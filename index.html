@@ -1,0 +1,2522 @@
+<!doctype html>
+<html lang="nl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<link rel="icon" href="favicon.ico">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+</head>
+<body>
+<title>Huvo website</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap">
+<style>
+/* Layout: oranje hero met vallende stip → drie werelden (Samen roze, Thuis licht oranje, Wijzer pruim) → stappen met stippenspoor → tip → terugbellen. Eén lichte huisstijl, bewust single-theme. */
+:root{
+  --oranje:#E6742B; --oranje-donker:#C95F1C; --licht-oranje:#FDEEE3;
+  --pruim:#5B2E4F; --pruim-diep:#45213B; --roze:#F6D1D1;
+  --wit:#FFFFFF; --inkt:#2A2420; --inkt-zacht:#5E534C; --lijn:#EAD9CC; --inkt-licht:#3A312C;
+  --font:"Nunito", ui-rounded, "SF Pro Rounded", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --r-lg:28px; --r-md:20px; --r-pill:999px;
+  --max:1200px;
+  color-scheme:light;
+}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--wit);color:var(--inkt);font-family:var(--font);font-size:19px;line-height:1.55;-webkit-font-smoothing:antialiased}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:60;background:var(--wit)}
+img{display:block;max-width:100%}
+a{color:inherit}
+h1,h2,h3{font-weight:800;line-height:1.12;margin:0;text-wrap:balance;letter-spacing:-.01em}
+h1{font-size:clamp(42px,6.2vw,72px)}
+h2{font-size:clamp(30px,3.6vw,44px)}
+h3{font-size:24px;font-weight:700;letter-spacing:0}
+p{margin:0}
+.wrap{max-width:var(--max);margin:0 auto;padding-left:max(20px,env(safe-area-inset-left,0px));padding-right:max(20px,env(safe-area-inset-right,0px))}
+.label{font-size:16px;font-weight:800;letter-spacing:.06em;text-transform:uppercase}
+.lead{font-size:clamp(19px,1.6vw,22px);max-width:34em}
+:focus-visible{outline:3px solid var(--pruim);outline-offset:3px;border-radius:8px}
+.ico{width:28px;height:28px;flex:none;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+
+/* knoppen */
+.btn{display:inline-flex;align-items:center;gap:10px;min-height:56px;padding:0 28px;border-radius:var(--r-pill);font:700 18px/1 var(--font);text-decoration:none;border:0;cursor:pointer;transition:transform .2s ease, background .2s ease, box-shadow .2s ease}
+.btn:hover{transform:translateY(-2px)}
+.btn .ico{width:22px;height:22px;transition:transform .2s ease}
+.btn:hover .ico{transform:translateX(3px)}
+.btn-wit{background:var(--wit);color:var(--inkt)}
+.btn-pruim{background:var(--pruim);color:var(--wit)}
+.btn-pruim:hover{background:var(--pruim-diep)}
+.btn-oranje{background:var(--oranje);color:var(--wit)}
+
+/* header */
+.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:50;background:var(--wit);transition:box-shadow .3s}
+.top.scrolled{box-shadow:0 1px 0 var(--lijn),0 10px 30px -18px rgba(42,36,32,.25)}
+.top .wrap{display:flex;align-items:center;justify-content:space-between;gap:24px;min-height:84px}
+.logo{display:block;color:var(--oranje);width:118px}
+.logo svg{display:block;width:100%;height:auto;overflow:visible}
+.nav{display:flex;align-items:center;gap:6px}
+.nav a{font-weight:700;font-size:18px;text-decoration:none;padding:10px 16px;border-radius:var(--r-pill);transition:background .2s}
+.nav a:hover{background:var(--licht-oranje)}
+.nav .btn{margin-left:10px;min-height:50px;padding:0 22px}
+.nav .btn:hover{background:var(--pruim-diep)}
+.menu-knop{display:none;background:none;border:0;color:var(--pruim);padding:8px;cursor:pointer;border-radius:12px}
+.menu-knop .ico{width:32px;height:32px}
+
+/* stip-animatie */
+.stip{transform-box:fill-box;transform-origin:center}
+.laad .stip{animation:val 1.3s cubic-bezier(.3,0,.2,1) .25s both}
+@keyframes val{
+  0%{transform:translateY(-900%);opacity:0}
+  12%{opacity:1}
+  55%{transform:translateY(0) scale(1.18,.82)}
+  70%{transform:translateY(-55%) scale(.95,1.05)}
+  84%{transform:translateY(0) scale(1.06,.94)}
+  92%{transform:translateY(-12%)}
+  100%{transform:translateY(0) scale(1)}
+}
+
+/* hero */
+.hero{position:relative;padding-bottom:56px}
+.hero-grid{display:grid;grid-template-columns:1.08fr 1fr;min-height:560px}
+.hero-tekst{position:relative;overflow:hidden;background:var(--oranje);color:var(--wit);padding:72px max(28px,5vw) 120px max(20px,calc((100vw - var(--max))/2 + 20px));display:flex;flex-direction:column;justify-content:center;gap:28px;border-radius:0 0 var(--r-lg) 0}
+.hero-tekst > *{position:relative;z-index:1}
+.hero-tekst .label{color:var(--licht-oranje);opacity:.9}
+.hero-tekst .lead{color:var(--wit)}
+.knoppen{display:flex;flex-wrap:wrap;gap:12px}
+/* zachte stippen: rustig zwevend, volgen de muis een klein beetje */
+.hero-tekst .zacht{position:absolute;z-index:0;border-radius:50%;background:rgba(255,255,255,.13);pointer-events:none;aspect-ratio:1}
+.zacht-1{width:min(440px,50vw);top:-150px;right:-130px;transform:translate(calc(var(--mx,0)*-36px),calc(var(--my,0)*-26px));animation:zweef 16s ease-in-out infinite alternate}
+.zacht-2{width:min(320px,42vw);bottom:-170px;left:-110px;transform:translate(calc(var(--mx,0)*24px),calc(var(--my,0)*18px));animation:zweef 20s ease-in-out -6s infinite alternate-reverse}
+.hero-tekst .zacht-3{width:84px;top:30%;right:14%;background:rgba(255,255,255,.1);transform:translate(calc(var(--mx,0)*-60px),calc(var(--my,0)*-44px));animation:zweef 11s ease-in-out -3s infinite alternate}
+.zacht{transition:transform .9s cubic-bezier(.2,.8,.2,1)}
+@keyframes zweef{from{translate:0 0}to{translate:26px 32px}}
+
+/* kop: woorden komen omhoog, daarna valt de punt als stip */
+.hero h1 .w{display:inline-block;overflow:hidden;vertical-align:bottom;padding-bottom:.06em;margin-bottom:-.06em}
+.hero h1 .w > span{display:inline-block;animation:omhoog .8s cubic-bezier(.2,.8,.2,1) both}
+.hero h1 .w:nth-child(2) > span{animation-delay:.08s}
+.hero h1 .w:nth-child(3) > span{animation-delay:.16s}
+@keyframes omhoog{from{transform:translateY(105%)}}
+.hero h1 .punt{display:inline-block;transform-origin:50% 90%;animation:valpunt 1.2s cubic-bezier(.3,0,.2,1) .7s both}
+@keyframes valpunt{
+  0%{transform:translateY(-700%);opacity:0}
+  15%{opacity:1}
+  55%{transform:translateY(0) scale(1.25,.75)}
+  70%{transform:translateY(-40%) scale(.92,1.08)}
+  85%{transform:translateY(0) scale(1.06,.94)}
+  100%{transform:none}
+}
+
+/* stippenspoor naar een knop */
+.cta-spoor{display:inline-flex;align-items:center;gap:7px;padding-inline:2px 4px}
+.cta-spoor i{display:block;border-radius:50%;background:var(--wit);animation:golf 3.4s ease-in-out infinite;transition:translate .35s cubic-bezier(.2,.8,.2,1)}
+.cta-spoor i:nth-child(1){width:6px;height:6px;opacity:.45}
+.cta-spoor i:nth-child(2){width:9px;height:9px;opacity:.6;animation-delay:.12s;transition-delay:.03s}
+.cta-spoor i:nth-child(3){width:12px;height:12px;opacity:.8;animation-delay:.24s;transition-delay:.06s}
+.cta-spoor i:nth-child(4){width:15px;height:15px;animation-delay:.36s;transition-delay:.09s}
+.cta-spoor.oranje i{background:var(--oranje)}
+@keyframes golf{0%,55%,100%{transform:none}18%{transform:translateY(-6px) scale(1.15)}}
+.knoppen:has(.spoor-doel:hover) .cta-spoor i,.cta-rij:has(.spoor-doel:hover) .cta-spoor i{translate:10px 0}
+.cta-rij{display:flex;align-items:center;flex-wrap:wrap;gap:10px}
+
+.hero-foto{position:relative;min-height:420px;overflow:hidden}
+.hero-foto img{position:absolute;left:0;top:-6%;width:100%;height:112%;object-fit:cover;object-position:60% 40%;will-change:transform}
+.hero-chip{position:absolute;left:24px;bottom:32px;background:var(--wit);border-radius:var(--r-md);padding:16px 20px;display:flex;gap:14px;align-items:center;box-shadow:0 20px 40px -20px rgba(42,36,32,.45);max-width:calc(100% - 48px);min-width:min(320px,calc(100% - 48px))}
+.hero-chip .rondje{width:48px;height:48px;border-radius:50%;background:var(--licht-oranje);color:var(--pruim);display:grid;place-items:center;flex:none;transition:background .5s}
+.hero-chip .rondje .ico{width:26px;height:26px}
+.chip-tekst{min-width:0;transition:transform .45s cubic-bezier(.2,.8,.2,1),opacity .45s}
+.chip-tekst.weg{transform:translateY(-10px);opacity:0}
+.chip-tekst.komt{transform:translateY(10px);opacity:0;transition:none}
+.hero-chip small{display:block;font-size:14px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--oranje)}
+.hero-chip strong{display:block;font-size:18px;line-height:1.25}
+.chip-stippen{display:flex;flex-direction:column;gap:5px;margin-left:auto;padding-left:6px}
+.chip-stippen i{width:7px;height:7px;border-radius:50%;background:var(--lijn);transition:background .4s, transform .4s}
+.chip-stippen i.aan{background:var(--oranje);transform:scale(1.25)}
+
+.pijlers{position:relative;z-index:2;margin-top:-44px}
+.pijlers .wrap{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.pijler{position:relative;overflow:hidden;display:flex;align-items:center;gap:14px;padding:22px 26px;border-radius:var(--r-md);text-decoration:none;font-weight:800;font-size:22px;transition:transform .25s ease, box-shadow .25s ease;box-shadow:0 18px 36px -24px rgba(42,36,32,.35)}
+.pijler > *{position:relative}
+.pijler::before{content:"";position:absolute;right:22px;top:50%;width:40px;height:40px;margin-top:-20px;border-radius:50%;background:rgba(255,255,255,.45);scale:0;transition:scale .6s cubic-bezier(.2,.8,.2,1)}
+.p-wijzer::before{background:rgba(255,255,255,.1)}
+.pijler:hover::before,.pijler:focus-visible::before{scale:9}
+
+/* lopende band met wat wij doen */
+.band{overflow:hidden;background:var(--licht-oranje);margin-top:64px;padding-block:22px}
+.band-rij{display:flex;width:max-content;animation:loop 48s linear infinite}
+.band:hover .band-rij{animation-play-state:paused}
+.band-rij span{display:inline-flex;align-items:center;gap:12px;font-weight:800;font-size:22px;color:var(--pruim);padding-inline:22px;white-space:nowrap}
+.band-rij span .ico{width:26px;height:26px}
+.band-rij b{width:10px;height:10px;border-radius:50%;background:var(--oranje);align-self:center;flex:none}
+@keyframes loop{to{transform:translateX(-50%)}}
+
+/* header: stip die meeloopt met het scrollen */
+.voortgang{position:absolute;left:0;right:0;bottom:-5px;height:10px;pointer-events:none;opacity:0;transition:opacity .3s}
+.top.scrolled .voortgang{opacity:1}
+.voortgang i{position:absolute;top:50%;left:0;border-radius:50%;background:var(--oranje);transform:translate(var(--x,0px),-50%)}
+.voortgang i:nth-child(1){width:10px;height:10px;transition:transform .12s linear}
+.voortgang i:nth-child(2){width:6px;height:6px;opacity:.6;transition:transform .35s ease-out}
+.voortgang i:nth-child(3){width:4px;height:4px;opacity:.35;transition:transform .6s ease-out}
+.pijler:hover{transform:translateY(-4px)}
+.pijler small{display:block;font-weight:600;font-size:16px;opacity:.8;margin-top:2px}
+.pijler .ico{margin-left:auto;width:24px;height:24px;transition:transform .2s}
+.pijler:hover .ico:last-child{transform:translateX(4px)}
+.pijler .ico:first-child{margin-left:0;width:30px;height:30px}
+.p-samen{background:var(--roze);color:var(--pruim)}
+.p-thuis{background:var(--licht-oranje);color:var(--pruim)}
+.p-wijzer{background:var(--pruim);color:var(--wit)}
+
+/* secties */
+section{scroll-margin-top:90px}
+main{scroll-margin-top:120px}
+.blok{padding-block:96px}
+.kop{display:flex;flex-direction:column;gap:16px;margin-bottom:48px;max-width:720px}
+.kop .label{color:var(--oranje)}
+
+/* wereld-kaarten */
+.werelden{display:flex;flex-direction:column;gap:28px}
+.wereld{position:relative;display:grid;grid-template-columns:1fr 1fr;border-radius:var(--r-lg);overflow:hidden;min-height:440px}
+.wereld-tekst{padding:56px;display:flex;flex-direction:column;gap:22px;min-width:0}
+.wereld-foto{position:relative;min-height:320px;overflow:hidden}
+.wereld-foto img,.kennis-foto img{position:absolute;left:0;top:-8%;width:100%;height:116%;object-fit:cover;will-change:transform}
+/* handtekening: één stip rechtsonder per vlak */
+.handtekening{position:absolute;right:28px;bottom:28px;width:16px;height:16px;border-radius:50%;z-index:2;pointer-events:none}
+.w-samen .handtekening{background:var(--wit)}
+.w-thuis .handtekening{background:var(--oranje)}
+.w-wijzer .handtekening{background:var(--roze)}
+.in .handtekening{animation:valpunt 1.2s cubic-bezier(.3,0,.2,1) .5s both}
+
+/* lijniconen tekenen zichzelf */
+@keyframes teken{from{stroke-dashoffset:80}to{stroke-dashoffset:0}}
+.in .bol .ico{stroke-dasharray:80;animation:teken 1.1s cubic-bezier(.4,0,.2,1) .2s both}
+.in li:nth-child(2) .bol .ico,.in .tegel:nth-child(2) .bol .ico{animation-delay:.35s}
+.in li:nth-child(3) .bol .ico,.in .tegel:nth-child(3) .bol .ico{animation-delay:.5s}
+.in .tegel:nth-child(4) .bol .ico{animation-delay:.65s}
+.in .tegel{animation:rijs .7s cubic-bezier(.2,.8,.2,1) both}
+.in .tegel:nth-child(2){animation-delay:.08s}
+.in .tegel:nth-child(3){animation-delay:.16s}
+.in .tegel:nth-child(4){animation-delay:.24s}
+@keyframes rijs{from{translate:0 18px}}
+.w-samen{background:var(--roze);color:var(--inkt)}
+.w-samen h3,.w-samen .label{color:var(--pruim)}
+.w-thuis{background:var(--licht-oranje);grid-template-columns:1fr 1.1fr}
+.w-thuis h3,.w-thuis .label{color:var(--pruim)}
+.w-wijzer{background:var(--pruim);color:var(--wit)}
+.w-wijzer .label{color:var(--roze)}
+.wereld h3{font-size:clamp(30px,3.2vw,40px);font-weight:800}
+.taken{list-style:none;padding:0;margin:4px 0 0;display:grid;gap:12px}
+.taken li{display:flex;gap:14px;align-items:center;font-weight:600}
+.taken .bol{width:46px;height:46px;border-radius:14px;background:rgba(255,255,255,.7);color:var(--pruim);display:grid;place-items:center;flex:none}
+.taken .bol .ico{width:24px;height:24px}
+.w-wijzer .taken .bol{background:rgba(255,255,255,.12);color:var(--wit)}
+
+.thuis-tegels{padding:40px;display:grid;grid-template-columns:1fr 1fr;gap:14px;align-content:center}
+.tegel{background:var(--wit);border-radius:var(--r-md);padding:24px;display:flex;flex-direction:column;gap:10px;transition:transform .25s ease}
+.tegel .bol{width:52px;height:52px;border-radius:16px;background:var(--licht-oranje);color:var(--pruim);display:grid;place-items:center}
+.tegel strong{font-size:20px;color:var(--pruim)}
+.tegel span{font-size:17px;color:var(--inkt-zacht);line-height:1.45}
+
+.agenda{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.18);border-radius:var(--r-md);padding:20px 22px;display:flex;gap:18px;align-items:center}
+.datum{background:var(--oranje);border-radius:16px;width:68px;padding:8px 0;text-align:center;flex:none;line-height:1.05}
+.datum b{display:block;font-size:28px;font-weight:900}
+.datum span{font-size:14px;font-weight:800;text-transform:uppercase;letter-spacing:.06em}
+.agenda strong{display:block;font-size:19px}
+.agenda p{font-size:16px;opacity:.85}
+
+/* stappen */
+.stappen-sectie{background:var(--licht-oranje)}
+.stappen{display:grid;grid-template-columns:repeat(3,1fr);gap:48px;position:relative;list-style:none;padding:0;margin:0}
+.stap{background:var(--wit);border-radius:var(--r-lg);padding:36px 32px;display:flex;flex-direction:column;gap:14px;position:relative}
+.stap-nr{width:56px;height:56px;border-radius:50%;background:var(--oranje);color:var(--wit);display:grid;place-items:center;font-weight:900;font-size:24px;transition:box-shadow .5s ease}
+.stap:nth-child(2) .stap-nr{background:var(--pruim)}
+.stap:nth-child(3) .stap-nr{background:var(--roze);color:var(--pruim)}
+.stap.aan .stap-nr{animation:pop .6s cubic-bezier(.3,1.6,.5,1);box-shadow:0 0 0 9px rgba(230,116,43,.14)}
+@keyframes pop{0%{transform:scale(.7)}100%{transform:none}}
+.stap p{color:var(--inkt-zacht)}
+/* spoor tussen de stappen; licht op terwijl u scrolt */
+.spoor{position:absolute;top:64px;left:100%;width:48px;display:flex;align-items:center;justify-content:center;gap:5px;z-index:2;translate:0 -50%}
+.spoor i{display:block;border-radius:50%;background:rgba(230,116,43,.22);transition:background .35s ease, transform .35s cubic-bezier(.3,1.6,.5,1)}
+.spoor i:nth-child(1){width:5px;height:5px}
+.spoor i:nth-child(2){width:7px;height:7px}
+.spoor i:nth-child(3){width:9px;height:9px}
+.spoor i.aan{background:var(--oranje);transform:scale(1.2)}
+.stappen-cta{margin-top:40px;justify-content:flex-end}
+.stappen-cta p{font-weight:700;font-size:20px;color:var(--pruim);margin-right:8px}
+
+/* belofte-band */
+.belofte{background:var(--oranje);color:var(--wit);overflow:hidden;position:relative}
+.belofte .wrap{position:relative;padding-block:96px;display:grid;grid-template-columns:1.25fr 1fr;gap:56px;align-items:center}
+.belofte-tekst-kol{display:flex;flex-direction:column;gap:22px;min-width:0}
+.belofte h2{font-size:clamp(34px,4.4vw,56px)}
+.belofte .zacht-b{position:absolute;border-radius:50%;background:rgba(255,255,255,.1);pointer-events:none;aspect-ratio:1}
+.belofte .zacht-b1{width:380px;left:-140px;bottom:-200px;animation:zweef 18s ease-in-out infinite alternate}
+.waarden{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:10px}
+.waarde{background:rgba(255,255,255,.12);border-radius:var(--r-md);padding:24px;transition:background .3s, transform .3s}
+.waarde:hover{background:rgba(255,255,255,.2);transform:translateY(-3px)}
+.waarden.in .waarde{animation:rijs .7s cubic-bezier(.2,.8,.2,1) both}
+.waarden.in .waarde:nth-child(2){animation-delay:.1s}
+.waarden.in .waarde:nth-child(3){animation-delay:.2s}
+.waarden.in .waarde:nth-child(4){animation-delay:.3s}
+/* de stip valt mee met het scrollen in de u */
+.u-podium{display:flex;flex-direction:column;align-items:center;gap:22px}
+.u-knop{background:none;border:0;padding:0;cursor:pointer;width:min(340px,70%);border-radius:40px}
+.u-knop svg{width:100%;height:auto;overflow:visible;display:block}
+.u-podium .u{fill:var(--wit)}
+.u-podium .stip{fill:var(--wit)}
+.u-podium .stip.land{animation:land .7s cubic-bezier(.3,1.4,.5,1)}
+.u-podium .stip.hup{animation:hup .9s cubic-bezier(.3,0,.3,1)}
+@keyframes land{0%{transform:scale(1.28,.72)}40%{transform:scale(.93,1.07)}70%{transform:scale(1.03,.97)}100%{transform:none}}
+@keyframes hup{0%{transform:none}15%{transform:scale(1.15,.85)}45%{transform:translateY(-160%) scale(.94,1.06)}75%{transform:scale(1.22,.78)}88%{transform:scale(.97,1.03)}100%{transform:none}}
+.u-onderschrift{font-weight:800;font-size:20px;color:var(--licht-oranje)}
+
+/* statement: tekst loopt vol terwijl u scrolt */
+.statement{padding-block:120px 40px}
+.groot{font-size:clamp(32px,4.4vw,58px);font-weight:800;line-height:1.2;letter-spacing:-.015em;max-width:21em;text-wrap:pretty}
+.groot .wd{color:rgba(42,36,32,.18);transition:color .35s ease}
+.groot .wd.vol{color:var(--inkt)}
+.groot em{font-style:normal}
+.groot em .wd.vol{color:var(--oranje)}
+.chipje{display:inline-grid;place-items:center;width:1.25em;height:.95em;border-radius:var(--r-pill);vertical-align:-.08em;margin-inline:.04em;opacity:.3;scale:.7;transition:opacity .35s, scale .5s cubic-bezier(.3,1.6,.5,1)}
+.chipje.vol{opacity:1;scale:1}
+.chipje .ico{width:.6em;height:.6em;stroke-width:2}
+.chipje.roze{background:var(--roze);color:var(--pruim)}
+.chipje.oranje{background:var(--licht-oranje);color:var(--oranje)}
+.chipje.pruim{background:var(--pruim);color:var(--wit)}
+
+/* werelden schuiven als kaarten over elkaar */
+.werelden.stapel .wereld{position:sticky;top:calc(108px + var(--i,0) * 18px);transform-origin:50% 0;box-shadow:0 -18px 40px -30px rgba(42,36,32,.35)}
+
+/* hoofdfoto opent vanuit een stip */
+.hero-foto{animation:onthul 1.4s cubic-bezier(.65,0,.35,1) .1s both}
+@keyframes onthul{from{clip-path:circle(0% at 6% 72%)}to{clip-path:circle(150% at 6% 72%)}}
+
+/* groot logo onderaan */
+.voet-groot{padding:24px max(20px,env(safe-area-inset-right,0px)) 0 max(20px,env(safe-area-inset-left,0px));max-width:var(--max);margin:0 auto;color:var(--inkt-licht)}
+.voet-groot svg{display:block;width:100%;height:auto;overflow:visible;margin-bottom:-2%}
+.voet-groot .stip{fill:var(--oranje)}
+.voet-groot.in .stip{animation:val 1.4s cubic-bezier(.3,0,.2,1) .3s both}
+.kantel{transition:transform .35s cubic-bezier(.2,.8,.2,1)}
+.waarde strong{display:block;font-size:22px;font-weight:800}
+.waarde span{opacity:.92}
+
+/* tip */
+.tip{display:grid;grid-template-columns:.9fr 1.1fr;gap:56px;align-items:start}
+.tip-kaart{background:var(--roze);border-radius:var(--r-lg);padding:44px;position:relative;overflow:hidden}
+.tip-kaart .label{color:var(--pruim)}
+.tip-kaart h3{font-size:clamp(28px,3vw,38px);font-weight:800;color:var(--pruim);margin-top:12px}
+.tip-kaart .hoek{position:absolute;right:28px;bottom:28px;width:18px;height:18px;border-radius:50%;background:var(--pruim)}
+.checks{list-style:none;padding:0;margin:0;display:grid;gap:4px;counter-reset:c}
+.check{display:grid;grid-template-columns:auto 1fr;gap:18px;padding:22px 0;border-bottom:1px solid var(--lijn)}
+.check:last-child{border-bottom:0}
+.check .bol{width:48px;height:48px;border-radius:50%;background:var(--licht-oranje);color:var(--oranje);display:grid;place-items:center}
+.checks.in .check{animation:schuif .7s cubic-bezier(.2,.8,.2,1) both}
+.checks.in .check:nth-child(2){animation-delay:.15s}
+.checks.in .check:nth-child(3){animation-delay:.3s}
+@keyframes schuif{from{translate:-16px 0}}
+.tip-kaart.in .hoek{animation:valpunt 1.2s cubic-bezier(.3,0,.2,1) .4s both}
+.check strong{display:block;font-size:20px;margin-bottom:2px}
+.check p{color:var(--inkt-zacht)}
+
+/* kennismaken */
+.kennis{background:var(--pruim);color:var(--wit);border-radius:var(--r-lg);overflow:hidden;display:grid;grid-template-columns:1fr 1fr}
+.kennis-foto{position:relative;min-height:360px}
+.kennis-foto img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:35% 50%}
+.kennis-form{padding:56px;display:flex;flex-direction:column;gap:22px;min-width:0}
+.kennis-form .label{color:var(--roze)}
+.veld{display:flex;flex-direction:column;gap:8px}
+.veld label{font-weight:700;font-size:18px}
+.veld input{font:400 19px var(--font);min-height:58px;padding:0 20px;border-radius:16px;border:2px solid transparent;background:var(--wit);color:var(--inkt);width:100%}
+.veld input:focus{outline:none;border-color:var(--oranje)}
+.keuzes{display:flex;flex-wrap:wrap;gap:10px;border:0;padding:0;margin:0}
+.keuzes legend{font-weight:700;font-size:18px;margin-bottom:8px;padding:0}
+.keuzes input{position:absolute;opacity:0;pointer-events:none}
+.keuzes label{display:inline-flex;align-items:center;min-height:52px;padding:0 22px;border-radius:var(--r-pill);border:2px solid rgba(255,255,255,.35);font-weight:700;cursor:pointer;transition:all .2s}
+.keuzes input:checked + label{background:var(--wit);color:var(--pruim);border-color:var(--wit)}
+.keuzes input:focus-visible + label{outline:3px solid var(--roze);outline-offset:3px}
+.fout{color:var(--roze);font-weight:700;font-size:17px}
+.bedankt{background:rgba(255,255,255,.1);border-radius:var(--r-md);padding:28px;display:flex;gap:18px;align-items:flex-start}
+.bedankt .bol{width:52px;height:52px;border-radius:50%;background:var(--oranje);display:grid;place-items:center;flex:none;animation:pop .6s cubic-bezier(.3,1.6,.5,1)}
+.bedankt .ico{stroke-dasharray:80;animation:teken .9s cubic-bezier(.4,0,.2,1) .25s both}
+.bedankt strong{font-size:22px;display:block;margin-bottom:4px}
+.of-bel{font-size:17px;opacity:.88}
+.of-bel b{white-space:nowrap}
+
+/* footer */
+.voet{background:var(--inkt);color:var(--licht-oranje);margin-top:96px;overflow:hidden}
+.voet .wrap{padding-block:64px 40px;display:grid;grid-template-columns:1.4fr 1fr 1fr;gap:40px}
+.voet-logo{color:var(--wit);width:160px}
+.voet-logo svg{width:100%;height:auto;display:block}
+.voet .belofte-tekst{margin-top:10px;font-weight:800;color:var(--oranje);font-size:20px}
+.voet h4{margin:0 0 12px;font-size:16px;letter-spacing:.06em;text-transform:uppercase;color:var(--roze)}
+.voet ul{list-style:none;margin:0;padding:0;display:grid;gap:8px}
+.voet a{text-decoration:none}
+.voet a:hover{text-decoration:underline}
+.voet-onder{grid-column:1/-1;border-top:1px solid rgba(253,238,227,.15);padding-top:24px;font-size:16px;opacity:.7;display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px}
+
+/* hulpknop */
+.hulp{position:fixed;z-index:70;right:calc(24px + env(safe-area-inset-right,0px));bottom:calc(24px + env(safe-area-inset-bottom,0px));display:flex;flex-direction:column;align-items:flex-end;gap:12px}
+.hulp-knop{display:flex;align-items:center;gap:0;height:68px;min-width:68px;padding:0 12px;border-radius:var(--r-pill);background:var(--oranje);color:var(--wit);border:0;cursor:pointer;font:800 18px var(--font);box-shadow:0 16px 34px -12px rgba(201,95,28,.7);transition:gap .3s ease, padding .3s ease, background .2s}
+.hulp-knop .dot{width:44px;height:44px;border-radius:50%;background:var(--wit);display:grid;place-items:center;flex:none;position:relative}
+.hulp-knop .dot::after{content:"";width:18px;height:18px;border-radius:50%;background:var(--oranje);animation:valpunt 1.2s cubic-bezier(.3,0,.2,1) 1.4s both}
+.hulp-knop .txt{max-width:0;overflow:hidden;white-space:nowrap;transition:max-width .35s ease}
+.hulp-knop:hover,.hulp-knop:focus-visible,.hulp-knop[aria-expanded="true"],.hulp-knop.piek{gap:12px;padding-right:24px}
+.hulp-knop:hover .txt,.hulp-knop:focus-visible .txt,.hulp-knop[aria-expanded="true"] .txt,.hulp-knop.piek .txt{max-width:200px}
+.hulp-knop .dot::before{content:"";position:absolute;inset:-6px;border-radius:50%;border:2px solid rgba(255,255,255,.7);animation:puls 2.8s ease-out 2s infinite}
+@keyframes puls{0%{transform:scale(.8);opacity:.9}70%,100%{transform:scale(1.35);opacity:0}}
+.hulp-paneel{width:min(340px,calc(100vw - 48px));background:var(--wit);border-radius:var(--r-lg);padding:26px;box-shadow:0 30px 60px -20px rgba(42,36,32,.4);display:flex;flex-direction:column;gap:14px;transform-origin:bottom right;animation:open .3s cubic-bezier(.2,.8,.2,1)}
+@keyframes open{from{opacity:0;transform:translateY(10px) scale(.96)}}
+.hulp-paneel h3{font-size:22px;color:var(--pruim);font-weight:800}
+.hulp-paneel p{font-size:17px;color:var(--inkt-zacht)}
+.hulp-paneel .nummer{display:flex;align-items:center;justify-content:space-between;gap:10px;background:var(--licht-oranje);border-radius:16px;padding:14px 16px;font-weight:800;font-size:22px;color:var(--pruim)}
+.tel-nr{white-space:nowrap}
+.kopie{background:var(--wit);border:0;border-radius:var(--r-pill);padding:8px 14px;font:700 15px var(--font);color:var(--pruim);cursor:pointer}
+.hulp-paneel .btn{justify-content:center}
+
+/* reveal: zichtbaar in rust, alleen een zachte beweging */
+.rv{transition:transform .8s cubic-bezier(.2,.8,.2,1)}
+.js .rv.wacht{transform:translateY(24px)}
+
+/* ===== Werken bij ===== */
+.nav a.actief{background:var(--licht-oranje);color:var(--pruim)}
+.vac-hero .hero-tekst{background:var(--pruim)}
+.vac-hero .hero-tekst .zacht{background:rgba(246,209,209,.1)}
+.vac-hero .hero-tekst .label{color:var(--roze)}
+.vac-hero .punt{color:var(--oranje)}
+.vac-hero .hero-foto img{object-position:50% 35%}
+.vac-hero h1 .w{display:inline-block;overflow:hidden;vertical-align:bottom;padding-bottom:.06em;margin-bottom:-.06em}
+.vac-hero h1 .w > span{display:inline-block;animation:omhoog .8s cubic-bezier(.2,.8,.2,1) both}
+.vac-hero h1 .w:nth-child(2) > span{animation-delay:.06s}
+.vac-hero h1 .w:nth-child(3) > span{animation-delay:.12s}
+.vac-hero h1 .w:nth-child(4) > span{animation-delay:.18s}
+.vac-hero h1 .w:nth-child(5) > span{animation-delay:.24s}
+.vac-hero h1 .punt{display:inline-block;transform-origin:50% 90%;animation:valpunt 1.2s cubic-bezier(.3,0,.2,1) .7s both}
+.vac-teller{display:flex;align-items:center;gap:14px}
+.vac-teller b{font-size:40px;font-weight:900;line-height:1;color:var(--oranje);font-variant-numeric:tabular-nums}
+.vac-teller span{font-weight:700;line-height:1.3}
+
+.waarom{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+.reden{background:var(--licht-oranje);border-radius:var(--r-md);padding:28px 24px;display:flex;flex-direction:column;gap:12px}
+.reden:nth-child(2){background:var(--roze)}
+.reden:nth-child(3){background:var(--pruim);color:var(--wit)}
+.reden:nth-child(3) .bol{background:rgba(255,255,255,.12);color:var(--wit)}
+.reden:nth-child(3) p{color:rgba(255,255,255,.85)}
+.reden .bol{width:52px;height:52px;border-radius:16px;background:rgba(255,255,255,.75);color:var(--pruim);display:grid;place-items:center}
+.reden strong{font-size:21px;line-height:1.25}
+.reden p{color:var(--inkt-zacht);font-size:18px}
+.waarom.in .reden{animation:rijs .7s cubic-bezier(.2,.8,.2,1) both}
+.waarom.in .reden:nth-child(2){animation-delay:.08s}
+.waarom.in .reden:nth-child(3){animation-delay:.16s}
+.waarom.in .reden:nth-child(4){animation-delay:.24s}
+.waarom.in .reden:nth-child(2) .bol .ico{animation-delay:.35s}
+.waarom.in .reden:nth-child(3) .bol .ico{animation-delay:.5s}
+.waarom.in .reden:nth-child(4) .bol .ico{animation-delay:.65s}
+
+/* vacaturelijst */
+.vac-sectie{background:var(--licht-oranje)}
+.vac-kop{display:flex;align-items:flex-end;justify-content:space-between;gap:24px;flex-wrap:wrap;margin-bottom:28px}
+.vac-kop .kop{margin-bottom:0}
+.filters{display:flex;flex-wrap:wrap;gap:8px}
+.filter{min-height:48px;padding:0 20px;border-radius:var(--r-pill);border:2px solid var(--lijn);background:var(--wit);color:var(--pruim);font:700 17px var(--font);cursor:pointer;transition:all .2s}
+.filter:hover{border-color:var(--pruim)}
+.filter[aria-pressed="true"]{background:var(--pruim);border-color:var(--pruim);color:var(--wit)}
+.filter small{font-size:14px;opacity:.7;margin-left:4px;font-variant-numeric:tabular-nums}
+.vac-lijst{display:flex;flex-direction:column;gap:14px}
+.vac{background:var(--wit);border-radius:var(--r-lg);overflow:hidden;transition:box-shadow .3s, translate .3s}
+.vac:hover{box-shadow:0 20px 40px -28px rgba(42,36,32,.35)}
+.vac.verberg{display:none}
+.vac.nieuw{animation:rijs .5s cubic-bezier(.2,.8,.2,1) both}
+.vac summary{list-style:none;cursor:pointer;display:grid;grid-template-columns:auto 1fr auto;gap:20px;align-items:center;padding:24px 28px}
+.vac summary::-webkit-details-marker{display:none}
+.vac .tak{width:60px;height:60px;border-radius:50%;display:grid;place-items:center;flex:none}
+.tak-samen{background:var(--roze);color:var(--pruim)}
+.tak-thuis{background:var(--licht-oranje);color:var(--pruim)}
+.tak-wijzer{background:var(--pruim);color:var(--wit)}
+.tak-kantoor{background:var(--oranje);color:var(--wit)}
+.vac h3{font-size:24px;font-weight:800;color:var(--pruim)}
+.vac-meta{display:flex;flex-wrap:wrap;gap:6px 18px;margin-top:6px;font-size:17px;color:var(--inkt-zacht)}
+.vac-meta span{display:inline-flex;align-items:center;gap:6px}
+.vac-meta .ico{width:20px;height:20px}
+.vac-meta .salaris{font-weight:800;color:var(--pruim);font-variant-numeric:tabular-nums}
+.vac-meta .salaris i{font-style:normal;width:20px;height:20px;border-radius:50%;background:var(--oranje);color:var(--wit);display:inline-grid;place-items:center;font-size:13px;font-weight:900}
+.vac .open-ico{width:48px;height:48px;border-radius:50%;background:var(--licht-oranje);color:var(--pruim);display:grid;place-items:center;transition:transform .35s cubic-bezier(.2,.8,.2,1), background .3s}
+.vac[open] .open-ico{transform:rotate(180deg);background:var(--pruim);color:var(--wit)}
+.vac-body{padding:4px 28px 32px 108px;display:grid;grid-template-columns:repeat(3,1fr);gap:28px}
+.vac[open] .vac-body{animation:rijs .45s cubic-bezier(.2,.8,.2,1)}
+.vac-body h4{margin:0 0 10px;font-size:17px;font-weight:800;letter-spacing:.05em;text-transform:uppercase;color:var(--oranje)}
+.vac-body ul{margin:0;padding:0;list-style:none;display:grid;gap:8px}
+.vac-body li{position:relative;padding-left:22px;font-size:18px}
+.vac-body li::before{content:"";position:absolute;left:2px;top:.62em;width:8px;height:8px;border-radius:50%;background:var(--oranje)}
+.vac-actie{grid-column:1/-1}
+
+/* een dag als helper */
+.dag{list-style:none;margin:0;padding:0;position:relative;max-width:820px}
+.dag::before,.dag::after{content:"";position:absolute;left:109px;top:14px;bottom:14px;width:3px;border-radius:3px;background:var(--lijn)}
+.dag::after{background:var(--oranje);bottom:auto;height:calc((100% - 28px) * var(--vul,0));transition:height .15s linear}
+.moment{display:grid;grid-template-columns:84px 52px 1fr;align-items:start;padding-bottom:34px}
+.moment:last-child{padding-bottom:0}
+.moment time{font-weight:800;font-size:20px;color:var(--pruim);font-variant-numeric:tabular-nums;padding-top:2px}
+.moment .m-stip{width:22px;height:22px;border-radius:50%;background:var(--wit);border:3px solid var(--lijn);margin:4px 0 0 14px;position:relative;z-index:1;transition:border-color .3s, background .3s, transform .4s cubic-bezier(.3,1.6,.5,1)}
+.moment.aan .m-stip{background:var(--oranje);border-color:var(--oranje);transform:scale(1.15)}
+.moment strong{display:block;font-size:22px;line-height:1.3}
+.moment p{color:var(--inkt-zacht)}
+.moment-tekst{transition:translate .5s cubic-bezier(.2,.8,.2,1), opacity .5s}
+.moment:not(.aan) .moment-tekst{opacity:.55}
+
+/* sollicitatie */
+.sol{display:grid;grid-template-columns:.85fr 1.15fr;gap:0;background:var(--pruim);color:var(--wit);border-radius:var(--r-lg);overflow:hidden}
+.sol-info{padding:56px;background:var(--oranje);display:flex;flex-direction:column;gap:20px;position:relative;overflow:hidden}
+.sol-info .zacht-s{position:absolute;width:300px;aspect-ratio:1;border-radius:50%;background:rgba(255,255,255,.12);right:-120px;bottom:-120px;animation:zweef 15s ease-in-out infinite alternate}
+.sol-info > *{position:relative}
+.sol-info ol{margin:0;padding:0;list-style:none;display:grid;gap:16px}
+.sol-info li{display:grid;grid-template-columns:40px 1fr;gap:14px;align-items:start;font-weight:600}
+.sol-info li b{width:40px;height:40px;border-radius:50%;background:var(--wit);color:var(--oranje);display:grid;place-items:center;font-weight:900}
+.sol-form{padding:56px;display:flex;flex-direction:column;gap:18px;min-width:0}
+.sol-form .label{color:var(--roze)}
+.veld select,.veld textarea{font:400 19px var(--font);padding:14px 20px;border-radius:16px;border:2px solid transparent;background:var(--wit);color:var(--inkt);width:100%}
+.veld select{min-height:58px;appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' fill='none' stroke='%235B2E4F' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 16px center;padding-right:52px}
+.veld textarea{min-height:120px;resize:vertical;line-height:1.5}
+.veld select:focus,.veld textarea:focus{outline:none;border-color:var(--oranje)}
+.veld select.gekozen{animation:pop .5s cubic-bezier(.3,1.6,.5,1)}
+
+/* ===== Over ons ===== */
+.ov-hero .hero-tekst{background:var(--roze);color:var(--pruim)}
+.ov-hero .hero-tekst .zacht{background:rgba(255,255,255,.4)}
+.ov-hero .hero-tekst .label{color:var(--pruim);opacity:.8}
+.ov-hero .hero-tekst .lead{color:var(--inkt)}
+.ov-hero .punt{color:var(--oranje)}
+.ov-hero .hero-foto img{object-position:50% 40%}
+.ov-hero .hero-chip .rondje{background:var(--roze)}
+
+/* het verhaal van de stip */
+.verhaal{display:grid;grid-template-columns:1.1fr .9fr;gap:64px;align-items:start}
+.verhaal-beeld{position:sticky;top:116px;height:min(540px,calc(100vh - 150px));border-radius:var(--r-lg);background:var(--licht-oranje);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:24px;overflow:hidden;transition:background .7s ease}
+.verhaal-beeld svg{width:76%;height:auto;overflow:visible}
+.verhaal-beeld .l{fill:var(--oranje);transition:opacity .6s ease, fill .7s ease, transform .9s cubic-bezier(.2,.8,.2,1);transform-box:fill-box;transform-origin:50% 100%}
+.verhaal-beeld .stip{fill:var(--oranje);transition:fill .7s ease}
+.verhaal-beeld .stip.vallen{animation:val 1.3s cubic-bezier(.3,0,.2,1) both}
+.verhaal-beeld .ring{fill:none;stroke:var(--pruim);stroke-width:9;opacity:0;transform-box:fill-box;transform-origin:center;transition:opacity .5s}
+.vb-belofte{width:76%;padding-left:1.6%;text-align:left;margin-top:-6px;font-size:clamp(20px,2.2vw,28px);font-weight:800;color:var(--wit);opacity:0;translate:0 10px;transition:opacity .6s .3s, translate .6s .3s}
+.verhaal-beeld[data-stap="2"] .l:not(.l-u),.verhaal-beeld[data-stap="3"] .l:not(.l-u){opacity:.13}
+.verhaal-beeld[data-stap="2"] .ring{opacity:1;animation:ringpuls 1.8s ease-out infinite}
+@keyframes ringpuls{0%{transform:scale(.85);opacity:.9}100%{transform:scale(1.5);opacity:0}}
+.verhaal-beeld[data-stap="3"] .l-u{transform:translateY(-3%)}
+.verhaal-beeld[data-stap="4"]{background:var(--oranje)}
+.verhaal-beeld[data-stap="4"] .l,.verhaal-beeld[data-stap="4"] .stip{fill:var(--wit)}
+.verhaal-beeld[data-stap="4"] .vb-belofte{opacity:1;translate:0 0}
+.vstappen{display:flex;flex-direction:column}
+.vstap{min-height:62vh;display:flex;flex-direction:column;justify-content:center;gap:14px;transition:opacity .5s ease}
+.vstap:first-child{min-height:48vh;justify-content:flex-start;padding-top:40px}
+.vstap .label{color:var(--oranje)}
+.vstap h3{font-size:clamp(28px,3vw,38px);font-weight:800;color:var(--pruim)}
+.vstap p{color:var(--inkt-zacht);max-width:28em}
+.vstappen.leeft .vstap:not(.actief){opacity:.35}
+
+/* wel en niet */
+.welniet{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+.wn{border-radius:var(--r-lg);padding:44px;display:flex;flex-direction:column;gap:20px}
+.wn-wel{background:var(--licht-oranje)}
+.wn-niet{background:var(--pruim);color:var(--wit)}
+.wn h3{font-size:30px;font-weight:800}
+.wn-wel h3{color:var(--pruim)}
+.wn ul{list-style:none;margin:0;padding:0;display:grid;gap:14px}
+.wn li{display:flex;gap:14px;align-items:center;font-weight:600;font-size:19px}
+.wn .bol{width:44px;height:44px;border-radius:50%;display:grid;place-items:center;flex:none}
+.wn-wel .bol{background:var(--wit);color:var(--oranje)}
+.wn-niet .bol{background:rgba(255,255,255,.12);color:var(--roze)}
+.wn .bol .ico{width:22px;height:22px}
+.wn-niet p{color:rgba(255,255,255,.85)}
+
+/* team */
+.team{display:grid;grid-template-columns:repeat(2,1fr);gap:20px}
+.lid{background:var(--licht-oranje);border-radius:var(--r-lg);padding:36px 32px 32px;display:flex;flex-direction:column;align-items:flex-start;gap:20px;position:relative}
+.foto-plek{position:relative;width:148px;aspect-ratio:1;border-radius:50%;display:grid;place-items:center;font-size:64px;font-weight:900;line-height:1;transition:transform .5s cubic-bezier(.3,1.4,.5,1)}
+.foto-plek::after{content:"";position:absolute;right:8px;bottom:8px;width:26px;height:26px;border-radius:50%;background:var(--oranje);border:4px solid var(--licht-oranje)}
+.lid:hover .foto-plek{transform:translateY(-6px) rotate(-3deg)}
+.lid:nth-child(1) .foto-plek{background:var(--roze);color:var(--pruim)}
+.lid:nth-child(2) .foto-plek{background:var(--pruim);color:var(--wit)}
+.lid:nth-child(3) .foto-plek{background:var(--oranje);color:var(--wit)}
+.lid:nth-child(3) .foto-plek::after{background:var(--pruim)}
+.team.in .foto-plek::after{animation:valpunt 1.2s cubic-bezier(.3,0,.2,1) .4s both}
+.team.in .lid:nth-child(2) .foto-plek::after{animation-delay:.55s}
+.team.in .lid:nth-child(3) .foto-plek::after{animation-delay:.7s}
+.lid h3{font-size:28px;font-weight:800;color:var(--pruim)}
+.lid p{font-weight:700;color:var(--oranje);margin-top:2px}
+
+/* kernwaarden als grote woorden */
+.wlijst{border-top:1px solid var(--lijn)}
+.wl{display:block;width:100%;text-align:left;background:none;border:0;border-bottom:1px solid var(--lijn);padding:26px 0;cursor:pointer;color:var(--inkt);font-family:var(--font)}
+.wl-rij{display:flex;align-items:center;gap:0;transition:gap .4s cubic-bezier(.2,.8,.2,1)}
+.wl-stip{width:0;height:22px;border-radius:50%;background:var(--oranje);flex:none;transition:width .4s cubic-bezier(.2,.8,.2,1)}
+.wl-woord{font-size:clamp(36px,5.4vw,72px);font-weight:900;line-height:1.05;letter-spacing:-.02em;color:var(--pruim);transition:color .3s}
+.wl-kort{margin-left:auto;font-weight:700;font-size:20px;color:var(--inkt-zacht);padding-left:16px;text-align:right}
+.wl-uitleg{display:grid;grid-template-rows:0fr;transition:grid-template-rows .45s cubic-bezier(.2,.8,.2,1)}
+.wl-tekst{display:block;overflow:hidden;min-height:0}
+.wl-tekst{padding-top:0;font-size:20px;max-width:34em;color:var(--inkt);line-height:1.5}
+.wl[aria-expanded="true"] .wl-tekst{padding-top:12px}
+.wl:hover .wl-rij,.wl[aria-expanded="true"] .wl-rij{gap:22px}
+.wl:hover .wl-stip,.wl[aria-expanded="true"] .wl-stip{width:22px}
+.wl[aria-expanded="true"] .wl-woord{color:var(--oranje)}
+.wl[aria-expanded="true"] .wl-uitleg{grid-template-rows:1fr}
+
+/* ===== Prijs aanvragen: één vraag per scherm ===== */
+.av-sectie{background:var(--licht-oranje)}
+.av-sectie .wrap{padding-block:40px 96px}
+.av-kop{display:flex;align-items:center;justify-content:space-between;gap:16px 24px;flex-wrap:wrap;margin-bottom:24px}
+.av-kop .label{color:var(--oranje)}
+.av-bel{display:inline-flex;align-items:center;gap:10px;background:var(--wit);border-radius:var(--r-pill);padding:10px 18px 10px 10px;font-weight:700;color:var(--pruim)}
+.av-bel .bol{width:36px;height:36px;border-radius:50%;background:var(--oranje);color:var(--wit);display:grid;place-items:center;flex:none}
+.av-bel .bol .ico{width:20px;height:20px}
+.av-bel b{font-size:20px;font-weight:900;white-space:nowrap}
+.av-voortgang{position:relative;display:flex;align-items:center;gap:8px}
+.av-voortgang .loper{position:absolute;top:50%;left:0;width:18px;height:18px;margin:-9px 0 0 -4px;border-radius:50%;background:var(--pruim);box-shadow:0 0 0 5px rgba(91,46,79,.14);transition:transform .6s cubic-bezier(.3,1.5,.5,1), opacity .3s}
+.av-voortgang i{display:block;width:10px;height:10px;border-radius:50%;background:var(--lijn);transition:background .35s, transform .45s cubic-bezier(.3,1.6,.5,1)}
+.av-voortgang i.klaar{background:var(--oranje)}
+.av-voortgang i.nu{background:var(--pruim)}
+.av-voortgang i:not(.klaar):not(.nu){display:none}
+.av-teller{font-weight:700;color:var(--inkt-zacht);font-size:16px;margin-left:8px;font-variant-numeric:tabular-nums}
+.av-kaart{background:var(--wit);border-radius:var(--r-lg);min-height:560px;display:grid;grid-template-columns:minmax(0,1.45fr) minmax(0,1fr);position:relative;overflow:hidden;box-shadow:0 30px 60px -40px rgba(91,46,79,.35)}
+.av-kaart.schud{animation:schud .45s cubic-bezier(.36,.07,.19,.97)}
+@keyframes schud{20%,60%{transform:translateX(-6px)}40%,80%{transform:translateX(6px)}}
+.av-links{padding:48px;display:flex;flex-direction:column;gap:28px;min-width:0}
+/* rechts: een levend beeld per vraag */
+.av-beeld{position:relative;overflow:hidden;background:var(--bb,var(--licht-oranje));transition:background .7s ease;display:grid;place-items:center;min-height:100%}
+.av-beeld .zb{position:absolute;border-radius:50%;background:rgba(255,255,255,.22);pointer-events:none;aspect-ratio:1}
+.av-beeld .zb1{width:62%;top:-18%;right:-22%;animation:zweef 14s ease-in-out infinite alternate}
+.av-beeld .zb2{width:40%;bottom:-14%;left:-12%;animation:zweef 18s ease-in-out -5s infinite alternate-reverse}
+.beeld-cirkel{position:relative;width:min(240px,62%);aspect-ratio:1;border-radius:50%;background:rgba(255,255,255,.6);display:grid;place-items:center;transition:background .7s ease, transform .6s cubic-bezier(.3,1.5,.5,1)}
+.av-beeld.donker .beeld-cirkel{background:rgba(255,255,255,.12)}
+.beeld-cirkel svg{width:48%;height:48%;fill:none;stroke:var(--bi,var(--pruim));stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:80;animation:teken 1.2s cubic-bezier(.4,0,.2,1) .15s both;transition:stroke .7s}
+.beeld-cirkel .bs{position:absolute;top:8%;right:8%;width:13%;aspect-ratio:1;border-radius:50%;background:var(--oranje);transform-origin:50% 100%;animation:valpunt 1.2s cubic-bezier(.3,0,.2,1) .35s both}
+.av-beeld.oranje .beeld-cirkel .bs{background:var(--pruim)}
+.beeld-cirkel.hup{animation:cirkelhup .5s cubic-bezier(.3,1.6,.5,1)}
+@keyframes cirkelhup{40%{transform:scale(1.06)}}
+.bubbels{position:absolute;inset:0;pointer-events:none;z-index:2}
+.bubbel{position:absolute;width:62px;height:62px;margin:-31px 0 0 -31px;border-radius:50%;background:var(--wit);color:var(--pruim);display:grid;place-items:center;box-shadow:0 12px 26px -14px rgba(42,36,32,.45);animation:zweef 9s ease-in-out infinite alternate}
+.bubbel .ico{width:30px;height:30px}
+.bubbel.pop{animation:bubbelpop .6s cubic-bezier(.3,1.7,.5,1) both, zweef 9s ease-in-out .6s infinite alternate}
+@keyframes bubbelpop{from{transform:scale(0)}}
+.bubbel:nth-child(2n){animation-duration:11s}
+.bubbel:nth-child(3n){animation-delay:-4s}
+.bubbel.pop:nth-child(2n){animation-duration:.6s, 11s}
+/* slim rechtervlak: midden + tekst onderaan */
+.av-beeld{display:flex;flex-direction:column;padding:28px;gap:16px}
+.beeld-midden{position:relative;z-index:1;flex:1;display:grid;place-items:center;width:100%}
+.beeld-midden > *{grid-area:1/1}
+.beeld-tekst{position:relative;z-index:1;color:var(--bi,var(--pruim));align-self:stretch;min-height:68px}
+.beeld-tekst small{display:block;font-size:14px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;opacity:.8}
+.beeld-tekst strong{display:block;font-size:24px;font-weight:800;line-height:1.25;text-wrap:balance;overflow-wrap:anywhere}
+.beeld-tekst.nieuw strong{animation:rijs .45s cubic-bezier(.2,.8,.2,1)}
+.widget{width:100%;max-width:330px;animation:widgetIn .55s cubic-bezier(.3,1.3,.5,1) both}
+@keyframes widgetIn{from{transform:translateY(14px) scale(.96);opacity:0}}
+.wkaart{background:var(--wit);border-radius:var(--r-md);padding:20px;box-shadow:0 20px 40px -26px rgba(42,36,32,.5);color:var(--inkt)}
+.wkaart small{display:block;font-size:13px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--oranje)}
+/* werkgebied */
+.wgebied svg{width:100%;height:auto;display:block;overflow:visible}
+.wgebied .ring{fill:rgba(230,116,43,.08);stroke:var(--oranje);stroke-width:.7;stroke-dasharray:2.2 2.2;transform-origin:center;transform-box:fill-box;animation:ringdraai 40s linear infinite}
+@keyframes ringdraai{to{transform:rotate(360deg)}}
+.wgebied .centrum{fill:var(--oranje)}
+.wgebied text{font:800 4.6px var(--font);fill:var(--pruim)}
+.wgebied .pin{transform-box:fill-box;transform-origin:50% 100%;animation:valpunt 1.1s cubic-bezier(.3,0,.2,1) both}
+.wgebied .pin circle.kern{fill:var(--pruim)}
+.wgebied .pin circle.golf{fill:none;stroke:var(--pruim);stroke-width:.7;transform-box:fill-box;transform-origin:center;animation:ringpuls 1.6s ease-out infinite}
+.wgebied .lijn{stroke:var(--pruim);stroke-width:.6;stroke-dasharray:1.6 1.6;opacity:.55}
+.wgebied.buiten .pin circle.kern{fill:var(--inkt-zacht)}
+/* week */
+.wweek table{border-collapse:separate;border-spacing:0 6px;width:100%}
+.wweek th{font-size:13px;font-weight:800;color:var(--inkt-zacht);text-transform:uppercase;letter-spacing:.04em;padding:0 0 2px;text-align:center}
+.wweek th.rij{text-align:left;padding-right:6px;font-size:12px;width:1%;white-space:nowrap}
+.wweek td{text-align:center;padding:0}
+.wweek td i{display:inline-block;width:20px;height:20px;border-radius:50%;background:var(--licht-oranje);vertical-align:middle;transition:background .3s}
+.wweek td i.aan{background:var(--oranje)}
+.wweek td i.pop{animation:bubbelpop .45s cubic-bezier(.3,1.7,.5,1) both}
+.wweek .wk-voet{margin-top:10px;font-size:15px;font-weight:700;color:var(--pruim)}
+/* voorbeeldweek */
+.wvoorbeeld ul{list-style:none;margin:10px 0 0;padding:0;display:grid;gap:10px}
+.wvoorbeeld li{display:grid;grid-template-columns:auto 1fr;gap:12px;align-items:center;animation:rijs .5s cubic-bezier(.2,.8,.2,1) both}
+.wvoorbeeld li:nth-child(2){animation-delay:.12s}
+.wvoorbeeld li:nth-child(3){animation-delay:.24s}
+.wvoorbeeld .dag-chip{width:54px;border-radius:14px;background:var(--licht-oranje);color:var(--pruim);text-align:center;padding:6px 0;line-height:1.1}
+.wvoorbeeld .dag-chip b{display:block;font-size:13px;font-weight:800;text-transform:uppercase;letter-spacing:.04em}
+.wvoorbeeld .dag-chip span{font-size:15px;font-weight:900;font-variant-numeric:tabular-nums}
+.wvoorbeeld .wat{display:flex;align-items:center;gap:8px;font-weight:700;font-size:16px;line-height:1.25;min-width:0}
+.wvoorbeeld .wat .ico{width:22px;height:22px;color:var(--oranje);flex:none}
+/* belkaart */
+.wbel{display:flex;flex-direction:column;gap:14px}
+.wbel .bk-kop{display:flex;align-items:center;gap:12px}
+.wbel .foto-plek{width:56px;font-size:24px;background:var(--roze);color:var(--pruim)}
+.wbel .foto-plek::after{width:14px;height:14px;right:0;bottom:0;border-width:3px;border-color:var(--wit)}
+.wbel strong{font-size:22px;font-weight:800;color:var(--pruim);display:block;line-height:1.2}
+.wbel .bk-tijd{font-size:30px;font-weight:900;color:var(--oranje);line-height:1.1}
+.wbel .golf{display:flex;gap:5px;align-items:flex-end;height:22px}
+.wbel .golf i{width:6px;border-radius:3px;background:var(--oranje);animation:golfje 1s ease-in-out infinite}
+.wbel .golf i:nth-child(1){height:8px}.wbel .golf i:nth-child(2){height:16px;animation-delay:.12s}.wbel .golf i:nth-child(3){height:22px;animation-delay:.24s}.wbel .golf i:nth-child(4){height:12px;animation-delay:.36s}
+@keyframes golfje{50%{transform:scaleY(.4)}}
+.wbel .nummer-groot{font-size:28px;font-weight:900;color:var(--pruim);white-space:nowrap}
+.status{display:inline-flex;align-items:center;gap:8px;font-weight:700;font-size:16px}
+.status i{width:12px;height:12px;border-radius:50%;background:var(--oranje);box-shadow:0 0 0 0 rgba(230,116,43,.6);animation:gereed 1.8s ease-out infinite}
+.status.dicht i{background:var(--inkt-zacht);animation:none}
+/* agenda */
+.wagenda{display:flex;flex-direction:column;align-items:center;text-align:center;gap:2px;position:relative;padding-top:28px}
+.wagenda .ak-maand{position:absolute;top:0;left:0;right:0;background:var(--oranje);color:var(--wit);font-weight:800;font-size:15px;letter-spacing:.06em;text-transform:uppercase;padding:6px;border-radius:var(--r-md) var(--r-md) 0 0}
+.wagenda .ak-dag{font-size:64px;font-weight:900;line-height:1;color:var(--pruim);margin-top:0;font-variant-numeric:tabular-nums}
+.wagenda .ak-wd{font-weight:800;color:var(--inkt-zacht);text-transform:capitalize}
+.wagenda .ak-dd{margin-top:8px;font-weight:800;color:var(--oranje)}
+.wagenda .ak-stip{position:absolute;top:56px;right:22px;width:18px;height:18px;border-radius:50%;background:var(--oranje);transform-origin:50% 100%;animation:valpunt 1.1s cubic-bezier(.3,0,.2,1) .5s both}
+.wagenda.wkaart{padding:52px 20px 20px;overflow:hidden}
+.av-stap{display:flex;flex-direction:column;gap:22px;flex:1}
+.av-stap.in-v > *{animation:avIn .5s cubic-bezier(.2,.8,.2,1) both}
+.av-stap.in-t > *{animation:avTerug .5s cubic-bezier(.2,.8,.2,1) both}
+.av-stap.in-v > :nth-child(2),.av-stap.in-t > :nth-child(2){animation-delay:.07s}
+.av-stap.in-v > :nth-child(3),.av-stap.in-t > :nth-child(3){animation-delay:.14s}
+.av-stap.in-v > :nth-child(4),.av-stap.in-t > :nth-child(4){animation-delay:.21s}
+.av-stap.in-v > :nth-child(n+5){animation-delay:.28s}
+.av-stap.in-v .keuzes-lijst > *{animation:rijs .5s cubic-bezier(.2,.8,.2,1) both}
+.av-stap.in-v .keuzes-lijst > :nth-child(1){animation-delay:.12s}
+.av-stap.in-v .keuzes-lijst > :nth-child(2){animation-delay:.19s}
+.av-stap.in-v .keuzes-lijst > :nth-child(3){animation-delay:.26s}
+.av-stap.in-v .keuzes-lijst > :nth-child(4){animation-delay:.33s}
+.av-stap.in-v .keuzes-lijst > :nth-child(5){animation-delay:.40s}
+.uitklap.vers .tegel-keus{animation:tegelIn .5s cubic-bezier(.3,1.4,.5,1) both}
+.uitklap.vers .tegel-keus:nth-child(2){animation-delay:.05s}
+.uitklap.vers .tegel-keus:nth-child(3){animation-delay:.1s}
+.uitklap.vers .tegel-keus:nth-child(4){animation-delay:.15s}
+.uitklap.vers .tegel-keus:nth-child(5){animation-delay:.2s}
+.uitklap.vers .tegel-keus:nth-child(6){animation-delay:.25s}
+@keyframes tegelIn{from{transform:translateY(16px) scale(.94);opacity:0}}
+.tegel-keus.pop,.keus.pop{animation:keuspop .45s cubic-bezier(.3,1.6,.5,1)}
+@keyframes keuspop{0%{transform:scale(.95)}60%{transform:scale(1.03)}100%{transform:none}}
+.tegel-keus .bol .ico,.keus .bol .ico{transition:transform .35s cubic-bezier(.3,1.6,.5,1)}
+.tegel-keus:hover .bol .ico,.keus:hover .bol .ico{transform:rotate(-8deg) scale(1.1)}
+@keyframes avIn{from{transform:translateX(28px);opacity:0}}
+@keyframes avTerug{from{transform:translateX(-28px);opacity:0}}
+.av-vraag{font-size:clamp(30px,3.4vw,44px);font-weight:800;line-height:1.15;color:var(--pruim);text-wrap:balance}
+.av-vraag:focus{outline:none}
+.av-uitleg{color:var(--inkt-zacht);font-size:19px;max-width:34em}
+.av-sub{font-size:22px;font-weight:800;color:var(--pruim);margin-top:6px}
+.keuzes-lijst{display:grid;gap:12px}
+.keus{display:flex;align-items:center;gap:16px;width:100%;min-height:76px;padding:12px 22px;border-radius:var(--r-md);border:2px solid var(--lijn);background:var(--wit);font:700 21px var(--font);color:var(--inkt);text-align:left;cursor:pointer;transition:border-color .2s, background .2s, color .2s, transform .2s}
+.keus:hover{border-color:var(--pruim);transform:translateY(-2px)}
+.keus .bol{width:48px;height:48px;border-radius:14px;background:var(--licht-oranje);color:var(--pruim);display:grid;place-items:center;flex:none;transition:background .2s, color .2s}
+.keus .bol .ico{width:26px;height:26px}
+.keus[aria-pressed="true"]{background:var(--pruim);border-color:var(--pruim);color:var(--wit)}
+.keus[aria-pressed="true"] .bol{background:rgba(255,255,255,.14);color:var(--wit)}
+.keus .pijl{margin-left:auto;width:24px;height:24px;color:var(--oranje)}
+.keus[aria-pressed="true"] .pijl{color:var(--roze)}
+.jn{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.jn.drie{grid-template-columns:repeat(3,1fr)}
+.jn .keus{justify-content:center;text-align:center}
+.tegels-keus{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.tegel-keus{position:relative;display:flex;flex-direction:column;align-items:flex-start;gap:12px;padding:20px;border-radius:var(--r-md);border:2px solid var(--lijn);background:var(--wit);font:700 19px var(--font);color:var(--inkt);text-align:left;cursor:pointer;transition:border-color .2s, background .2s, color .2s, transform .2s;min-height:132px}
+.tegel-keus:hover{border-color:var(--pruim);transform:translateY(-2px)}
+.tegel-keus .bol{width:52px;height:52px;border-radius:16px;background:var(--licht-oranje);color:var(--pruim);display:grid;place-items:center}
+.tegel-keus .bol .ico{width:28px;height:28px}
+.tegel-keus small{display:block;font-weight:600;font-size:16px;color:var(--inkt-zacht);line-height:1.35}
+.tegel-keus[aria-pressed="true"]{background:var(--pruim);border-color:var(--pruim);color:var(--wit)}
+.tegel-keus[aria-pressed="true"] small{color:rgba(255,255,255,.8)}
+.tegel-keus[aria-pressed="true"] .bol{background:rgba(255,255,255,.14);color:var(--wit)}
+.tegel-keus .vink{position:absolute;top:14px;right:14px;width:30px;height:30px;border-radius:50%;background:var(--oranje);color:var(--wit);display:grid;place-items:center;scale:0;transition:scale .35s cubic-bezier(.3,1.6,.5,1)}
+.tegel-keus .vink .ico{width:18px;height:18px;stroke-width:2.4}
+.tegel-keus[aria-pressed="true"] .vink{scale:1}
+.uitklap{display:flex;flex-direction:column;gap:16px}
+.uitklap.vers{animation:rijs .45s cubic-bezier(.2,.8,.2,1)}
+.av-kaart .veld input,.av-kaart .veld textarea{border-color:var(--lijn)}
+.av-kaart .veld input:focus,.av-kaart .veld textarea:focus{border-color:var(--oranje)}
+.av-kaart .veld textarea{min-height:96px}
+.velden-2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.velden-pc{display:grid;grid-template-columns:1.2fr 1fr;gap:14px;max-width:460px}
+.aanhef{display:flex;gap:10px}
+.aanhef .keus{min-height:58px;width:auto;padding:0 26px;font-size:19px}
+.vinkvak{display:flex;align-items:center;gap:14px;cursor:pointer;font-weight:700;font-size:19px}
+.vinkvak input{position:absolute;opacity:0;pointer-events:none}
+.vinkvak .vak{width:34px;height:34px;border-radius:10px;border:2px solid var(--lijn);background:var(--wit);display:grid;place-items:center;flex:none;transition:all .2s}
+.vinkvak .vak .ico{width:22px;height:22px;stroke-width:2.4;color:var(--wit);scale:0;transition:scale .3s cubic-bezier(.3,1.6,.5,1)}
+.vinkvak input:checked + .vak{background:var(--oranje);border-color:var(--oranje)}
+.vinkvak input:checked + .vak .ico{scale:1}
+.vinkvak input:focus-visible + .vak{outline:3px solid var(--pruim);outline-offset:3px}
+.melding{border-radius:var(--r-md);padding:20px 22px;display:flex;gap:14px;align-items:flex-start;animation:rijs .4s cubic-bezier(.2,.8,.2,1)}
+.melding .bol{width:44px;height:44px;border-radius:50%;display:grid;place-items:center;flex:none}
+.melding .bol .ico{width:22px;height:22px}
+.melding.zacht{background:var(--licht-oranje)}
+.melding.zacht .bol{background:var(--oranje);color:var(--wit)}
+.melding.roze{background:var(--roze)}
+.melding.roze .bol{background:var(--pruim);color:var(--wit)}
+.av-fout{color:#B4441A;font-weight:700;font-size:18px}
+.av-nav{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-top:auto;padding-top:8px}
+.av-terug{display:inline-flex;align-items:center;gap:8px;background:none;border:0;font:700 19px var(--font);color:var(--pruim);cursor:pointer;padding:12px 6px;border-radius:12px}
+.av-terug .ico{width:22px;height:22px;transform:rotate(180deg)}
+.av-terug:hover{color:var(--oranje)}
+.av-nav .btn{min-height:62px;padding:0 34px;font-size:19px;position:relative}
+.av-nav .btn.gereed{animation:gereed 2.2s ease-out infinite}
+@keyframes gereed{0%{box-shadow:0 0 0 0 rgba(230,116,43,.55)}70%,100%{box-shadow:0 0 0 16px rgba(230,116,43,0)}}
+.av-nav .btn.gereed .ico{animation:duw 1.1s ease-in-out infinite}
+@keyframes duw{50%{transform:translateX(4px)}}
+.honing{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden}
+
+/* overzicht */
+.ov-lijst{display:grid;gap:10px}
+.ov-rij{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;padding:16px 20px;border-radius:16px;background:var(--licht-oranje)}
+.ov-rij strong{display:block;font-size:15px;font-weight:800;letter-spacing:.05em;text-transform:uppercase;color:var(--oranje)}
+.ov-rij span{font-weight:600}
+.wijzig{background:none;border:0;font:700 17px var(--font);color:var(--pruim);text-decoration:underline;text-underline-offset:3px;cursor:pointer;padding:4px;flex:none}
+.prijs-ind{display:flex;align-items:center;flex-wrap:wrap;gap:4px 18px;background:var(--pruim);color:var(--wit);border-radius:var(--r-md);padding:22px 24px}
+.prijs-ind b{font-size:26px;font-weight:900}
+.prijs-ind span{opacity:.9}
+.helpers{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px}
+.helper{display:flex;gap:14px;align-items:center;padding:16px;border-radius:var(--r-md);border:2px solid var(--lijn)}
+.av-stap.in-v .helper{animation:rijs .6s cubic-bezier(.2,.8,.2,1) .45s both}
+.av-stap.in-v .helper:nth-child(2){animation-delay:.6s}
+.av-stap.in-v .helper .foto-plek::after{animation:valpunt 1.1s cubic-bezier(.3,0,.2,1) .8s both}
+.av-stap.in-v .ov-rij{animation:rijs .5s cubic-bezier(.2,.8,.2,1) both}
+.av-stap.in-v .ov-rij:nth-child(2){animation-delay:.08s}
+.av-stap.in-v .ov-rij:nth-child(3){animation-delay:.16s}
+.helper .foto-plek{width:64px;font-size:28px;flex:none}
+.helper .foto-plek::after{width:16px;height:16px;right:0;bottom:0;border-width:3px;border-color:var(--wit)}
+.helper strong{display:block;font-size:20px;color:var(--pruim)}
+.helper span{font-size:16px;color:var(--inkt-zacht);line-height:1.35}
+.helper:nth-child(2) .foto-plek{background:var(--pruim);color:var(--wit)}
+.helper:nth-child(1) .foto-plek{background:var(--roze);color:var(--pruim)}
+
+/* bedankt */
+.bedankt-groot{display:flex;flex-direction:column;align-items:flex-start;gap:20px}
+.bedankt-groot .foto-plek{width:120px;font-size:52px;background:var(--roze);color:var(--pruim)}
+.bedankt-groot .foto-plek::after{border-color:var(--wit)}
+.groot-nummer{font-size:clamp(36px,5vw,56px);font-weight:900;color:var(--pruim);letter-spacing:-.01em;white-space:nowrap}
+.bedankt-groot .foto-plek::after{animation:valpunt 1.2s cubic-bezier(.3,0,.2,1) .3s both}
+
+@media (max-width:980px){
+  .av-kaart{grid-template-columns:1fr}
+  .av-beeld{order:-1;min-height:170px}
+  .beeld-cirkel{width:118px}
+  .bubbel{width:46px;height:46px}
+  .av-beeld{padding:22px}
+  .beeld-tekst{min-height:0}
+  .beeld-tekst strong{font-size:20px}
+  .bubbel .ico{width:22px;height:22px}
+}
+@media (max-width:560px){
+  .av-sectie .wrap{padding-block:24px 72px}
+  .av-kaart{min-height:0}
+  .av-links{padding:28px 22px}
+  .av-beeld{min-height:140px}
+  .beeld-cirkel{width:96px}
+  .bubbel{width:40px;height:40px;margin:-20px 0 0 -20px}
+  .av-beeld.met-bubbels .beeld-cirkel{display:none}
+  .av-beeld.met-bubbels .bubbels{position:static;display:flex;flex-wrap:wrap;justify-content:center;gap:8px;padding:6px 0}
+  .av-beeld.met-bubbels .bubbel{position:static;margin:0}
+  .widget{max-width:300px}
+  .wbel .bk-tijd{font-size:26px}
+  .bubbel .ico{width:20px;height:20px}
+  .tegels-keus{grid-template-columns:1fr 1fr}
+  .tegel-keus{padding:16px;min-height:0}
+  .velden-2{grid-template-columns:1fr}
+  .keus{font-size:19px;min-height:68px;padding:10px 16px}
+  .av-nav .btn{padding:0 24px}
+  .jn .keus .bol{display:none}
+  .jn .keus{padding:10px 12px}
+  .prijs-ind{padding:20px}
+  .av-bel b{font-size:18px}
+  .av-teller{display:none}
+}
+
+/* veelgestelde vragen */
+.faq{display:flex;flex-direction:column;gap:12px;max-width:880px}
+.vraag{background:var(--wit);border-radius:var(--r-md);overflow:hidden;border:2px solid var(--lijn);transition:border-color .3s}
+.vraag[open]{border-color:var(--oranje)}
+.vraag summary{list-style:none;cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:16px;padding:22px 26px;font-weight:800;font-size:21px;color:var(--pruim)}
+.vraag summary::-webkit-details-marker{display:none}
+.vraag .open-ico{width:42px;height:42px;border-radius:50%;background:var(--licht-oranje);display:grid;place-items:center;flex:none;transition:transform .35s cubic-bezier(.2,.8,.2,1), background .3s, color .3s}
+.vraag .open-ico .ico{width:22px;height:22px}
+.vraag[open] .open-ico{transform:rotate(45deg);background:var(--oranje);color:var(--wit)}
+.vraag .antwoord{padding:0 26px 24px;max-width:40em}
+.vraag[open] .antwoord{animation:rijs .4s cubic-bezier(.2,.8,.2,1)}
+.faq-sectie{background:var(--licht-oranje)}
+
+/* afsluiter over ons */
+.ov-slot{background:var(--pruim);color:var(--wit);border-radius:var(--r-lg);padding:64px;display:grid;grid-template-columns:1.3fr 1fr;gap:40px;align-items:center;position:relative;overflow:hidden}
+.ov-slot > *{position:relative}
+.ov-slot .zacht-o{position:absolute;width:360px;aspect-ratio:1;border-radius:50%;background:rgba(246,209,209,.08);right:-120px;top:-160px;animation:zweef 17s ease-in-out infinite alternate}
+.ov-slot h2{font-size:clamp(30px,3.6vw,46px)}
+.ov-slot p{color:rgba(255,255,255,.85);margin-top:14px}
+.ov-slot .cta-rij{justify-content:flex-end}
+.meer-link{margin-top:6px}
+
+@media (max-width:980px){
+  .verhaal{grid-template-columns:1fr;gap:0}
+  .verhaal-beeld{top:92px;height:250px;z-index:3;box-shadow:0 20px 30px -24px rgba(42,36,32,.4)}
+  .verhaal-beeld svg{width:70%}
+  .vb-belofte{width:70%}
+  .vstap,.vstap:first-child{min-height:56vh;padding-top:0;justify-content:center}
+  .welniet{grid-template-columns:1fr}
+  .prijzen{grid-template-columns:1fr;gap:28px}
+  .reken,.gebied{grid-template-columns:1fr}
+  .gebied{gap:28px}
+  .team{grid-template-columns:1fr 1fr;gap:12px}
+  .lid{padding:24px 18px;align-items:center;text-align:center}
+  .foto-plek{width:min(120px,100%);font-size:48px}
+  .lid h3{font-size:22px}
+  .ov-slot{grid-template-columns:1fr;padding:44px 32px}
+  .ov-slot .cta-rij{justify-content:flex-start}
+}
+@media (max-width:560px){
+  .wn{padding:30px 24px}
+  .wl-kort{display:none}
+  .prijs{padding:30px 24px}
+  .reken-in,.reken-uit{padding:30px 24px}
+  .uren-rij{flex-direction:column;align-items:stretch;gap:10px}
+  .vraag summary{font-size:19px;padding:18px 20px}
+  .vraag .antwoord{padding:0 20px 20px}
+  .team{grid-template-columns:1fr}
+  .lid{flex-direction:row;align-items:center;text-align:left;gap:18px}
+  .foto-plek{width:96px;font-size:40px;flex:none}
+  .foto-plek::after{width:20px;height:20px;right:4px;bottom:4px}
+  .ov-slot{padding:36px 24px}
+}
+
+@media (max-width:980px){
+  .waarom{grid-template-columns:1fr 1fr}
+  .vac-body{grid-template-columns:1fr;padding:4px 28px 32px}
+  .sol{grid-template-columns:1fr}
+}
+@media (max-width:560px){
+  .waarom{grid-template-columns:1fr}
+  .vac summary{grid-template-columns:1fr auto;padding:22px}
+  .vac .tak{display:none}
+  .vac-body{padding:4px 22px 28px}
+  .sol-info,.sol-form{padding:32px 24px}
+  .dag::before,.dag::after{left:10px}
+  .moment{grid-template-columns:36px 1fr;row-gap:2px}
+  .moment .m-stip{grid-row:1 / span 2;margin:4px 0 0 0}
+  .moment time{grid-column:2;font-size:18px}
+  .moment-tekst{grid-column:2}
+}
+
+@media (max-width:980px){
+  .hero-grid{grid-template-columns:1fr}
+  .hero-tekst{padding:56px max(20px,env(safe-area-inset-left,0px)) 96px;border-radius:0}
+  .hero-foto{min-height:340px}
+  .pijlers{margin-top:-36px}
+  .wereld,.w-thuis{grid-template-columns:1fr}
+  .w-thuis .wereld-tekst{order:0}
+  .wereld-foto{min-height:280px;order:-1}
+  .w-thuis .thuis-tegels{padding:0 28px 32px}
+  .stappen{grid-template-columns:1fr}
+  .spoor{top:100%;left:60px;width:auto;height:48px;flex-direction:column;translate:-50% 0}
+  .stappen-cta{justify-content:flex-start}
+  .belofte .wrap,.tip,.kennis{grid-template-columns:1fr}
+  .u-knop{width:min(240px,60%)}
+  .statement{padding-block:80px 24px}
+  .voet .wrap{grid-template-columns:1fr 1fr}
+  .voet .wrap > div:first-child{grid-column:1/-1}
+}
+@media (max-width:820px){
+  .nav{display:none}
+  .menu-knop{display:block}
+  .top.open .nav{display:flex;position:absolute;top:100%;left:0;right:0;flex-direction:column;align-items:stretch;background:var(--wit);padding:12px max(20px,env(safe-area-inset-right,0px)) 24px max(20px,env(safe-area-inset-left,0px));box-shadow:0 20px 30px -20px rgba(42,36,32,.3)}
+  .top.open .nav a{font-size:20px;padding:14px 16px}
+  .top.open .nav .btn{margin:8px 0 0;justify-content:center}
+  .pijlers .wrap{grid-template-columns:1fr;gap:10px}
+  .pijler{padding:18px 22px}
+}
+@media (max-width:560px){
+  body{font-size:18px}
+  .blok{padding-block:64px}
+  .wereld-tekst,.kennis-form{padding:32px 24px}
+  .thuis-tegels{grid-template-columns:1fr}
+  .tip-kaart{padding:32px 26px}
+  .waarden{grid-template-columns:1fr}
+  .belofte .wrap{padding-block:64px}
+  .hero-chip{left:16px;right:16px;bottom:16px;min-width:0}
+  .knoppen .cta-spoor{display:none}
+  .band-rij span{font-size:19px}
+  .voet .wrap{grid-template-columns:1fr}
+  .hulp{right:calc(16px + env(safe-area-inset-right,0px));bottom:calc(16px + env(safe-area-inset-bottom,0px))}
+}
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation:none !important;transition:none !important}
+  .js .rv.wacht{transform:none}
+  html{scroll-behavior:auto}
+  .zacht,.voortgang{transform:none !important}
+  .hero-foto{clip-path:none}
+  .band-rij{flex-wrap:wrap;width:auto}
+  .band-rij [data-kopie]{display:none}
+}
+</style>
+
+<!-- logo-letters zonder stip; de stip staat los zodat hij kan vallen -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <symbol id="letters" viewBox="0 0 2486 805">
+      <path d="M118 763Q80 763 60 742Q40 721 40 683L40 120Q40 82 60 61Q80 40 118 40Q155 40 175 61Q195 82 195 120L195 332L523 332L523 120Q523 82 543 61Q563 40 600 40Q638 40 658 61Q678 82 678 120L678 683Q678 721 658 742Q638 763 600 763Q563 763 543 742Q523 721 523 683L523 461L195 461L195 683Q195 721 175.5 742Q156 763 118 763ZM796 331L796 499C796 645.91 915.09 765 1062 765C1208.91 765 1328 645.91 1328 499L1328 331C1328 289.03 1293.97 255 1252 255C1210.03 255 1176 289.03 1176 331L1176 499C1176 561.96 1124.96 613 1062 613C999.04 613 948 561.96 948 499L948 331C948 289.03 913.97 255 872 255C830.03 255 796 289.03 796 331ZM1644 763Q1615 763 1593 747.5Q1571 732 1558 701L1407 353Q1396 327 1399 304.5Q1402 282 1420.5 268.5Q1439 255 1472 255Q1499 255 1516 267.5Q1533 280 1546 315L1648.3 575.1L1755 314Q1769 280 1786 267.5Q1803 255 1833 255Q1859 255 1874.5 268.5Q1890 282 1893.5 304Q1897 326 1885 352L1731 701Q1718 733 1696.5 748Q1675 763 1644 763ZM2185 765Q2106 765 2047.5 734Q1989 703 1957 645Q1925 587 1925 508Q1925 449 1943 402Q1961 355 1995.5 321.5Q2030 288 2078 270.5Q2126 253 2185 253Q2264 253 2322.5 284Q2381 315 2413.5 372Q2446 429 2446 508Q2446 568 2427.5 615Q2409 662 2375 696Q2341 730 2292.5 747.5Q2244 765 2185 765ZM2185 652Q2218 652 2242 636Q2266 620 2280 588.5Q2294 557 2294 508Q2294 435 2264 400.5Q2234 366 2185 366Q2153 366 2128.5 381Q2104 396 2090.5 427.5Q2077 459 2077 508Q2077 581 2107 616.5Q2137 652 2185 652Z" fill="currentColor"/>
+    </symbol>
+    <symbol id="l-h" viewBox="0 0 2486 805"><path d="M118 763Q80 763 60 742Q40 721 40 683L40 120Q40 82 60 61Q80 40 118 40Q155 40 175 61Q195 82 195 120L195 332L523 332L523 120Q523 82 543 61Q563 40 600 40Q638 40 658 61Q678 82 678 120L678 683Q678 721 658 742Q638 763 600 763Q563 763 543 742Q523 721 523 683L523 461L195 461L195 683Q195 721 175.5 742Q156 763 118 763Z"/></symbol>
+    <symbol id="l-u" viewBox="0 0 2486 805"><path d="M796 331L796 499C796 645.91 915.09 765 1062 765C1208.91 765 1328 645.91 1328 499L1328 331C1328 289.03 1293.97 255 1252 255C1210.03 255 1176 289.03 1176 331L1176 499C1176 561.96 1124.96 613 1062 613C999.04 613 948 561.96 948 499L948 331C948 289.03 913.97 255 872 255C830.03 255 796 289.03 796 331Z"/></symbol>
+    <symbol id="l-v" viewBox="0 0 2486 805"><path d="M1644 763Q1615 763 1593 747.5Q1571 732 1558 701L1407 353Q1396 327 1399 304.5Q1402 282 1420.5 268.5Q1439 255 1472 255Q1499 255 1516 267.5Q1533 280 1546 315L1648.3 575.1L1755 314Q1769 280 1786 267.5Q1803 255 1833 255Q1859 255 1874.5 268.5Q1890 282 1893.5 304Q1897 326 1885 352L1731 701Q1718 733 1696.5 748Q1675 763 1644 763Z"/></symbol>
+    <symbol id="l-o" viewBox="0 0 2486 805"><path d="M2185 765Q2106 765 2047.5 734Q1989 703 1957 645Q1925 587 1925 508Q1925 449 1943 402Q1961 355 1995.5 321.5Q2030 288 2078 270.5Q2126 253 2185 253Q2264 253 2322.5 284Q2381 315 2413.5 372Q2446 429 2446 508Q2446 568 2427.5 615Q2409 662 2375 696Q2341 730 2292.5 747.5Q2244 765 2185 765ZM2185 652Q2218 652 2242 636Q2266 620 2280 588.5Q2294 557 2294 508Q2294 435 2264 400.5Q2234 366 2185 366Q2153 366 2128.5 381Q2104 396 2090.5 427.5Q2077 459 2077 508Q2077 581 2107 616.5Q2137 652 2185 652Z"/></symbol>
+    <symbol id="i-samen" viewBox="0 0 24 24"><circle cx="8.5" cy="8" r="3"/><circle cx="16" cy="9" r="2.5"/><path d="M3 19c0-3 2.5-5.5 5.5-5.5S14 16 14 19"/><path d="M14.5 14.2c.5-.2 1-.2 1.5-.2 2.8 0 5 2.2 5 5"/></symbol>
+    <symbol id="i-thuis" viewBox="0 0 24 24"><path d="M3 11l9-7 9 7"/><path d="M5 10v10h14V10"/><path d="M10 20v-5h4v5"/></symbol>
+    <symbol id="i-veilig" viewBox="0 0 24 24"><path d="M12 3l7 3v5c0 4.5-3 8-7 10-4-2-7-5.5-7-10V6l7-3z"/><path d="M9 12l2 2 4-4"/></symbol>
+    <symbol id="i-spel" viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="4"/><circle cx="9" cy="9" r="1.1" fill="currentColor" stroke="none"/><circle cx="15" cy="9" r="1.1" fill="currentColor" stroke="none"/><circle cx="9" cy="15" r="1.1" fill="currentColor" stroke="none"/><circle cx="15" cy="15" r="1.1" fill="currentColor" stroke="none"/></symbol>
+    <symbol id="i-koffie" viewBox="0 0 24 24"><path d="M4 9h12v5a5 5 0 0 1-5 5H9a5 5 0 0 1-5-5V9z"/><path d="M16 11h1.5a2.5 2.5 0 0 1 0 5H16"/><path d="M8 3v2M12 3v2"/></symbol>
+    <symbol id="i-boodschap" viewBox="0 0 24 24"><path d="M5 8h14l-1 12H6L5 8z"/><path d="M9 8V6a3 3 0 0 1 6 0v2"/></symbol>
+    <symbol id="i-poetsen" viewBox="0 0 24 24"><path d="M11 3l1.8 5.2L18 10l-5.2 1.8L11 17l-1.8-5.2L4 10l5.2-1.8z"/><path d="M19 15l.7 1.8 1.8.7-1.8.7L19 20l-.7-1.8-1.8-.7 1.8-.7z"/></symbol>
+    <symbol id="i-klus" viewBox="0 0 24 24"><rect x="3" y="8" width="18" height="11" rx="2"/><path d="M9 8V6a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/><path d="M3 13h18"/></symbol>
+    <symbol id="i-uitleg" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="12" rx="2"/><path d="M12 16v4M8 20h8"/><path d="M7 12l3-3 2 2 4-4"/></symbol>
+    <symbol id="i-bel" viewBox="0 0 24 24"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a1 1 0 0 1-1 1A16 16 0 0 1 4 5a1 1 0 0 1 1-1z"/></symbol>
+    <symbol id="i-pijl" viewBox="0 0 24 24"><path d="M5 12h14"/><path d="M13 6l6 6-6 6"/></symbol>
+    <symbol id="i-vink" viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></symbol>
+    <symbol id="i-hart" viewBox="0 0 24 24"><path d="M12 20s-7.5-4.6-7.5-10A4.3 4.3 0 0 1 12 7.4 4.3 4.3 0 0 1 19.5 10c0 5.4-7.5 10-7.5 10z"/></symbol>
+    <symbol id="i-menu" viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16"/></symbol>
+    <symbol id="i-kruis" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></symbol>
+    <symbol id="i-locatie" viewBox="0 0 24 24"><path d="M12 21s-6.5-5.8-6.5-11a6.5 6.5 0 0 1 13 0c0 5.2-6.5 11-6.5 11z"/><circle cx="12" cy="10" r="2.3"/></symbol>
+    <symbol id="i-klok" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><path d="M12 7.5V12l3 2"/></symbol>
+    <symbol id="i-omlaag" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></symbol>
+    <symbol id="i-persoon" viewBox="0 0 24 24"><circle cx="12" cy="8" r="3.6"/><path d="M5 20c0-3.9 3.1-7 7-7s7 3.1 7 7"/></symbol>
+    <symbol id="i-bal" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><path d="M12 8.2l3.2 2.3-1.2 3.8h-4l-1.2-3.8z"/><path d="M12 8.2V3.6M15.2 10.5l4.3-1.4M14 14.3l2.6 3.7M10 14.3l-2.6 3.7M8.8 10.5L4.5 9.1"/></symbol>
+    <symbol id="i-zon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3.8"/><path d="M12 3v2M12 19v2M3 12h2M19 12h2M5.6 5.6l1.4 1.4M17 17l1.4 1.4M5.6 18.4L7 17M17 7l1.4-1.4"/></symbol>
+    <symbol id="i-pan" viewBox="0 0 24 24"><path d="M3 11h13v3a4.5 4.5 0 0 1-4.5 4.5h-4A4.5 4.5 0 0 1 3 14v-3z"/><path d="M16 12.5h5"/><path d="M7.5 7.5c0-1.2 1.2-1.6 1.2-2.8M11.5 7.5c0-1.2 1.2-1.6 1.2-2.8"/></symbol>
+    <symbol id="i-was" viewBox="0 0 24 24"><path d="M9 4L4 7l2 4 2-1v10h8V10l2 1 2-4-5-3a3 3 0 0 1-6 0z"/></symbol>
+    <symbol id="i-zoeken" viewBox="0 0 24 24"><circle cx="11" cy="11" r="6.5"/><path d="M16 16l4.5 4.5"/></symbol>
+    <symbol id="i-maan" viewBox="0 0 24 24"><path d="M19.5 14.5A8 8 0 1 1 9.5 4.5a6.5 6.5 0 0 0 10 10z"/></symbol>
+    <symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
+    <symbol id="i-agenda" viewBox="0 0 24 24"><rect x="3.5" y="5" width="17" height="15" rx="2.5"/><path d="M3.5 10h17M8 3v4M16 3v4"/></symbol>
+  </defs>
+</svg>
+
+<header class="top" id="top">
+  <div class="wrap">
+    <a class="logo laad" href="#home" aria-label="Huvo, naar boven">
+      <svg viewBox="0 0 2486 805" role="img" aria-label="Huvo"><use href="#letters"/><circle class="stip" cx="1062" cy="463" r="66.5" fill="currentColor"/></svg>
+    </a>
+    <nav class="nav" id="nav" aria-label="Hoofdmenu">
+      <a href="#samen">Samen</a>
+      <a href="#thuis">Thuis</a>
+      <a href="#wijzer">Wijzer</a>
+      <a href="#aanvragen" data-pagina="aanvragen">Prijs aanvragen</a>
+      <a href="#over-ons" data-pagina="over-ons">Over ons</a>
+      <a href="#werken" data-pagina="werken">Werken bij</a>
+      <a class="btn btn-pruim" href="#kennismaken"><svg class="ico"><use href="#i-bel"/></svg>Bel ons</a>
+    </nav>
+    <button class="menu-knop" id="menuKnop" aria-expanded="false" aria-controls="nav" aria-label="Menu openen">
+      <svg class="ico"><use href="#i-menu"/></svg>
+    </button>
+  </div>
+  <div class="voortgang" aria-hidden="true"><i></i><i></i><i></i></div>
+</header>
+
+<main id="home">
+  <section class="hero">
+    <div class="hero-grid">
+      <div class="hero-tekst" id="heroTekst">
+        <span class="zacht zacht-1" aria-hidden="true"></span>
+        <span class="zacht zacht-2" aria-hidden="true"></span>
+        <span class="zacht zacht-3" aria-hidden="true"></span>
+        <span class="label">Hulp en gezelschap aan huis</span>
+        <h1><span class="w"><span>Morgen</span></span> <span class="w"><span>zonder</span></span> <span class="w"><span>zorgen</span></span><span class="punt">.</span></h1>
+        <p class="lead">Gezelschap, hulp in huis en uitleg over alles van nu. Zodat u fijn uw eigen gang kunt gaan.</p>
+        <div class="knoppen">
+          <a class="btn btn-wit" href="#samen">Wat wij doen</a>
+          <span class="cta-spoor" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
+          <a class="btn btn-pruim spoor-doel" href="#aanvragen">Maak kennis <svg class="ico"><use href="#i-pijl"/></svg></a>
+        </div>
+      </div>
+      <div class="hero-foto">
+        <img class="plx" src="img/hero.jpg" alt="Een ouder echtpaar kijkt lachend samen naar een laptop op tafel." fetchpriority="high">
+        <div class="hero-chip" id="chip">
+          <span class="rondje" id="chipRondje"><svg class="ico"><use id="chipIco" href="#i-koffie"/></svg></span>
+          <div class="chip-tekst" id="chipTekst"><small id="chipLabel">Samen</small><strong id="chipKop">Koffie en een spelletje</strong></div>
+          <span class="chip-stippen" aria-hidden="true"><i class="aan"></i><i></i><i></i></span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <nav class="pijlers" aria-label="Wat wij doen">
+    <div class="wrap">
+      <a class="pijler p-samen" href="#samen"><svg class="ico"><use href="#i-samen"/></svg><span>Samen<small>Gezelschap en plezier</small></span><svg class="ico"><use href="#i-pijl"/></svg></a>
+      <a class="pijler p-thuis" href="#thuis"><svg class="ico"><use href="#i-thuis"/></svg><span>Thuis<small>Hulp in en om het huis</small></span><svg class="ico"><use href="#i-pijl"/></svg></a>
+      <a class="pijler p-wijzer" href="#wijzer"><svg class="ico"><use href="#i-veilig"/></svg><span>Wijzer<small>Uitleg over alles van nu</small></span><svg class="ico"><use href="#i-pijl"/></svg></a>
+    </div>
+  </nav>
+
+  <div class="band" aria-hidden="true">
+    <div class="band-rij">
+      <span><svg class="ico"><use href="#i-spel"/></svg>Samen een spelletje</span><b></b>
+      <span><svg class="ico"><use href="#i-boodschap"/></svg>Boodschappen</span><b></b>
+      <span><svg class="ico"><use href="#i-koffie"/></svg>Koffie en een goed gesprek</span><b></b>
+      <span><svg class="ico"><use href="#i-poetsen"/></svg>Poetsen</span><b></b>
+      <span><svg class="ico"><use href="#i-veilig"/></svg>Veilig internetten</span><b></b>
+      <span><svg class="ico"><use href="#i-klus"/></svg>Klusjes</span><b></b>
+      <span><svg class="ico"><use href="#i-uitleg"/></svg>Uitleg in het buurthuis</span><b></b>
+      <span data-kopie><svg class="ico"><use href="#i-spel"/></svg>Samen een spelletje</span><b data-kopie></b>
+      <span data-kopie><svg class="ico"><use href="#i-boodschap"/></svg>Boodschappen</span><b data-kopie></b>
+      <span data-kopie><svg class="ico"><use href="#i-koffie"/></svg>Koffie en een goed gesprek</span><b data-kopie></b>
+      <span data-kopie><svg class="ico"><use href="#i-poetsen"/></svg>Poetsen</span><b data-kopie></b>
+      <span data-kopie><svg class="ico"><use href="#i-veilig"/></svg>Veilig internetten</span><b data-kopie></b>
+      <span data-kopie><svg class="ico"><use href="#i-klus"/></svg>Klusjes</span><b data-kopie></b>
+      <span data-kopie><svg class="ico"><use href="#i-uitleg"/></svg>Uitleg in het buurthuis</span><b data-kopie></b>
+    </div>
+  </div>
+
+  <section class="blok" aria-labelledby="wat-kop">
+    <div class="wrap">
+      <div class="kop rv">
+        <span class="label">Wat wij doen</span>
+        <h2 id="wat-kop">Een helpende hand bij alles wat het leven makkelijker en leuker maakt.</h2>
+        <p class="lead">Geen medische zorg. Wel iemand die tijd voor u heeft, de boodschappen haalt en helpt in huis.</p>
+      </div>
+
+      <div class="werelden">
+        <article class="wereld w-samen rv" id="samen">
+          <div class="wereld-tekst">
+            <span class="label">Samen</span>
+            <h3>Gezelschap en plezier.</h3>
+            <p>Een spelletje, een wandeling of koffie met een goed gesprek. Wij komen graag bij u langs, voor een uur of een hele middag.</p>
+            <ul class="taken">
+              <li><span class="bol"><svg class="ico"><use href="#i-spel"/></svg></span>Samen een spelletje doen</li>
+              <li><span class="bol"><svg class="ico"><use href="#i-koffie"/></svg></span>Koffie en een goed gesprek</li>
+              <li><span class="bol"><svg class="ico"><use href="#i-hart"/></svg></span>Een wandeling of een uitje</li>
+            </ul>
+          </div>
+          <div class="wereld-foto"><img class="plx" src="img/samen.jpg" alt="Drie ouderen bekijken lachend samen een fotoalbum op de bank." loading="lazy"></div>
+          <span class="handtekening" aria-hidden="true"></span>
+        </article>
+
+        <article class="wereld w-thuis rv" id="thuis">
+          <div class="wereld-tekst">
+            <span class="label">Thuis</span>
+            <h3>Praktische hulp, goed geregeld.</h3>
+            <p>Wij doen de klusjes die u liever overlaat. Betrouwbaar, op een vaste tijd en zoals u het gewend bent.</p>
+            <div class="cta-rij"><span class="cta-spoor oranje" aria-hidden="true"><i></i><i></i><i></i><i></i></span><a class="btn btn-pruim spoor-doel" href="#aanvragen">Vraag hulp aan <svg class="ico"><use href="#i-pijl"/></svg></a></div>
+          </div>
+          <div class="thuis-tegels">
+            <div class="tegel"><span class="bol"><svg class="ico"><use href="#i-boodschap"/></svg></span><strong>Boodschappen</strong><span>Met uw lijstje naar de winkel, of samen erheen.</span></div>
+            <div class="tegel"><span class="bol"><svg class="ico"><use href="#i-poetsen"/></svg></span><strong>Poetsen</strong><span>Een schoon en fris huis, elke week.</span></div>
+            <div class="tegel"><span class="bol"><svg class="ico"><use href="#i-klus"/></svg></span><strong>Klusjes</strong><span>Een lamp vervangen of de post sorteren.</span></div>
+            <div class="tegel"><span class="bol"><svg class="ico"><use href="#i-uitleg"/></svg></span><strong>Uitleg over uw telefoon</strong><span>Hoe stuurt u een foto? Wij laten het zien.</span></div>
+          </div>
+          <span class="handtekening" aria-hidden="true"></span>
+        </article>
+
+        <article class="wereld w-wijzer rv" id="wijzer">
+          <div class="wereld-foto"><img class="plx" src="img/wijzer.jpg" alt="Twee ouderen kijken samen met een helper naar een tablet." loading="lazy"></div>
+          <div class="wereld-tekst">
+            <span class="label">Wijzer</span>
+            <h3>Bijblijven in deze tijd.</h3>
+            <p>Wij geven uitleg in buurthuizen bij u in de buurt. Over veilig internetten, nepmails en uw telefoon. Gratis, en met koffie.</p>
+            <ul class="taken">
+              <li><span class="bol"><svg class="ico"><use href="#i-veilig"/></svg></span>Veilig internetten</li>
+              <li><span class="bol"><svg class="ico"><use href="#i-uitleg"/></svg></span>Zo herkent u nepmails</li>
+            </ul>
+            <div class="agenda">
+              <div class="datum"><b>12</b><span>nov</span></div>
+              <div><strong>Uitleg in het buurthuis: zo herkent u nepmails</strong><p>14.00 tot 15.30 uur · gratis, met koffie</p></div>
+            </div>
+          </div>
+          <span class="handtekening" aria-hidden="true"></span>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="statement" aria-label="Wat Huvo voor u doet">
+    <div class="wrap">
+      <p class="groot" id="groot">Wij komen op <span class="chipje roze" aria-hidden="true"><svg class="ico"><use href="#i-koffie"/></svg></span> koffie, doen de <span class="chipje oranje" aria-hidden="true"><svg class="ico"><use href="#i-boodschap"/></svg></span> boodschappen en geven <span class="chipje pruim" aria-hidden="true"><svg class="ico"><use href="#i-uitleg"/></svg></span> uitleg in het buurthuis. Zodat u zich geen zorgen hoeft te maken. Vandaag niet, en <em>morgen ook niet.</em></p>
+    </div>
+  </section>
+
+  <section class="stappen-sectie" aria-labelledby="zo-kop">
+    <div class="wrap blok">
+      <div class="kop rv">
+        <span class="label">Zo gaat het</span>
+        <h2 id="zo-kop">In drie stappen een vertrouwd gezicht in huis.</h2>
+      </div>
+      <ol class="stappen">
+        <li class="stap">
+          <span class="stap-nr">1</span>
+          <h3>U belt ons</h3>
+          <p>Of u laat uw nummer achter. Wij bellen u dezelfde dag terug.</p>
+          <span class="spoor" aria-hidden="true"><i></i><i></i><i></i></span>
+        </li>
+        <li class="stap">
+          <span class="stap-nr">2</span>
+          <h3>Wij komen op koffie</h3>
+          <p>Samen kijken we waar u hulp bij kunt gebruiken, en wat u vooral zelf wilt blijven doen.</p>
+          <span class="spoor" aria-hidden="true"><i></i><i></i><i></i></span>
+        </li>
+        <li class="stap">
+          <span class="stap-nr">3</span>
+          <h3>Uw vaste helper</h3>
+          <p>U krijgt één vaste helper, op een vaste tijd. Wij regelen het.</p>
+        </li>
+      </ol>
+      <div class="cta-rij stappen-cta">
+        <p>Zullen we beginnen?</p>
+        <span class="cta-spoor oranje" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
+        <a class="btn btn-pruim spoor-doel" href="#kennismaken"><svg class="ico"><use href="#i-bel"/></svg>Bel ons</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="belofte" id="over" aria-labelledby="over-kop">
+    <span class="zacht-b zacht-b1" aria-hidden="true"></span>
+    <div class="wrap">
+      <div class="belofte-tekst-kol">
+        <span class="label" style="color:var(--licht-oranje)">Over Huvo</span>
+        <h2 id="over-kop">Geen zorg. Wel een helpende hand.</h2>
+        <p class="lead">Het rondje in onze u is een stip die gedragen wordt. Zo bieden wij ouderen een helpende hand. Met Huvo erbij hoeft u zich geen zorgen te maken over vandaag, en dus ook niet over morgen.</p>
+        <div class="waarden rv">
+          <div class="waarde"><strong>Behulpzaam</strong><span>Wij regelen het.</span></div>
+          <div class="waarde"><strong>Warm</strong><span>Tijd en aandacht.</span></div>
+          <div class="waarde"><strong>Modern</strong><span>Van deze tijd.</span></div>
+          <div class="waarde"><strong>Tot in de puntjes</strong><span>Rustig en verzorgd.</span></div>
+        </div>
+        <div class="meer-link"><a class="btn btn-wit" href="#over-ons">Lees ons verhaal <svg class="ico"><use href="#i-pijl"/></svg></a></div>
+      </div>
+      <div class="u-podium" id="uPodium">
+        <button class="u-knop" id="uKnop" type="button" aria-label="De u uit het Huvo-logo. Klik en de stip springt even op.">
+          <svg viewBox="200 160 600 640" aria-hidden="true"><path class="u" d="M240 325.04L240 489.25C240 632.84 356.41 749.25 500 749.25C643.59 749.25 760 632.84 760 489.25L760 325.04C760 284.01 726.74 250.75 685.71 250.75C644.69 250.75 611.43 284.01 611.43 325.04L611.43 489.25C611.43 550.79 561.54 600.68 500 600.68C438.46 600.68 388.57 550.79 388.57 489.25L388.57 325.04C388.57 284.01 355.31 250.75 314.29 250.75C273.26 250.75 240 284.01 240 325.04Z"/><g id="uStipG"><circle class="stip" id="uStip" cx="500" cy="454" r="65"/></g></svg>
+        </button>
+        <p class="u-onderschrift">Een stip die gedragen wordt.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="blok" aria-labelledby="tip-kop">
+    <div class="wrap tip">
+      <div class="tip-kaart rv">
+        <span class="label">Tip van Huvo</span>
+        <h3 id="tip-kop">Zo herkent u een nepmail.</h3>
+        <p style="margin-top:16px">Twijfelt u over een mail of sms? Bel ons. Wij kijken graag even met u mee.</p>
+        <span class="hoek" aria-hidden="true"></span>
+      </div>
+      <ul class="checks rv">
+        <li class="check"><span class="bol"><svg class="ico"><use href="#i-vink"/></svg></span><div><strong>Er is haast</strong><p>"Doe het vandaag nog." Een echte bank zet u nooit onder druk.</p></div></li>
+        <li class="check"><span class="bol"><svg class="ico"><use href="#i-vink"/></svg></span><div><strong>Ze vragen om uw gegevens</strong><p>Uw pincode of wachtwoord geeft u nooit via mail of sms.</p></div></li>
+        <li class="check"><span class="bol"><svg class="ico"><use href="#i-vink"/></svg></span><div><strong>De afzender klopt niet</strong><p>Kijk naar het mailadres. Ziet het er vreemd uit? Klik dan nergens op.</p></div></li>
+      </ul>
+    </div>
+  </section>
+
+  <section id="kennismaken" aria-labelledby="kennis-kop">
+    <div class="wrap">
+      <div class="kennis rv">
+        <div class="kennis-foto"><img class="plx" src="img/kennis.jpg" alt="Een oudere man en zijn kleinzoon werken lachend samen op een laptop." loading="lazy"></div>
+        <div class="kennis-form">
+          <span class="label">Maak kennis</span>
+          <h2 id="kennis-kop">Wij bellen u terug.</h2>
+          <form id="terugbel" novalidate>
+            <div style="display:flex;flex-direction:column;gap:18px">
+              <div class="veld"><label for="naam">Uw naam</label><input id="naam" name="naam" autocomplete="name" placeholder="Bijvoorbeeld mevrouw Jansen"></div>
+              <div class="veld"><label for="tel">Uw telefoonnummer</label><input id="tel" name="tel" type="tel" autocomplete="tel" inputmode="tel" placeholder="06 12 34 56 78"></div>
+              <fieldset class="keuzes">
+                <legend>Wanneer schikt het?</legend>
+                <input type="radio" name="moment" id="m-ochtend" value="ochtend" checked><label for="m-ochtend">Ochtend</label>
+                <input type="radio" name="moment" id="m-middag" value="middag"><label for="m-middag">Middag</label>
+                <input type="radio" name="moment" id="m-avond" value="avond"><label for="m-avond">Vroege avond</label>
+              </fieldset>
+              <p class="fout" id="fout" hidden></p>
+              <div><button class="btn btn-oranje" type="submit">Bel mij terug <svg class="ico"><use href="#i-pijl"/></svg></button></div>
+            </div>
+          </form>
+          <div class="bedankt" id="bedankt" hidden>
+            <span class="bol"><svg class="ico"><use href="#i-vink"/></svg></span>
+            <div><strong id="bedanktKop">Dank u wel.</strong><p id="bedanktTekst"></p></div>
+          </div>
+          <p class="of-bel">Liever zelf bellen? Wij zijn er op werkdagen van 9 tot 17 uur: <b class="tel-nr">088 – 000 48 86</b></p>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<main id="werken" hidden>
+  <section class="hero vac-hero">
+    <div class="hero-grid">
+      <div class="hero-tekst" id="vacHeroTekst">
+        <span class="zacht zacht-1" aria-hidden="true"></span>
+        <span class="zacht zacht-2" aria-hidden="true"></span>
+        <span class="zacht zacht-3" aria-hidden="true"></span>
+        <span class="label">Werken bij Huvo</span>
+        <h1><span class="w"><span>Werk</span></span> <span class="w"><span>met</span></span> <span class="w"><span>tijd</span></span> <span class="w"><span>en</span></span> <span class="w"><span>aandacht</span></span><span class="punt">.</span></h1>
+        <p class="lead">Bij Huvo help je ouderen met alles wat het leven makkelijker en leuker maakt. Geen zorg, wel een helpende hand. Met vaste klanten, in je eigen buurt.</p>
+        <div class="knoppen">
+          <a class="btn btn-wit" href="#vacatures">Bekijk vacatures</a>
+          <span class="cta-spoor" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
+          <a class="btn btn-oranje spoor-doel" href="#solliciteer">Solliciteer direct <svg class="ico"><use href="#i-pijl"/></svg></a>
+        </div>
+      </div>
+      <div class="hero-foto">
+        <img class="plx" src="img/wijzer.jpg" alt="Een helper bekijkt samen met twee ouderen iets op een tablet." loading="lazy">
+        <div class="hero-chip">
+          <div class="vac-teller"><b id="vacAantal">3</b><span>open vacatures<br><span style="font-weight:600;color:var(--inkt-zacht);font-size:16px">Helper, Wijzer en kantoor</span></span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="blok" aria-labelledby="waarom-kop" style="padding-top:40px">
+    <div class="wrap">
+      <div class="kop rv">
+        <span class="label">Waarom Huvo</span>
+        <h2 id="waarom-kop">Werk waar je zelf ook blij van wordt.</h2>
+        <p class="lead">Je hebt tijd voor de mensen bij wie je komt. Dat merken zij, en dat merk jij.</p>
+      </div>
+      <div class="waarom rv">
+        <div class="reden"><span class="bol"><svg class="ico"><use href="#i-hart"/></svg></span><strong>Vaste klanten</strong><p>Je ziet steeds dezelfde mensen. Zo bouw je echt een band op.</p></div>
+        <div class="reden"><span class="bol"><svg class="ico"><use href="#i-locatie"/></svg></span><strong>Werk in je buurt</strong><p>Je werkt in je eigen wijk. Weinig reistijd, veel bekende gezichten.</p></div>
+        <div class="reden"><span class="bol"><svg class="ico"><use href="#i-klok"/></svg></span><strong>Uren die passen</strong><p>Van een paar ochtenden per week tot bijna fulltime.</p></div>
+        <div class="reden"><span class="bol"><svg class="ico"><use href="#i-samen"/></svg></span><strong>Nooit alleen</strong><p>Je hebt een vaste collega op kantoor voor al je vragen.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="vac-sectie" id="vacatures" aria-labelledby="vac-kop">
+    <div class="wrap blok">
+      <div class="vac-kop">
+        <div class="kop rv">
+          <span class="label">Vacatures</span>
+          <h2 id="vac-kop">Kies wat bij je past.</h2>
+        </div>
+        <div class="filters" role="group" aria-label="Filter vacatures">
+          <button class="filter" type="button" data-filter="alle" aria-pressed="true">Alles <small></small></button>
+          <button class="filter" type="button" data-filter="helper" aria-pressed="false">Helper <small></small></button>
+          <button class="filter" type="button" data-filter="wijzer" aria-pressed="false">Wijzer <small></small></button>
+          <button class="filter" type="button" data-filter="kantoor" aria-pressed="false">Kantoor <small></small></button>
+        </div>
+      </div>
+
+      <div class="vac-lijst" id="vacLijst">
+        <details class="vac" data-tak="helper" open>
+          <summary>
+            <span class="tak tak-samen"><svg class="ico"><use href="#i-samen"/></svg></span>
+            <div><h3>Helper</h3><div class="vac-meta"><span><svg class="ico"><use href="#i-klok"/></svg>8 tot 32 uur per week</span><span><svg class="ico"><use href="#i-locatie"/></svg>In je eigen buurt</span><span class="salaris"><i aria-hidden="true">€</i>€ 2.600 tot € 3.250 bruto per maand bij 36 uur</span></div></div>
+            <span class="open-ico"><svg class="ico"><use href="#i-omlaag"/></svg></span>
+          </summary>
+          <div class="vac-body">
+            <div><h4>Wat ga je doen</h4><ul><li>Koffie drinken en een goed gesprek voeren</li><li>Samen boodschappen doen, wandelen of naar de markt</li><li>Het huis schoon en fris houden</li></ul></div>
+            <div><h4>Wat vragen we</h4><ul><li>Je hebt oprecht aandacht voor anderen</li><li>Je bent geduldig en betrouwbaar</li><li>Je werkt netjes en ziet wat er moet gebeuren</li><li>Je kunt overdag werken</li></ul></div>
+            <div><h4>Wat bieden we</h4><ul><li>€ 2.600 tot € 3.250 bruto per maand bij 36 uur</li><li>Vaste klanten en een vast rooster</li><li>Een warme start met een collega</li><li>Reiskosten vergoed, en reistijd tussen klanten telt als werktijd</li></ul></div>
+            <div class="vac-actie"><a class="btn btn-pruim kies-vac" href="#solliciteer" data-vac="Helper">Solliciteer als Helper <svg class="ico"><use href="#i-pijl"/></svg></a></div>
+          </div>
+        </details>
+
+        <details class="vac" data-tak="wijzer">
+          <summary>
+            <span class="tak tak-wijzer"><svg class="ico"><use href="#i-veilig"/></svg></span>
+            <div><h3>Wijzer-coach</h3><div class="vac-meta"><span><svg class="ico"><use href="#i-klok"/></svg>16 tot 24 uur per week</span><span><svg class="ico"><use href="#i-locatie"/></svg>In buurthuizen in de regio</span><span class="salaris"><i aria-hidden="true">€</i>€ 3.000 tot € 4.000 bruto per maand bij 36 uur, plus bonus</span></div></div>
+            <span class="open-ico"><svg class="ico"><use href="#i-omlaag"/></svg></span>
+          </summary>
+          <div class="vac-body">
+            <div><h4>Wat ga je doen</h4><ul><li>Uitleg geven in buurthuizen, bijvoorbeeld over nepmails</li><li>Na afloop in gesprek met bezoekers over wat Huvo voor hen kan doen</li><li>Nieuwe buurthuizen benaderen en uitleg-middagen plannen</li></ul></div>
+            <div><h4>Wat vragen we</h4><ul><li>Je legt dingen rustig en simpel uit</li><li>Je vindt het leuk om voor een groep te staan</li><li>Je maakt makkelijk contact en durft door te vragen</li></ul></div>
+            <div><h4>Wat bieden we</h4><ul><li>€ 3.000 tot € 4.000 bruto per maand bij 36 uur</li><li>Een bonus als je je doelen haalt</li><li>Een afwisselende week</li><li>Kant-en-klaar lesmateriaal</li><li>Reiskosten vergoed</li></ul></div>
+            <div class="vac-actie"><a class="btn btn-pruim kies-vac" href="#solliciteer" data-vac="Wijzer-coach">Solliciteer als Wijzer-coach <svg class="ico"><use href="#i-pijl"/></svg></a></div>
+          </div>
+        </details>
+
+        <details class="vac" data-tak="kantoor">
+          <summary>
+            <span class="tak tak-kantoor"><svg class="ico"><use href="#i-agenda"/></svg></span>
+            <div><h3>Planner</h3><div class="vac-meta"><span><svg class="ico"><use href="#i-klok"/></svg>32 tot 36 uur per week</span><span><svg class="ico"><use href="#i-locatie"/></svg>Op kantoor</span><span class="salaris"><i aria-hidden="true">€</i>€ 3.000 tot € 4.000 bruto per maand bij 36 uur</span></div></div>
+            <span class="open-ico"><svg class="ico"><use href="#i-omlaag"/></svg></span>
+          </summary>
+          <div class="vac-body">
+            <div><h4>Wat ga je doen</h4><ul><li>Klanten en helpers aan elkaar koppelen</li><li>De telefoon opnemen als iemand hulp nodig heeft</li><li>Zorgen dat ieder rooster klopt</li></ul></div>
+            <div><h4>Wat vragen we</h4><ul><li>Je houdt van puzzelen met roosters</li><li>Je bent vriendelijk en duidelijk aan de telefoon</li><li>Je houdt het overzicht, ook als het druk is</li></ul></div>
+            <div><h4>Wat bieden we</h4><ul><li>€ 3.000 tot € 4.000 bruto per maand bij 36 uur</li><li>Een vaste plek in een klein team</li><li>Werk dat er echt toe doet</li><li>Ruimte om mee te denken</li></ul></div>
+            <div class="vac-actie"><a class="btn btn-pruim kies-vac" href="#solliciteer" data-vac="Planner">Solliciteer als Planner <svg class="ico"><use href="#i-pijl"/></svg></a></div>
+          </div>
+        </details>
+      </div>
+    </div>
+  </section>
+
+  <section class="blok" aria-labelledby="dag-kop">
+    <div class="wrap">
+      <div class="kop rv">
+        <span class="label">Een dag als helper</span>
+        <h2 id="dag-kop">Zo kan jouw dag eruitzien.</h2>
+      </div>
+      <ol class="dag" id="dag">
+        <li class="moment"><time>08.45</time><span class="m-stip" aria-hidden="true"></span><div class="moment-tekst"><strong>Koffie bij je eerste klant</strong><p>Even bijpraten. Hoe was het weekend?</p></div></li>
+        <li class="moment"><time>10.00</time><span class="m-stip" aria-hidden="true"></span><div class="moment-tekst"><strong>Samen naar de markt</strong><p>Met het boodschappenlijstje, en tijd voor een praatje bij de kaasboer.</p></div></li>
+        <li class="moment"><time>12.30</time><span class="m-stip" aria-hidden="true"></span><div class="moment-tekst"><strong>Lunchpauze</strong><p>Je eigen tijd. Even bijtanken.</p></div></li>
+        <li class="moment"><time>13.30</time><span class="m-stip" aria-hidden="true"></span><div class="moment-tekst"><strong>Uitleg over de tablet</strong><p>Samen oefenen met foto's sturen naar de kleinkinderen.</p></div></li>
+        <li class="moment"><time>15.30</time><span class="m-stip" aria-hidden="true"></span><div class="moment-tekst"><strong>Een spelletje aan tafel</strong><p>Wie wint er vandaag?</p></div></li>
+        <li class="moment"><time>17.00</time><span class="m-stip" aria-hidden="true"></span><div class="moment-tekst"><strong>Klaar voor vandaag</strong><p>Je hebt iemands dag een stukje beter gemaakt.</p></div></li>
+      </ol>
+    </div>
+  </section>
+
+  <section id="solliciteer" aria-labelledby="sol-kop">
+    <div class="wrap">
+      <div class="sol rv">
+        <div class="sol-info">
+          <span class="zacht-s" aria-hidden="true"></span>
+          <span class="label" style="color:var(--licht-oranje)">Zo gaat het</span>
+          <h2 id="sol-kop">Solliciteren is zo gedaan.</h2>
+          <ol>
+            <li><b>1</b><span>Je laat je gegevens achter. Een cv is niet nodig.</span></li>
+            <li><b>2</b><span>Wij bellen je om kennis te maken.</span></li>
+            <li><b>3</b><span>Je loopt een dag mee met een collega.</span></li>
+          </ol>
+        </div>
+        <div class="sol-form">
+          <span class="label">Solliciteer</span>
+          <form id="solForm" novalidate>
+            <div style="display:flex;flex-direction:column;gap:18px">
+              <div class="veld"><label for="solNaam">Je naam</label><input id="solNaam" name="naam" autocomplete="name"></div>
+              <div class="veld"><label for="solContact">Je telefoonnummer of e-mail</label><input id="solContact" name="contact" autocomplete="email"></div>
+              <div class="veld"><label for="solVac">Welke vacature?</label>
+                <select id="solVac" name="vacature">
+                  <option>Helper</option><option>Wijzer-coach</option><option>Planner</option><option>Open sollicitatie</option>
+                </select>
+              </div>
+              <div class="veld"><label for="solWaarom">Waarom wil je bij Huvo werken? <span style="font-weight:400;opacity:.8">(mag kort)</span></label><textarea id="solWaarom" name="waarom"></textarea></div>
+              <p class="fout" id="solFout" hidden></p>
+              <div><button class="btn btn-oranje" type="submit">Verstuur sollicitatie <svg class="ico"><use href="#i-pijl"/></svg></button></div>
+            </div>
+          </form>
+          <div class="bedankt" id="solBedankt" hidden>
+            <span class="bol"><svg class="ico"><use href="#i-vink"/></svg></span>
+            <div><strong id="solBedanktKop">Dank je wel.</strong><p id="solBedanktTekst"></p></div>
+          </div>
+          <p class="of-bel">Liever eerst even bellen? Dat kan op werkdagen van 9 tot 17 uur: <b class="tel-nr">088 – 000 48 86</b></p>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<main id="over-ons" hidden>
+  <section class="hero ov-hero">
+    <div class="hero-grid">
+      <div class="hero-tekst">
+        <span class="zacht zacht-1" aria-hidden="true"></span>
+        <span class="zacht zacht-2" aria-hidden="true"></span>
+        <span class="zacht zacht-3" aria-hidden="true"></span>
+        <span class="label">Over Huvo</span>
+        <h1><span class="w"><span>Wij</span></span> <span class="w"><span>zijn</span></span> <span class="w"><span>Huvo</span></span><span class="punt">.</span></h1>
+        <p class="lead">Wij helpen ouderen met alles wat het dagelijks leven makkelijker en leuker maakt. Geen medische zorg, wel een helpende hand.</p>
+        <div class="knoppen">
+          <a class="btn btn-wit" href="#verhaal">Ons verhaal</a>
+          <span class="cta-spoor oranje" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
+          <a class="btn btn-pruim spoor-doel" href="#aanvragen">Maak kennis <svg class="ico"><use href="#i-pijl"/></svg></a>
+        </div>
+      </div>
+      <div class="hero-foto">
+        <img class="plx" src="img/samen.jpg" alt="Drie ouderen bekijken lachend samen een fotoalbum op de bank." loading="lazy">
+        <div class="hero-chip">
+          <span class="rondje"><svg class="ico"><use href="#i-hart"/></svg></span>
+          <div class="chip-tekst"><small>Onze belofte</small><strong>Morgen zonder zorgen.</strong></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="blok" id="verhaal" aria-labelledby="verhaal-kop" style="padding-top:40px">
+    <div class="wrap">
+      <div class="kop rv">
+        <span class="label">Ons verhaal</span>
+        <h2 id="verhaal-kop">Alles begint bij een stip.</h2>
+      </div>
+      <div class="verhaal">
+        <div class="verhaal-beeld" id="verhaalBeeld" data-stap="1" aria-hidden="true">
+          <svg viewBox="0 0 2486 805">
+            <use class="l l-h" href="#l-h"/><use class="l l-u" href="#l-u"/><use class="l l-v" href="#l-v"/><use class="l l-o" href="#l-o"/>
+            <circle class="ring" cx="1062" cy="463" r="112"/>
+            <circle class="stip" id="verhaalStip" cx="1062" cy="463" r="66.5"/>
+          </svg>
+          <p class="vb-belofte">Morgen zonder zorgen.</p>
+        </div>
+        <div class="vstappen" id="vstappen">
+          <div class="vstap" data-stap="1"><span class="label">Het woord</span><h3>Gewoon het woord Huvo.</h3><p>Kort, rond en makkelijk te onthouden.</p></div>
+          <div class="vstap" data-stap="2"><span class="label">Het detail</span><h3>Met één detail: het rondje in de u.</h3><p>Klein, maar daar draait het om.</p></div>
+          <div class="vstap" data-stap="3"><span class="label">De betekenis</span><h3>Een stip die gedragen wordt.</h3><p>De u vangt de stip op en houdt hem vast. Zo bieden wij ouderen een helpende hand.</p></div>
+          <div class="vstap" data-stap="4"><span class="label">De belofte</span><h3>Morgen zonder zorgen.</h3><p>Met Huvo erbij hoeft u zich geen zorgen te maken over vandaag, en dus ook niet over morgen. Of het nu gaat om gezelschap, de boodschappen of een vraag over internet.</p></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="blok" aria-labelledby="welniet-kop" style="padding-top:0">
+    <div class="wrap">
+      <div class="kop rv">
+        <span class="label">Wat wij doen</span>
+        <h2 id="welniet-kop">Een helpende hand. Geen zorg.</h2>
+        <p class="lead">Huvo is er alleen voor ouderen. Alles wat wij doen, maken en zeggen, is voor hen bedoeld.</p>
+      </div>
+      <div class="welniet">
+        <div class="wn wn-wel rv">
+          <h3>Dit doen wij</h3>
+          <ul class="taken">
+            <li><span class="bol"><svg class="ico"><use href="#i-koffie"/></svg></span>Gezelschap: koffie, een spelletje, een wandeling</li>
+            <li><span class="bol"><svg class="ico"><use href="#i-boodschap"/></svg></span>Boodschappen, poetsen, klusjes en uitleg over uw telefoon</li>
+            <li><span class="bol"><svg class="ico"><use href="#i-uitleg"/></svg></span>Uitleg in het buurthuis over veilig internetten</li>
+          </ul>
+        </div>
+        <div class="wn wn-niet rv">
+          <h3>Dit doen wij niet</h3>
+          <ul class="taken">
+            <li><span class="bol"><svg class="ico"><use href="#i-kruis"/></svg></span>Medische zorg of verpleging</li>
+            <li><span class="bol"><svg class="ico"><use href="#i-kruis"/></svg></span>Dingen overnemen die u zelf wilt blijven doen</li>
+          </ul>
+          <p>Samen kijken we waar u hulp bij kunt gebruiken. En wat u vooral zelf wilt blijven doen.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="blok" aria-labelledby="team-kop" style="padding-top:0">
+    <div class="wrap">
+      <div class="kop rv">
+        <span class="label">De mensen achter Huvo</span>
+        <h2 id="team-kop">Opgericht door Mike en Coen.</h2>
+      </div>
+      <div class="team rv">
+        <div class="lid"><div class="foto-plek" role="img" aria-label="Foto van Mike volgt">M</div><div><h3>Mike</h3><p>Oprichter</p></div></div>
+        <div class="lid"><div class="foto-plek" role="img" aria-label="Foto van Coen volgt">C</div><div><h3>Coen</h3><p>Oprichter</p></div></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="blok" aria-labelledby="kern-kop" style="padding-top:0">
+    <div class="wrap">
+      <div class="kop rv">
+        <span class="label">Onze kernwaarden</span>
+        <h2 id="kern-kop">Vier woorden die bepalen wie wij zijn.</h2>
+      </div>
+      <div class="wlijst" id="wlijst">
+        <button class="wl" type="button" aria-expanded="true">
+          <span class="wl-rij"><span class="wl-stip" aria-hidden="true"></span><span class="wl-woord">Behulpzaam</span><span class="wl-kort">Wij regelen het.</span></span>
+          <span class="wl-uitleg"><span class="wl-tekst">Wij zeggen wat we doen, en hoe. Concreet en oplossend. U hoeft zich nergens druk om te maken.</span></span>
+        </button>
+        <button class="wl" type="button" aria-expanded="false">
+          <span class="wl-rij"><span class="wl-stip" aria-hidden="true"></span><span class="wl-woord">Warm</span><span class="wl-kort">Tijd en aandacht.</span></span>
+          <span class="wl-uitleg"><span class="wl-tekst">Persoonlijk, met oprechte interesse in u. Wij nemen de tijd voor een goed gesprek.</span></span>
+        </button>
+        <button class="wl" type="button" aria-expanded="false">
+          <span class="wl-rij"><span class="wl-stip" aria-hidden="true"></span><span class="wl-woord">Modern</span><span class="wl-kort">Van deze tijd.</span></span>
+          <span class="wl-uitleg"><span class="wl-tekst">Kort en helder. Gewone woorden, geen moeilijke termen. En wij helpen u bij te blijven met alles van nu.</span></span>
+        </button>
+        <button class="wl" type="button" aria-expanded="false">
+          <span class="wl-rij"><span class="wl-stip" aria-hidden="true"></span><span class="wl-woord">Tot in de puntjes</span><span class="wl-kort">Rustig en verzorgd.</span></span>
+          <span class="wl-uitleg"><span class="wl-tekst">Wij doen wat we zeggen, en we doen het goed. Rustig, netjes en op tijd.</span></span>
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <section class="blok" aria-labelledby="slot-kop">
+    <div class="wrap">
+      <div class="ov-slot rv">
+        <span class="zacht-o" aria-hidden="true"></span>
+        <div>
+          <h2 id="slot-kop">Zullen we kennismaken?</h2>
+          <p>Wij komen graag bij u langs voor een kop koffie. Samen kijken we wat u nodig hebt.</p>
+        </div>
+        <div class="cta-rij">
+          <span class="cta-spoor" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
+          <a class="btn btn-oranje spoor-doel" href="#aanvragen">Maak kennis <svg class="ico"><use href="#i-pijl"/></svg></a>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<main id="aanvragen" hidden>
+  <section class="av-sectie" aria-labelledby="avKop">
+    <div class="wrap">
+      <div class="av-kop">
+        <div style="display:flex;align-items:center;gap:18px;flex-wrap:wrap">
+          <span class="label" id="avKop">Prijs aanvragen</span>
+          <div class="av-voortgang" id="avVoortgang" aria-hidden="true"></div>
+        </div>
+        <span class="av-bel"><span class="bol"><svg class="ico"><use href="#i-bel"/></svg></span>Liever bellen? <b class="tel-nr">088 – 000 48 86</b></span>
+      </div>
+      <form class="av-kaart" id="avForm" novalidate>
+        <div class="honing" aria-hidden="true"><label for="avWebsite">Laat dit veld leeg</label><input id="avWebsite" name="website" tabindex="-1" autocomplete="off"></div>
+        <div class="av-links">
+          <div class="av-stap" id="avStap"></div>
+          <div class="av-nav" id="avNav">
+            <button class="av-terug" type="button" id="avTerug"><svg class="ico"><use href="#i-pijl"/></svg>Terug</button>
+            <button class="btn btn-oranje" type="submit" id="avVolgende">Volgende <svg class="ico"><use href="#i-pijl"/></svg></button>
+          </div>
+        </div>
+        <div class="av-beeld" id="avBeeld" aria-hidden="true">
+          <span class="zb zb1"></span><span class="zb zb2"></span>
+          <div class="beeld-midden"><div class="beeld-cirkel" id="avCirkel"></div><div id="avWidget"></div><div class="bubbels" id="avBubbels"></div></div>
+          <div class="beeld-tekst" id="avBeeldTekst"></div>
+        </div>
+      </form>
+    </div>
+  </section>
+
+  <section class="faq-sectie" id="vragen" aria-labelledby="faq-kop">
+    <div class="wrap blok">
+      <div class="kop rv">
+        <span class="label">Veelgestelde vragen</span>
+        <h2 id="faq-kop">Goed om te weten.</h2>
+      </div>
+      <div class="faq">
+        <details class="vraag"><summary>Kan ik zelf mijn helper kiezen?<span class="open-ico"><svg class="ico"><use href="#i-plus"/></svg></span></summary><div class="antwoord"><p>Nee, wij kiezen een helper die bij u past. Klikt het niet? Dan vraagt u gewoon een andere helper. Dat mag zo vaak als u wilt.</p></div></details>
+        <details class="vraag"><summary>Zijn er nog extra kosten?<span class="open-ico"><svg class="ico"><use href="#i-plus"/></svg></span></summary><div class="antwoord"><p>Nee. Er zijn geen inschrijfkosten en geen reiskosten. U betaalt alleen voor de uren dat wij bij u zijn.</p></div></details>
+        <details class="vraag"><summary>Komt Huvo ook bij mij?<span class="open-ico"><svg class="ico"><use href="#i-plus"/></svg></span></summary><div class="antwoord"><p>Wij werken tot 40 kilometer rond 's-Hertogenbosch. Vul hierboven uw postcode in, dan ziet u het meteen.</p></div></details>
+        <details class="vraag"><summary>Is Huvo zorg?<span class="open-ico"><svg class="ico"><use href="#i-plus"/></svg></span></summary><div class="antwoord"><p>Nee. Wij geven geen medische zorg. Wij helpen met alles wat het leven makkelijker en leuker maakt: gezelschap, hulp in huis en uitleg over alles van nu.</p></div></details>
+        <details class="vraag"><summary>Hoe begin ik?<span class="open-ico"><svg class="ico"><use href="#i-plus"/></svg></span></summary><div class="antwoord"><p>Beantwoord hierboven een paar korte vragen, of bel ons. Daarna komen wij gratis bij u op koffie om kennis te maken.</p></div></details>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="voet">
+  <div class="wrap">
+    <div>
+      <div class="voet-logo"><svg viewBox="0 0 2486 805" role="img" aria-label="Huvo"><use href="#letters"/><circle cx="1062" cy="463" r="66.5" fill="currentColor"/></svg></div>
+      <p class="belofte-tekst">Morgen zonder zorgen.</p>
+    </div>
+    <div>
+      <h4>Wat wij doen</h4>
+      <ul><li><a href="#samen">Samen</a></li><li><a href="#thuis">Thuis</a></li><li><a href="#wijzer">Wijzer</a></li><li><a href="#aanvragen">Prijs aanvragen</a></li><li><a href="#vragen">Veelgestelde vragen</a></li><li><a href="#over-ons">Over ons</a></li><li><a href="#werken">Werken bij Huvo</a></li></ul>
+    </div>
+    <div>
+      <h4>Contact</h4>
+      <ul><li class="tel-nr">088 – 000 48 86</li><li>Werkdagen 9 tot 17 uur</li><li><a href="#kennismaken">Laat u terugbellen</a></li></ul>
+    </div>
+    <div class="voet-onder"><span>© 2026 Huvo</span><span>Voor ouderen, met tijd en aandacht.</span></div>
+  </div>
+  <div class="voet-groot rv" aria-hidden="true"><svg viewBox="0 0 2486 805"><use href="#letters"/><circle class="stip" cx="1062" cy="463" r="66.5"/></svg></div>
+</footer>
+
+<div class="hulp" id="hulp">
+  <div class="hulp-paneel" id="hulpPaneel" role="dialog" aria-labelledby="hulpKop" hidden>
+    <h3 id="hulpKop">Even hulp nodig?</h3>
+    <p>Bel ons gerust. Of laat uw nummer achter, dan bellen wij u terug.</p>
+    <div class="nummer"><span class="tel-nr">088 – 000 48 86</span><button class="kopie" id="kopie" type="button">Kopieer</button></div>
+    <a class="btn btn-pruim" href="#kennismaken" id="naarForm">Bel mij terug</a>
+  </div>
+  <button class="hulp-knop" id="hulpKnop" aria-expanded="false" aria-controls="hulpPaneel">
+    <span class="dot" aria-hidden="true"></span><span class="txt">Even hulp nodig?</span>
+  </button>
+</div>
+
+<script>
+(function(){
+  document.documentElement.classList.add('js');
+  var TEL = '088 – 000 48 86';
+
+  var rustig = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  function herstart(el, cls){ el.classList.remove(cls); void el.getBoundingClientRect(); el.classList.add(cls); }
+
+  // alles wat met scrollen meebeweegt, in één frame
+  var top = document.getElementById('top');
+  var voortgang = top.querySelector('.voortgang');
+  var plx = [].slice.call(document.querySelectorAll('.plx'));
+  var stappenLijst = document.querySelector('.stappen');
+  var reeks = [];
+  [].slice.call(stappenLijst.children).forEach(function(stap){
+    reeks.push(stap);
+    stap.querySelectorAll('.spoor i').forEach(function(i){ reeks.push(i); });
+  });
+  // statement: knip de tekst op in woorden die vol kunnen lopen
+  var groot = document.getElementById('groot');
+  var woorden = [];
+  function splits(node){
+    [].slice.call(node.childNodes).forEach(function(n){
+      if (n.nodeType === 3){
+        var frag = document.createDocumentFragment();
+        n.textContent.split(/(\s+)/).forEach(function(stuk){
+          if (!stuk) return;
+          if (/^\s+$/.test(stuk)){ frag.appendChild(document.createTextNode(stuk)); return; }
+          var s = document.createElement('span'); s.className = 'wd'; s.textContent = stuk;
+          frag.appendChild(s); woorden.push(s);
+        });
+        node.replaceChild(frag, n);
+      } else if (n.classList && n.classList.contains('chipje')){
+        woorden.push(n);
+      } else if (n.nodeType === 1){
+        splits(n);
+      }
+    });
+  }
+  splits(groot);
+  var woordenVol = -1;
+
+  // grote u: stip valt mee met het scrollen
+  var podium = document.getElementById('uPodium'), uStipG = document.getElementById('uStipG');
+  var uStip = document.getElementById('uStip'), wasGeland = true;
+
+  // werelden: stapel alleen als elke kaart in het scherm past
+  var werelden = document.querySelector('.werelden');
+  var kaarten = [].slice.call(werelden.querySelectorAll('.wereld'));
+  kaarten.forEach(function(k, i){ k.style.setProperty('--i', i); });
+  function checkStapel(){
+    var ruimte = window.innerHeight - 108 - kaarten.length * 18 - 16;
+    var past = !rustig && window.innerWidth > 980 && kaarten.every(function(k){ return k.offsetHeight <= ruimte; });
+    werelden.classList.toggle('stapel', past);
+    if (!past) kaarten.forEach(function(k){ k.style.scale = ''; });
+  }
+  checkStapel();
+  window.addEventListener('resize', checkStapel);
+
+  // naar een wereld-kaart scrollen: bij de stapel naar de plek waar die kaart net bovenaan ligt
+  function scrollNaar(el, gedrag){
+    var i = kaarten.indexOf(el);
+    if (i > -1 && werelden.classList.contains('stapel')){
+      var gat = parseFloat(getComputedStyle(werelden).rowGap) || 0;
+      var y = werelden.getBoundingClientRect().top + window.scrollY;
+      for (var j = 0; j < i; j++) y += kaarten[j].offsetHeight + gat;
+      window.scrollTo({top: Math.max(0, y - (108 + i * 18)), behavior: gedrag});
+    } else {
+      el.scrollIntoView({behavior: gedrag, block: 'start'});
+    }
+  }
+  document.addEventListener('click', function(e){
+    var a = e.target.closest('a[href^="#"]');
+    if (!a) return;
+    var el = document.getElementById(a.getAttribute('href').slice(1));
+    if (!el || kaarten.indexOf(el) < 0 || el.closest('main').hidden) return;
+    e.preventDefault();
+    if (location.hash !== a.getAttribute('href')) history.pushState(null, '', a.getAttribute('href'));
+    scrollNaar(el, rustig ? 'auto' : 'smooth');
+  });
+
+  var vstappen = document.getElementById('vstappen');
+  var vstapEls = [].slice.call(vstappen.querySelectorAll('.vstap'));
+  var verhaalBeeld = document.getElementById('verhaalBeeld'), verhaalStip = document.getElementById('verhaalStip');
+  vstappen.classList.add('leeft'); vstapEls[0].classList.add('actief');
+  var dag = document.getElementById('dag');
+  var momenten2 = [].slice.call(dag.querySelectorAll('.moment'));
+  var aantalAan = -1, gepland = false;
+
+  function frame(){
+    gepland = false;
+    var y = window.scrollY, vh = window.innerHeight;
+    top.classList.toggle('scrolled', y > 8);
+
+    var max = document.documentElement.scrollHeight - vh;
+    var p = max > 0 ? Math.min(1, y / max) : 0;
+    voortgang.style.setProperty('--x', (p * (top.clientWidth - 10)) + 'px');
+
+    if (!rustig){
+      plx.forEach(function(img){
+        var r = img.parentNode.getBoundingClientRect();
+        if (r.bottom < 0 || r.top > vh) return;
+        var t = (r.top + r.height / 2 - vh / 2) / vh;
+        img.style.transform = 'translate3d(0,' + (t * -7).toFixed(2) + '%,0)';
+      });
+    }
+
+    var sr = stappenLijst.getBoundingClientRect();
+    var sp = (vh * 0.8 - sr.top) / (sr.height * 0.95);
+    sp = Math.max(0, Math.min(1, sp));
+    var n = Math.round(sp * reeks.length);
+    if (n !== aantalAan){
+      aantalAan = n;
+      reeks.forEach(function(el, i){ el.classList.toggle('aan', i < n); });
+    }
+
+    // het verhaal van de stip: de stap die het midden van het scherm passeert, is actief
+    if (vstappen.offsetParent){
+      var actief = 1;
+      vstapEls.forEach(function(v){ if (v.getBoundingClientRect().top < vh * 0.55) actief = +v.dataset.stap; });
+      if (String(actief) !== verhaalBeeld.dataset.stap){
+        verhaalBeeld.dataset.stap = actief;
+        vstapEls.forEach(function(v){ v.classList.toggle('actief', +v.dataset.stap === actief); });
+        if (actief === 3 && !rustig) herstart(verhaalStip, 'vallen');
+      }
+    }
+
+    // een dag als helper: lijn loopt mee, momenten lichten op
+    if (dag.offsetParent){
+      var dr = dag.getBoundingClientRect();
+      var dp = rustig ? 1 : Math.max(0, Math.min(1, (vh * 0.6 - dr.top) / dr.height));
+      dag.style.setProperty('--vul', dp.toFixed(3));
+      momenten2.forEach(function(m){
+        var mr = m.getBoundingClientRect();
+        m.classList.toggle('aan', rustig || mr.top + 14 <= vh * 0.6);
+      });
+    }
+
+    // statement vol laten lopen
+    var gr = groot.getBoundingClientRect();
+    var gp = rustig ? 1 : (vh * 0.9 - gr.top) / (vh * 0.4 + gr.height);
+    var gn = Math.round(Math.max(0, Math.min(1, gp)) * woorden.length);
+    if (gn !== woordenVol){
+      woordenVol = gn;
+      woorden.forEach(function(w, i){ w.classList.toggle('vol', i < gn); });
+    }
+
+    // stip valt in de u
+    if (!rustig){
+      var pr = podium.getBoundingClientRect();
+      var up = Math.max(0, Math.min(1, (vh * 0.95 - pr.top) / (vh * 0.5)));
+      uStipG.setAttribute('transform', 'translate(0,' + (-560 * (1 - up * up)).toFixed(1) + ')');
+      uStip.classList.toggle('weg', up < 1);
+      if (up >= 1 && !wasGeland){ uStip.classList.remove('hup'); herstart(uStip, 'land'); }
+      wasGeland = up >= 1;
+    }
+
+    // werelden: kaart eronder wordt iets kleiner als de volgende eroverheen schuift
+    if (werelden.classList.contains('stapel')){
+      kaarten.forEach(function(k, i){
+        var volg = kaarten[i + 1];
+        if (!volg){ k.style.scale = ''; return; }
+        var kr = k.getBoundingClientRect(), vr = volg.getBoundingClientRect();
+        var t = Math.max(0, Math.min(1, (kr.bottom - vr.top) / kr.height));
+        k.style.scale = (1 - t * 0.05).toFixed(4);
+      });
+    }
+  }
+  function plan(){ if (!gepland){ gepland = true; requestAnimationFrame(frame); } }
+  window.addEventListener('scroll', plan, {passive:true});
+  window.addEventListener('resize', plan);
+  frame();
+
+  // zachte stippen volgen de muis een klein beetje
+  if (!rustig && matchMedia('(pointer:fine)').matches){
+    document.querySelectorAll('.hero-tekst').forEach(function(ht){
+      ht.addEventListener('pointermove', function(e){
+        var r = ht.getBoundingClientRect();
+        ht.style.setProperty('--mx', ((e.clientX - r.left) / r.width - .5).toFixed(3));
+        ht.style.setProperty('--my', ((e.clientY - r.top) / r.height - .5).toFixed(3));
+      });
+      ht.addEventListener('pointerleave', function(){
+        ht.style.setProperty('--mx', 0); ht.style.setProperty('--my', 0);
+      });
+    });
+  }
+
+  // ===== Werken bij =====
+  // twee pagina's in één: de hash bepaalt welke te zien is
+  var paginas = [document.getElementById('home'), document.getElementById('werken'), document.getElementById('over-ons'), document.getElementById('aanvragen')];
+  var navPaginas = [].slice.call(document.querySelectorAll('#nav a[data-pagina]'));
+  function route(){
+    var h = location.hash.slice(1);
+    var doel = h ? document.getElementById(h) : null;
+    var pagina = (doel && doel.closest('main')) || (doel ? null : paginas[0]);
+    if (!pagina) return;
+    var wissel = pagina.hidden;
+    paginas.forEach(function(p){ p.hidden = p !== pagina; });
+    navPaginas.forEach(function(a){ a.classList.toggle('actief', a.dataset.pagina === pagina.id); });
+    if (wissel){
+      checkStapel();
+      if (doel && doel !== pagina) scrollNaar(doel, 'instant');
+      else window.scrollTo({top:0, behavior:'instant'});
+      plan();
+    }
+  }
+  window.addEventListener('hashchange', route);
+  route();
+
+  // ===== Prijs aanvragen: één vraag per scherm =====
+  (function(){
+    var TEL = '088 – 000 48 86';
+    var SAMEN = [
+      ['koffie','Samen koffie','Koffie en een goed gesprek','#i-koffie'],
+      ['voetbal','Samen voetbal','Samen een wedstrijd kijken','#i-bal'],
+      ['wandelen','Samen wandelen','Een rondje park of markt','#i-locatie'],
+      ['uitje','Samen op uitje','Museum, terras of familiebezoek','#i-zon'],
+      ['koken','Samen koken','Samen een maaltijd maken','#i-pan'],
+      ['anders','Iets anders','Vertel het ons','#i-plus']
+    ];
+    var THUIS = [
+      ['boodschappen','Boodschappen thuis','Halen, of samen gaan','#i-boodschap'],
+      ['poetsen','Poetsen thuis','Ramen, kasten, extra schoon','#i-poetsen'],
+      ['was','Was en strijken thuis','Wassen, strijken, bed verschonen','#i-was'],
+      ['klussen','Klussen thuis','Lamp, schilderij, drempel','#i-klus'],
+      ['digitaal','Digitale hulp thuis','Mail, WhatsApp of videobellen','#i-uitleg'],
+      ['anders','Iets anders','Vertel het ons','#i-plus']
+    ];
+    var TIJDEN = [['ochtend','Ochtend','#i-zon'],['middag','Middag','#i-klok'],['avond','Avond','#i-maan']];
+    var DAGEN = [['week','Doordeweeks'],['weekend','In het weekend']];
+    function allesGekozen(){ return A.tijden.length === 3 && A.dagen.length === 2; }
+    function lijstZin(l){ return l.length < 2 ? l.join('') : l.slice(0,-1).join(', ') + ' en ' + l[l.length - 1]; }
+    function wanneerTekst(){
+      if (allesGekozen()) return 'Maakt niet uit';
+      if (!A.tijden.length || !A.dagen.length) return '';
+      var t = TIJDEN.filter(function(x){ return A.tijden.indexOf(x[0]) > -1; }).map(function(x){ return x[1].toLowerCase(); });
+      var z = lijstZin(t); z = z.charAt(0).toUpperCase() + z.slice(1);
+      var d = A.dagen.length === 2 ? 'de hele week' : A.dagen[0] === 'week' ? 'doordeweeks' : 'in het weekend';
+      return z + ', ' + d;
+    }
+    // helpers die nu bij u in de buurt helpen (foto's volgen)
+    var HELPERS = [
+      {naam:'Mike', letter:'M', pijlers:['samen','thuis']},
+      {naam:'Coen', letter:'C', pijlers:['samen','thuis']}
+    ];
+    var BELLER = {naam:'Mike', letter:'M'};
+    var STAPPEN = ['voorwie','naam','bereik','adres','samen','thuis','dagdeel','overzicht','verder'];
+
+    var A = {voorwie:null, aanhef:'', voornaam:'', achternaam:'', invulVoornaam:'', invulAchternaam:'',
+      tel:'', mail:'', bellen:false, postcode:'', huisnr:'', gebied:null,
+      samen:null, samenKeus:[], samenAnders:'', thuis:null, thuisKeus:[], thuisAnders:'',
+      tijden:[], dagen:[], verder:null, belDagdeel:''};
+    var stap = 0, scherm = null, fout = '', versOpen = false;
+
+    var vak = document.getElementById('avStap'), form = document.getElementById('avForm');
+    var terug = document.getElementById('avTerug'), volgendeKnop = document.getElementById('avVolgende');
+    var nav = document.getElementById('avNav'), voortgang = document.getElementById('avVoortgang');
+    STAPPEN.forEach(function(){ voortgang.appendChild(document.createElement('i')); });
+    var loper = document.createElement('b'); loper.className = 'loper'; voortgang.appendChild(loper);
+
+    function esc(s){ return String(s).replace(/[&<>"']/g, function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]; }); }
+    function ico(id, cls){ return '<svg class="ico' + (cls ? ' ' + cls : '') + '"><use href="' + id + '"/></svg>'; }
+
+    // wie is "u" in de vragen?
+    function wie(){
+      if (A.voorwie === 'zelf' || !A.voorwie) return 'u';
+      if (A.voorwie === 'ouder') return A.aanhef === 'Mevrouw' ? 'uw moeder' : A.aanhef === 'Meneer' ? 'uw vader' : 'uw vader of moeder';
+      return A.aanhef && A.achternaam ? A.aanhef.toLowerCase() + ' ' + A.achternaam : 'deze persoon';
+    }
+    function wilt(){ return A.voorwie === 'zelf' ? 'Wilt u' : 'Wil ' + wie(); }
+
+    function keus(veld, waarde, label, icoon, extra){
+      var aan = A[veld] === waarde;
+      return '<button type="button" class="keus" data-veld="' + veld + '" data-waarde="' + waarde + '"' + (extra || '') + ' aria-pressed="' + aan + '">' +
+        (icoon ? '<span class="bol">' + ico(icoon) + '</span>' : '') + '<span>' + label + '</span></button>';
+    }
+    function tegel(lijst, item){
+      var aan = A[lijst].indexOf(item[0]) > -1;
+      return '<button type="button" class="tegel-keus" data-lijst="' + lijst + '" data-waarde="' + item[0] + '" aria-pressed="' + aan + '">' +
+        '<span class="bol">' + ico(item[3]) + '</span><span>' + item[1] + '<small>' + item[2] + '</small></span><span class="vink" aria-hidden="true">' + ico('#i-vink') + '</span></button>';
+    }
+    function veld(id, label, waarde, attrs){
+      return '<div class="veld"><label for="' + id + '">' + label + '</label><input id="' + id + '" data-in="' + id.replace('av-','') + '" value="' + esc(waarde) + '" ' + (attrs || '') + '></div>';
+    }
+    function aanhefKeus(){
+      return '<div class="aanhef" role="group" aria-label="Aanhef">' + keus('aanhef','Meneer','Meneer') + keus('aanhef','Mevrouw','Mevrouw') + '</div>';
+    }
+
+    // gebied: tot 40 km rond 5222 AE. Ruwe indeling op de eerste twee cijfers van de postcode.
+    var BINNEN = ['52','53','54'], RAND = ['40','41','42','48','49','50','51','55','56','57','58','65','66'];
+    function gebied(pc){ var p = pc.slice(0,2); return BINNEN.indexOf(p) > -1 ? 'binnen' : RAND.indexOf(p) > -1 ? 'rand' : 'buiten'; }
+
+    function namen(lijst, keuzes, anders){
+      return A[keuzes].map(function(k){
+        if (k === 'anders') return anders ? '"' + anders + '"' : 'iets anders';
+        return lijst.filter(function(x){ return x[0] === k; })[0][1];
+      });
+    }
+    var WEEKDAGEN = ['zondag','maandag','dinsdag','woensdag','donderdag','vrijdag','zaterdag'];
+    var MAANDEN = ['januari','februari','maart','april','mei','juni','juli','augustus','september','oktober','november','december'];
+    function volgendeWerkdag(){
+      var d = new Date(), n = new Date(d); n.setDate(d.getDate() + 1);
+      while (n.getDay() === 0 || n.getDay() === 6) n.setDate(n.getDate() + 1);
+      var t = new Date(d); t.setDate(d.getDate() + 1);
+      return {datum:n, morgen:n.toDateString() === t.toDateString()};
+    }
+    function wanneer(){
+      var w = volgendeWerkdag();
+      return (w.morgen ? 'morgen' : WEEKDAGEN[w.datum.getDay()]) + (A.belDagdeel || 'ochtend');
+    }
+    function groet(){ var h = new Date().getHours(); return h < 12 ? 'Goedemorgen' : h < 18 ? 'Goedemiddag' : 'Goedenavond'; }
+    function nuOpen(){ var d = new Date(), h = d.getHours() + d.getMinutes() / 60; return d.getDay() > 0 && d.getDay() < 6 && h >= 9 && h < 17; }
+    function weerOpen(){
+      var d = new Date(), h = d.getHours();
+      if (d.getDay() > 0 && d.getDay() < 6 && h < 9) return 'vandaag om 9 uur';
+      var w = volgendeWerkdag();
+      return (w.morgen ? 'morgen' : WEEKDAGEN[w.datum.getDay()]) + ' om 9 uur';
+    }
+
+    // ---------- schermen ----------
+    var R = {
+      voorwie: function(){
+        return '<h2 class="av-vraag" tabindex="-1">Voor wie is de hulp?</h2>' +
+          '<div class="keuzes-lijst">' +
+            keus('voorwie','zelf','Voor mijzelf','#i-persoon',' data-door') +
+            keus('voorwie','ouder','Voor mijn vader of moeder','#i-samen',' data-door') +
+            keus('voorwie','anders','Voor iemand anders','#i-hart',' data-door') +
+          '</div>';
+      },
+      naam: function(){
+        if (A.voorwie === 'zelf'){
+          return '<h2 class="av-vraag" tabindex="-1">Hoe heet u?</h2>' + aanhefKeus() +
+            '<div class="velden-2">' + veld('av-voornaam','Voornaam',A.voornaam,'autocomplete="given-name"') + veld('av-achternaam','Achternaam',A.achternaam,'autocomplete="family-name"') + '</div>';
+        }
+        var sub = A.voorwie === 'ouder' ? 'En hoe heet uw vader of moeder?' : 'En voor wie vraagt u hulp aan?';
+        return '<h2 class="av-vraag" tabindex="-1">Hoe heet u?</h2>' +
+          '<div class="velden-2">' + veld('av-invulVoornaam','Uw voornaam',A.invulVoornaam,'autocomplete="given-name"') + veld('av-invulAchternaam','Uw achternaam',A.invulAchternaam,'autocomplete="family-name"') + '</div>' +
+          '<p class="av-sub">' + sub + '</p>' + aanhefKeus() +
+          '<div class="velden-2">' + veld('av-voornaam','Voornaam',A.voornaam,'autocomplete="off"') + veld('av-achternaam','Achternaam',A.achternaam,'autocomplete="off"') + '</div>';
+      },
+      bereik: function(){
+        return '<h2 class="av-vraag" tabindex="-1">Hoe kunnen we u bereiken?</h2>' +
+          veld('av-tel','Telefoonnummer',A.tel,'type="tel" inputmode="tel" autocomplete="tel"') +
+          veld('av-mail','E-mail <span style="font-weight:400;opacity:.75">(mag ook leeg)</span>',A.mail,'type="email" inputmode="email" autocomplete="email"') +
+          '<label class="vinkvak"><input type="checkbox" id="av-bellen" data-vink="bellen"' + (A.bellen ? ' checked' : '') + '><span class="vak">' + ico('#i-vink') + '</span>U mag mij bellen over deze aanvraag.</label>';
+      },
+      adres: function(){
+        var h = '<h2 class="av-vraag" tabindex="-1">Waar woont ' + esc(wie()) + '?</h2>' +
+          '<p class="av-uitleg">Alleen uw postcode en huisnummer. De straat vullen wij zelf aan.</p>' +
+          '<div class="velden-pc">' + veld('av-postcode','Postcode',A.postcode,'autocomplete="postal-code" placeholder="1234 AB" maxlength="7"') + veld('av-huisnr','Huisnummer',A.huisnr,'inputmode="numeric" maxlength="8"') + '</div>';
+        if (A.gebied === 'buiten'){
+          h += '<div class="melding roze"><span class="bol">' + ico('#i-locatie') + '</span><div><strong style="font-size:20px">We komen nog niet bij u in de buurt.</strong><p>Mogen we het u laten weten als dat wel zo is?</p></div></div>' +
+            '<div class="jn">' + keus('wachtlijst','ja','Ja, graag','#i-vink',' data-door') + keus('wachtlijst','nee','Nee, dank u','#i-kruis',' data-door') + '</div>';
+        }
+        return h;
+      },
+      samen: function(){
+        var h = '<h2 class="av-vraag" tabindex="-1">' + esc(wilt()) + ' samen iets gezelligs doen?</h2>' +
+          '<div class="jn">' + keus('samen','ja','Ja','#i-vink') + keus('samen','nee','Nee, liever niet','#i-kruis',' data-door') + '</div>';
+        if (A.samen === 'ja'){
+          h += '<div class="uitklap"><p class="av-uitleg">Kies wat u leuk lijkt. Meer kiezen mag.</p><div class="tegels-keus">' + SAMEN.map(function(s){ return tegel('samenKeus', s); }).join('') + '</div>' +
+            (A.samenKeus.indexOf('anders') > -1 ? '<div class="veld"><label for="av-samenAnders">Wat zou u graag samen doen?</label><textarea id="av-samenAnders" data-in="samenAnders">' + esc(A.samenAnders) + '</textarea></div>' : '') + '</div>';
+        }
+        return h;
+      },
+      thuis: function(){
+        var onderwerp = A.voorwie === 'zelf' ? 'u' : wie();
+        var h = '<h2 class="av-vraag" tabindex="-1">Kunnen we ' + esc(onderwerp) + ' ook met iets praktisch helpen?</h2>' +
+          '<div class="jn">' + keus('thuis','ja','Ja','#i-vink') + keus('thuis','nee','Nee, liever niet','#i-kruis',' data-door') + '</div>';
+        if (A.thuis === 'ja'){
+          h += '<div class="uitklap"><p class="av-uitleg">Kies waar wij mee kunnen helpen. Meer kiezen mag.</p><div class="tegels-keus">' + THUIS.map(function(s){ return tegel('thuisKeus', s); }).join('') + '</div>' +
+            (A.thuisKeus.indexOf('anders') > -1 ? '<div class="veld"><label for="av-thuisAnders">Waar kunnen wij mee helpen?</label><textarea id="av-thuisAnders" data-in="thuisAnders">' + esc(A.thuisAnders) + '</textarea></div>' : '') + '</div>';
+        }
+        return h;
+      },
+      dagdeel: function(){
+        var onderwerp = A.voorwie === 'zelf' ? 'u' : wie();
+        var lk = function(lijst, item, icoon){ var aan = A[lijst].indexOf(item[0]) > -1;
+          return '<button type="button" class="keus" data-lijst="' + lijst + '" data-waarde="' + item[0] + '" aria-pressed="' + aan + '">' + (icoon ? '<span class="bol">' + ico(icoon) + '</span>' : '') + '<span>' + item[1] + '</span></button>'; };
+        return '<h2 class="av-vraag" tabindex="-1">Wanneer komt het ' + esc(onderwerp) + ' meestal goed uit?</h2>' +
+          '<p class="av-sub">Welk deel van de dag?</p>' +
+          '<div class="jn drie">' + TIJDEN.map(function(t){ return lk('tijden', t, t[2]); }).join('') + '</div>' +
+          '<p class="av-sub">Welke dagen?</p>' +
+          '<div class="jn">' + DAGEN.map(function(d){ return lk('dagen', d, '#i-agenda'); }).join('') + '</div>' +
+          '<button type="button" class="keus" data-alles="1" aria-pressed="' + allesGekozen() + '"><span class="bol">' + ico('#i-vink') + '</span><span>Maakt niet uit</span></button>';
+      },
+      overzicht: function(){
+        var samen = A.samen === 'ja' ? namen(SAMEN,'samenKeus',A.samenAnders) : [];
+        var thuis = A.thuis === 'ja' ? namen(THUIS,'thuisKeus',A.thuisAnders) : [];
+        var rij = function(titel, tekst, naar){ return '<div class="ov-rij"><div><strong>' + titel + '</strong><span>' + esc(tekst) + '</span></div><button type="button" class="wijzig" data-naar="' + naar + '">Wijzig</button></div>'; };
+        var dd = wanneerTekst();
+        var h = '<h2 class="av-vraag" tabindex="-1">Uw overzicht</h2><div class="ov-lijst">' +
+          rij('Samen', samen.length ? samen.join(', ') : 'Liever niet', 4) +
+          rij('Thuis', thuis.length ? thuis.join(', ') : 'Liever niet', 5) +
+          rij('Wanneer', dd, 6) + '</div>' +
+          '<div class="prijs-ind"><b>De kennismaking is gratis.</b><span>Over de prijs vertellen wij u graag in het gesprek.</span></div>';
+        if (A.gebied === 'rand') h += '<div class="melding zacht"><span class="bol">' + ico('#i-locatie') + '</span><p>U woont aan de rand van ons gebied. Dat kijken we na als we u bellen.</p></div>';
+        // helpers die passen: pijler gekozen (niet alleen "iets anders")
+        var echtSamen = A.samenKeus.some(function(k){ return k !== 'anders'; }) && A.samen === 'ja';
+        var echtThuis = A.thuisKeus.some(function(k){ return k !== 'anders'; }) && A.thuis === 'ja';
+        var passend = HELPERS.filter(function(hp){ return (!echtSamen || hp.pijlers.indexOf('samen') > -1) && (!echtThuis || hp.pijlers.indexOf('thuis') > -1); });
+        if ((echtSamen || echtThuis) && passend.length){
+          var wat = samen.concat(thuis).filter(function(x){ return x.charAt(0) !== '"' && x !== 'iets anders'; });
+          h += '<p class="av-sub">Deze mensen helpen graag bij u in de buurt</p><div class="helpers">' + passend.slice(0,3).map(function(hp){
+            return '<div class="helper"><div class="foto-plek" role="img" aria-label="Foto van ' + hp.naam + ' volgt">' + hp.letter + '</div><div><strong>' + hp.naam + '</strong><span>Helpt bij ' + esc((wat.length > 2 ? wat.slice(0,2).join(', ') + ' en meer' : wat.join(' en ')).toLowerCase()) + '.</span></div></div>';
+          }).join('') + '</div><p class="av-uitleg" style="font-size:17px">Zij passen bij uw wensen en hebben tijd. Wie er komt, bespreken we samen in het gesprek.</p>';
+        } else {
+          h += '<div class="melding zacht"><span class="bol">' + ico('#i-zoeken') + '</span><p>We zoeken iemand voor u en bellen u binnen een werkdag.</p></div>';
+        }
+        return h;
+      },
+      verder: function(){
+        var h = '<h2 class="av-vraag" tabindex="-1">Hoe wilt u verder?</h2><div class="keuzes-lijst">' +
+          keus('verder','terug','Bel mij terug','#i-bel') + keus('verder','zelf','Ik bel zelf','#i-persoon') + '</div>';
+        if (A.verder === 'terug'){
+          h += '<div class="uitklap"><p class="av-sub">Wanneer kunnen we u het beste bellen?</p><div class="jn" style="grid-template-columns:repeat(3,1fr)">' +
+            keus('belDagdeel','ochtend','Ochtend') + keus('belDagdeel','middag','Middag') + keus('belDagdeel','avond','Avond') + '</div></div>';
+        }
+        if (A.verder === 'zelf'){
+          h += '<div class="uitklap"><p class="av-uitleg">Wij zijn er op werkdagen van 9 tot 17 uur.</p><p class="groot-nummer tel-nr">' + TEL + '</p></div>';
+        }
+        return h;
+      },
+      klaar: function(){
+        if (A.verder === 'zelf'){
+          return '<div class="bedankt-groot"><h2 class="av-vraag" tabindex="-1">Dank u wel. Wij horen graag van u.</h2><p class="av-uitleg">Uw aanvraag staat klaar. Bel ons gerust, op werkdagen van 9 tot 17 uur.</p><p class="groot-nummer tel-nr">' + TEL + '</p><a class="btn btn-pruim" href="#home">Naar de homepage</a></div>';
+        }
+        return '<div class="bedankt-groot"><div class="foto-plek" role="img" aria-label="Foto van ' + BELLER.naam + ' volgt">' + BELLER.letter + '</div>' +
+          '<h2 class="av-vraag" tabindex="-1">' + BELLER.naam + ' belt u ' + wanneer() + '.</h2>' +
+          '<p class="av-uitleg">Op ' + esc(A.tel) + '. Heeft u in de tussentijd een vraag? Bel ons gerust op <b class="tel-nr">' + TEL + '</b>.</p>' +
+          '<a class="btn btn-pruim" href="#home">Naar de homepage</a></div>';
+      },
+      wachtlijst: function(){
+        if (A.wachtlijst === 'ja'){
+          return '<div class="bedankt-groot"><h2 class="av-vraag" tabindex="-1">Dank u wel. Wij laten het u weten.</h2><p class="av-uitleg">Zodra wij bij u in de buurt komen, hoort u van ons.</p><a class="btn btn-pruim" href="#home">Naar de homepage</a></div>';
+        }
+        return '<div class="bedankt-groot"><h2 class="av-vraag" tabindex="-1">Jammer dat we nog niet bij u in de buurt komen.</h2><p class="av-uitleg">U mag ons altijd bellen op <b class="tel-nr">' + TEL + '</b>.</p><a class="btn btn-pruim" href="#home">Naar de homepage</a></div>';
+      }
+    };
+
+    // ---------- controle per stap ----------
+    var C = {
+      voorwie: function(){ return A.voorwie ? '' : 'Kies voor wie de hulp is.'; },
+      naam: function(){
+        if (A.voorwie !== 'zelf' && !A.invulVoornaam.trim()) return 'Vul uw voornaam in.';
+        if (!A.aanhef) return A.voorwie === 'zelf' ? 'Kies meneer of mevrouw.' : 'Kies meneer of mevrouw bij ' + (A.voorwie === 'ouder' ? 'uw vader of moeder.' : 'de persoon voor wie de hulp is.');
+        if (!A.achternaam.trim()) return 'Vul de achternaam in.';
+        return '';
+      },
+      bereik: function(){
+        if (A.tel.replace(/[^0-9]/g,'').length < 10) return 'Vul een telefoonnummer in, met tien cijfers.';
+        if (A.mail.trim() && !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(A.mail.trim())) return 'Dit e-mailadres klopt niet helemaal. U mag het ook leeg laten.';
+        return '';
+      },
+      adres: function(){
+        var pc = A.postcode.toUpperCase().replace(/\s/g,'');
+        if (!/^[1-9][0-9]{3}[A-Z]{2}$/.test(pc)) return 'Vul uw postcode in, bijvoorbeeld 5222 AE.';
+        if (!/^[0-9]+/.test(A.huisnr.trim())) return 'Vul uw huisnummer in.';
+        A.postcode = pc.slice(0,4) + ' ' + pc.slice(4);
+        A.gebied = gebied(pc);
+        if (A.gebied === 'buiten') return 'buiten';
+        return '';
+      },
+      samen: function(){
+        if (!A.samen) return 'Kies ja of nee.';
+        if (A.samen === 'ja' && !A.samenKeus.length) return 'Kies minstens één ding dat u leuk lijkt.';
+        return '';
+      },
+      thuis: function(){
+        if (!A.thuis) return 'Kies ja of nee.';
+        if (A.thuis === 'ja' && !A.thuisKeus.length) return 'Kies minstens één ding waar wij mee kunnen helpen.';
+        return '';
+      },
+      dagdeel: function(){ if (!A.tijden.length) return 'Kies welk deel van de dag.'; if (!A.dagen.length) return 'Kies welke dagen.'; return ''; },
+      overzicht: function(){ return ''; },
+      verder: function(){
+        if (!A.verder) return 'Kies hoe u verder wilt.';
+        if (A.verder === 'terug' && !A.belDagdeel) return 'Kies wanneer we u het beste kunnen bellen.';
+        return '';
+      }
+    };
+
+    // ---------- tekenen ----------
+    // rechts: per vraag een eigen kleur en icoon, en uw keuzes als zwevende bolletjes
+    var BEELD = {
+      voorwie:['#i-hart','var(--roze)','var(--pruim)',''], naam:['#i-persoon','var(--licht-oranje)','var(--pruim)',''],
+      bereik:['#i-bel','var(--oranje)','var(--wit)','oranje'], adres:['#i-thuis','var(--licht-oranje)','var(--pruim)',''],
+      samen:['#i-samen','var(--roze)','var(--pruim)',''], thuis:['#i-thuis','var(--licht-oranje)','var(--pruim)',''],
+      dagdeel:['#i-klok','var(--pruim)','var(--wit)','donker'], overzicht:['#i-vink','var(--oranje)','var(--wit)','oranje'],
+      verder:['#i-bel','var(--pruim)','var(--wit)','donker'], klaar:['#i-vink','var(--oranje)','var(--wit)','oranje'],
+      wachtlijst:['#i-locatie','var(--roze)','var(--pruim)','']
+    };
+    var beeldEl = document.getElementById('avBeeld'), cirkel = document.getElementById('avCirkel'), bubbelsEl = document.getElementById('avBubbels');
+    var vorigBeeld = null, vorigeBubbels = [];
+    var widgetEl = document.getElementById('avWidget'), tekstEl = document.getElementById('avBeeldTekst');
+    var vorigeWidget = '', vorigeTekst = '', vorigeCellen = [];
+    // ruwe ligging per postcodegebied (km t.o.v. 's-Hertogenbosch, oost en zuid positief)
+    var PC2 = {'52':[0,0],'53':[12,-8],'54':[22,6],'50':[-20,14],'51':[-24,0],'55':[4,30],'56':[13,29],'57':[27,26],'58':[40,8],
+               '40':[10,-24],'41':[-6,-20],'42':[-26,-16],'48':[-38,13],'49':[-31,4],'65':[37,-12],'66':[30,-17]};
+    var DAGDEEL_NAAM = {ochtend:'Ochtend', middag:'Middag', avond:'Avond', weekend:'Weekend', 'maakt-niet-uit':'Maakt niet uit'};
+    var MOMENTEN = {ochtend:[['di','10.00'],['vr','10.00']], middag:[['wo','14.00'],['ma','14.00']], avond:[['do','19.00'],['ma','19.00']],
+                    weekend:[['za','11.00'],['zo','14.00']], 'maakt-niet-uit':[['di','10.00'],['do','14.00'],['za','11.00']]};
+    var DAGVOLGORDE = ['ma','di','wo','do','vr','za','zo'];
+
+    function gekozenDiensten(){
+      var l = [];
+      if (A.samen === 'ja') A.samenKeus.forEach(function(k){ if (k !== 'anders') l.push(SAMEN.filter(function(x){ return x[0] === k; })[0]); });
+      if (A.thuis === 'ja') A.thuisKeus.forEach(function(k){ if (k !== 'anders') l.push(THUIS.filter(function(x){ return x[0] === k; })[0]); });
+      return l;
+    }
+    function pcLive(){
+      var pc = A.postcode.toUpperCase().replace(/\s/g,'');
+      if (!/^[1-9][0-9]{3}/.test(pc)) return null;
+      return pc.slice(0,2);
+    }
+
+    function widgetVoor(id){
+      // geeft [sleutel, html] terug, of null als het icoon-beeld moet staan
+      if (id === 'adres' || id === 'wachtlijst'){
+        var p = pcLive(), g = p ? gebied(p + '00') : null;
+        var pos = p ? (PC2[p] || [-44,-30]) : null;
+        var html = '<div class="widget wkaart wgebied' + (g === 'buiten' ? ' buiten' : '') + '"><svg viewBox="-55 -50 110 100">' +
+          '<circle class="ring" cx="0" cy="0" r="40"/><text x="0" y="-43" text-anchor="middle" style="fill:var(--oranje)">40 KM</text>' +
+          '<circle class="centrum" cx="0" cy="0" r="3"/><text x="5" y="1.6">Den Bosch</text>';
+        if (pos){
+          html += '<line class="lijn" x1="0" y1="0" x2="' + pos[0] + '" y2="' + pos[1] + '"/>' +
+            '<g class="pin"><circle class="golf" cx="' + pos[0] + '" cy="' + pos[1] + '" r="3.6"/><circle class="kern" cx="' + pos[0] + '" cy="' + pos[1] + '" r="2.8"/></g>' +
+            '<text x="' + (pos[0] > 20 ? pos[0] - 4 : pos[0] + 4) + '" y="' + (pos[1] - 4.5) + '"' + (pos[0] > 20 ? ' text-anchor="end"' : '') + '>' + (A.voorwie === 'zelf' ? 'U' : 'Hier') + '</text>';
+        }
+        return ['gebied:' + (p || ''), html + '</svg></div>'];
+      }
+      if (id === 'dagdeel'){
+        var rijen = [['ochtend','ochtend'],['middag','middag'],['avond','avond']];
+        var cellen = [], h = '<div class="widget wkaart wweek"><small>Uw week</small><table><tr><th></th>' + DAGVOLGORDE.map(function(d){ return '<th>' + d + '</th>'; }).join('') + '</tr>';
+        rijen.forEach(function(r){
+          h += '<tr><th class="rij">' + r[1] + '</th>';
+          DAGVOLGORDE.forEach(function(d, i){
+            var aan = A.tijden.indexOf(r[0]) > -1 && ((i < 5 && A.dagen.indexOf('week') > -1) || (i >= 5 && A.dagen.indexOf('weekend') > -1));
+            var key = r[0] + d; if (aan) cellen.push(key);
+            var nieuw = aan && vorigeCellen.indexOf(key) < 0 && !rustig;
+            h += '<td><i class="' + (aan ? 'aan' : '') + (nieuw ? ' pop' : '') + '"' + (nieuw ? ' style="animation-delay:' + (i * 35) + 'ms"' : '') + '></i></td>';
+          });
+          h += '</tr>';
+        });
+        vorigeCellen = cellen;
+        h += '</table><p class="wk-voet">' + (cellen.length ? cellen.length + ' momenten waarop wij kunnen komen' : 'Tik aan wat u uitkomt') + '</p></div>';
+        return ['week:' + A.tijden.join(',') + '|' + A.dagen.join(','), h];
+      }
+      if (id === 'overzicht'){
+        var diensten = gekozenDiensten().slice(0,3);
+        if (!diensten.length) return null;
+        var UUR = {ochtend:'10.00', middag:'14.00', avond:'19.00'};
+        var dw = A.dagen.indexOf('week') > -1, dz = A.dagen.indexOf('weekend') > -1;
+        var dagenVolg = dw && dz ? ['di','za','do','zo','ma','wo','vr'] : dz ? ['za','zo'] : ['di','do','ma','wo','vr'];
+        var tijdenVolg = A.tijden.length ? A.tijden : ['ochtend'];
+        var mom = [];
+        for (var ronde = 0; mom.length < diensten.length && ronde < 3; ronde++){
+          dagenVolg.forEach(function(d, i){
+            if (mom.length >= diensten.length) return;
+            var t = tijdenVolg[(i + ronde) % tijdenVolg.length];
+            if (!mom.some(function(m){ return m[0] === d && m[2] === t; }) && (ronde > 0 || !mom.some(function(m){ return m[0] === d; }))) mom.push([d, UUR[t], t]);
+          });
+        }
+        diensten = diensten.slice(0, mom.length);
+        var rijen2 = diensten.map(function(dn, i){ return [mom[i], dn]; }).sort(function(x, y){ return (DAGVOLGORDE.indexOf(x[0][0]) - DAGVOLGORDE.indexOf(y[0][0])) || x[0][1].localeCompare(y[0][1]); });
+        return ['voorbeeld', '<div class="widget wkaart wvoorbeeld"><small>Zo kan uw week eruitzien</small><ul>' + rijen2.map(function(r){
+          return '<li><span class="dag-chip"><b>' + r[0][0] + '</b><span>' + r[0][1] + '</span></span><span class="wat">' + ico(r[1][3]) + r[1][1] + '</span></li>';
+        }).join('') + '</ul></div>'];
+      }
+      if (id === 'verder' && A.verder === 'terug'){
+        return ['bel:' + A.belDagdeel, '<div class="widget wkaart wbel"><div class="bk-kop"><span class="foto-plek" role="img" aria-label="Foto van ' + BELLER.naam + ' volgt">' + BELLER.letter + '</span><div><small>Huvo belt u</small><strong>' + BELLER.naam + '</strong></div><span class="golf" style="margin-left:auto"><i></i><i></i><i></i><i></i></span></div>' +
+          '<div class="bk-tijd">' + (A.belDagdeel ? wanneer() : 'Kies een dagdeel') + '</div></div>'];
+      }
+      if ((id === 'verder' && A.verder === 'zelf') || (id === 'klaar' && A.verder === 'zelf')){
+        var open = nuOpen();
+        return ['zelf:' + open, '<div class="widget wkaart wbel"><small>Bel ons op</small><span class="nummer-groot tel-nr">' + TEL + '</span>' +
+          '<span class="status' + (open ? '' : ' dicht') + '"><i></i>' + (open ? 'Nu bereikbaar' : 'Nu gesloten. Wij zijn er weer ' + weerOpen() + '.') + '</span></div>'];
+      }
+      if (id === 'klaar'){
+        var w = volgendeWerkdag().datum;
+        return ['agenda', '<div class="widget wkaart wagenda"><span class="ak-maand">' + MAANDEN[w.getMonth()] + '</span><span class="ak-stip" aria-hidden="true"></span>' +
+          '<span class="ak-dag">' + w.getDate() + '</span><span class="ak-wd">' + WEEKDAGEN[w.getDay()] + '</span><span class="ak-dd">' + BELLER.naam + ' belt in de ' + (A.belDagdeel || 'ochtend') + '</span></div>'];
+      }
+      return null;
+    }
+
+    function tekstVoor(id){
+      var n = gekozenDiensten().length + (A.samenKeus.indexOf('anders') > -1 && A.samen === 'ja' ? 1 : 0) + (A.thuisKeus.indexOf('anders') > -1 && A.thuis === 'ja' ? 1 : 0);
+      switch (id){
+        case 'voorwie': return [groet(), 'Een paar korte vragen. Daarna nemen wij contact met u op.'];
+        case 'naam':
+          var nm = [A.aanhef ? A.aanhef.toLowerCase() : '', A.voornaam, A.achternaam].join(' ').trim();
+          return A.achternaam || A.voornaam ? ['Voor', nm.charAt(0).toUpperCase() + nm.slice(1)] : ['Uw naam', 'Zo weten wij wie we bellen.'];
+        case 'bereik': return A.tel.replace(/[^0-9]/g,'').length >= 6 ? ['Wij bellen', A.tel] : ['Uw nummer', 'Wij bellen alleen over deze aanvraag.'];
+        case 'adres':
+          var p = pcLive(), g = p ? gebied(p + '00') : null;
+          if (!g) return ['Werkgebied', 'Tot 40 km rond \'s-Hertogenbosch.'];
+          return g === 'binnen' ? ['Goed nieuws', 'Wij komen bij u in de buurt.'] : g === 'rand' ? ['Bijna', 'Aan de rand van ons gebied. Dat kijken we na.'] : ['Helaas', 'Nog niet bij u in de buurt.'];
+        case 'samen': case 'thuis': return ['Uw keuzes', n === 0 ? 'Kies wat u leuk lijkt.' : n === 1 ? '1 ding gekozen' : n + ' dingen gekozen'];
+        case 'dagdeel': return ['Wanneer', wanneerTekst() || 'Kies wat u uitkomt.'];
+        case 'overzicht': return gekozenDiensten().length ? ['Bijvoorbeeld', 'Het echte rooster maken we samen.'] : ['Bijna klaar', 'In het gesprek kijken we wat past.'];
+        case 'verder': return A.verder === 'terug' ? ['Wij bellen u', 'U hoeft verder niets te doen.'] : A.verder === 'zelf' ? ['Bel gerust', 'Op werkdagen van 9 tot 17 uur.'] : ['Laatste vraag', 'Bellen wij u, of belt u ons?'];
+        case 'klaar': return A.verder === 'zelf' ? ['Tot zo', 'Wij horen graag van u.'] : ['Tot snel', 'U hoort van ons.'];
+        case 'wachtlijst': return A.wachtlijst === 'ja' ? ['Genoteerd', 'Wij laten het u weten.'] : ['Werkgebied', 'Tot 40 km rond \'s-Hertogenbosch.'];
+      }
+      return ['', ''];
+    }
+
+    function beeld(id){
+      var c = BEELD[id];
+      if (id !== vorigBeeld){
+        beeldEl.style.setProperty('--bb', c[1]); beeldEl.style.setProperty('--bi', c[2]);
+        beeldEl.className = 'av-beeld ' + c[3];
+        cirkel.innerHTML = '<svg viewBox="0 0 24 24"><use href="' + c[0] + '"/></svg><span class="bs"></span>';
+        vorigBeeld = id; vorigeWidget = '';
+      }
+      var w = widgetVoor(id);
+      if (w){
+        cirkel.hidden = true; bubbelsEl.hidden = true;
+        if (w[0] !== vorigeWidget){
+          // kaart en voorbeeld niet opnieuw laten inschuiven bij kleine wijzigingen
+          var zelfde = vorigeWidget.split(':')[0] === w[0].split(':')[0];
+          widgetEl.innerHTML = w[1];
+          var wd = widgetEl.firstChild;
+          if (zelfde && wd) wd.style.animation = 'none';
+          vorigeWidget = w[0];
+        }
+      } else {
+        widgetEl.innerHTML = ''; vorigeWidget = '';
+        cirkel.hidden = false; bubbelsEl.hidden = false;
+      }
+      var t = tekstVoor(id), sleutel = t.join('|');
+      if (sleutel !== vorigeTekst){
+        tekstEl.innerHTML = '<small>' + esc(t[0]) + '</small><strong>' + esc(t[1]) + '</strong>';
+        tekstEl.classList.remove('nieuw'); void tekstEl.offsetWidth; if (!rustig) tekstEl.classList.add('nieuw');
+        vorigeTekst = sleutel;
+      }
+      var keuzes = [];
+      if (A.samen === 'ja') A.samenKeus.forEach(function(k){ keuzes.push(['s' + k, SAMEN.filter(function(x){ return x[0] === k; })[0][3]]); });
+      if (A.thuis === 'ja') A.thuisKeus.forEach(function(k){ keuzes.push(['t' + k, THUIS.filter(function(x){ return x[0] === k; })[0][3]]); });
+      var n = keuzes.length;
+      beeldEl.classList.toggle('met-bubbels', n > 0 && !widgetEl.innerHTML);
+      bubbelsEl.innerHTML = keuzes.map(function(k, i){
+        var hoek = -Math.PI / 2 + i * 2 * Math.PI / Math.max(n, 6);
+        var x = 50 + 41 * Math.cos(hoek), y = 50 + 43 * Math.sin(hoek);
+        var nieuw = vorigeBubbels.indexOf(k[0]) < 0;
+        return '<span class="bubbel' + (nieuw && !rustig ? ' pop' : '') + '" style="left:' + x.toFixed(1) + '%;top:' + y.toFixed(1) + '%">' + ico(k[1]) + '</span>';
+      }).join('');
+      keuzes = keuzes.map(function(k){ return k[0]; });
+      if (keuzes.length > vorigeBubbels.length && !rustig){ cirkel.classList.remove('hup'); void cirkel.offsetWidth; cirkel.classList.add('hup'); }
+      vorigeBubbels = keuzes;
+    }
+    function gereed(){
+      var id = scherm || STAPPEN[stap];
+      var ok;
+      if (id === 'adres') ok = /^[1-9][0-9]{3}\s?[A-Za-z]{2}$/.test(A.postcode.trim()) && /^[0-9]+/.test(A.huisnr.trim());
+      else ok = !scherm && C[id] && C[id]() === '' && id !== 'overzicht';
+      volgendeKnop.classList.toggle('gereed', !!ok && !rustig);
+    }
+    function zijkant(){ beeld(scherm || STAPPEN[stap]); gereed(); }
+
+    function teken(richting){
+      var id = scherm || STAPPEN[stap];
+      vak.className = 'av-stap' + (richting && !rustig ? (richting > 0 ? ' in-v' : ' in-t') : '');
+      vak.innerHTML = R[id]() + (fout ? '<p class="av-fout" role="alert">' + esc(fout) + '</p>' : '');
+      var eind = !!scherm;
+      nav.hidden = eind || (id === 'adres' && A.gebied === 'buiten');
+      terug.style.visibility = stap === 0 ? 'hidden' : '';
+      volgendeKnop.innerHTML = (id === 'overzicht' ? 'Verder ' : id === 'verder' ? (A.verder === 'zelf' ? 'Klaar ' : 'Verstuur aanvraag ') : 'Volgende ') + ico('#i-pijl');
+      voortgang.querySelectorAll('i').forEach(function(d, i){
+        d.className = eind || i < stap ? 'klaar' : i === stap ? 'nu' : '';
+      });
+      loper.style.transform = 'translateX(' + ((eind ? STAPPEN.length - 1 : stap) * 18) + 'px)';
+      loper.style.opacity = eind ? 0 : 1;
+      if (versOpen){ var u = vak.querySelector('.uitklap'); if (u) u.classList.add('vers'); versOpen = false; }
+      zijkant();
+    }
+    function focusVraag(){
+      var v = vak.querySelector('.av-vraag'); if (v) v.focus({preventScroll:true});
+      var r = form.getBoundingClientRect();
+      if (r.top < 90 || r.top > window.innerHeight * 0.5) window.scrollTo({top: r.top + window.scrollY - 110, behavior: rustig ? 'auto' : 'smooth'});
+    }
+    function volgende(){
+      var id = STAPPEN[stap];
+      if (document.getElementById('avWebsite').value) return; // spam
+      var f = C[id]();
+      if (f === 'buiten'){ fout = ''; teken(); return; }
+      if (f){ fout = f; teken(); var e = vak.querySelector('.av-fout'); if (e) e.scrollIntoView({block:'nearest'}); if (!rustig){ form.classList.remove('schud'); void form.offsetWidth; form.classList.add('schud'); } return; }
+      fout = '';
+      if (stap === STAPPEN.length - 1){ scherm = 'klaar'; teken(1); focusVraag(); return; }
+      stap++; teken(1); focusVraag();
+    }
+    function vorige(){
+      fout = '';
+      if (stap > 0){ stap--; if (STAPPEN[stap] === 'adres' && A.gebied === 'buiten') A.gebied = null; teken(-1); focusVraag(); }
+    }
+
+    form.addEventListener('submit', function(e){ e.preventDefault(); volgende(); });
+    terug.addEventListener('click', vorige);
+
+    vak.addEventListener('input', function(e){
+      var t = e.target;
+      if (t.dataset.in){
+        A[t.dataset.in] = t.value;
+        if ((t.dataset.in === 'postcode' || t.dataset.in === 'huisnr') && A.gebied === 'buiten'){
+          A.gebied = null; A.wachtlijst = null;
+          vak.querySelectorAll('.melding, .jn').forEach(function(x){ x.remove(); });
+          nav.hidden = false;
+        }
+        if (fout){ fout = ''; var e2 = vak.querySelector('.av-fout'); if (e2) e2.remove(); }
+        zijkant();
+      }
+    });
+    vak.addEventListener('change', function(e){
+      if (e.target.dataset.vink){ A[e.target.dataset.vink] = e.target.checked; }
+    });
+    vak.addEventListener('click', function(e){
+      var w = e.target.closest('.wijzig');
+      if (w){ stap = +w.dataset.naar; fout = ''; teken(-1); focusVraag(); return; }
+      var alles = e.target.closest('[data-alles]');
+      if (alles){
+        if (allesGekozen()){ A.tijden = []; A.dagen = []; } else { A.tijden = ['ochtend','middag','avond']; A.dagen = ['week','weekend']; }
+        fout = ''; teken();
+        var f2 = vak.querySelector('[data-alles]'); if (f2){ f2.focus({preventScroll:true}); if (!rustig) f2.classList.add('pop'); }
+        return;
+      }
+      var b = e.target.closest('[data-veld],[data-lijst]');
+      if (!b) return;
+      var waarde = b.dataset.waarde;
+      if (b.dataset.lijst){
+        var l = A[b.dataset.lijst], i = l.indexOf(waarde);
+        if (i > -1) l.splice(i,1); else l.push(waarde);
+      } else {
+        if ((b.dataset.veld === 'samen' || b.dataset.veld === 'thuis' || b.dataset.veld === 'verder') && A[b.dataset.veld] !== waarde) versOpen = true;
+        A[b.dataset.veld] = waarde;
+      }
+      fout = '';
+      // bewaar welke knop focus had
+      var sleutel = (b.dataset.lijst || b.dataset.veld) + ':' + waarde;
+      if (b.dataset.veld === 'wachtlijst'){ scherm = 'wachtlijst'; teken(1); focusVraag(); return; }
+      teken();
+      var terugFocus = vak.querySelector('[data-' + (b.dataset.lijst ? 'lijst' : 'veld') + '="' + sleutel.split(':')[0] + '"][data-waarde="' + waarde + '"]');
+      if (terugFocus){ terugFocus.focus({preventScroll:true}); if (!rustig) terugFocus.classList.add('pop'); }
+      if (b.hasAttribute('data-door')) setTimeout(volgende, rustig ? 0 : 260);
+    });
+
+    // vanaf elke "Prijs aanvragen"-link: begin bij de eerste vraag als het formulier al af was
+    window.addEventListener('hashchange', function(){
+      if (location.hash === '#aanvragen' && scherm){ scherm = null; stap = 0; teken(); }
+    });
+    teken();
+  })();
+
+  // kernwaarden: één tegelijk open
+  var wls = [].slice.call(document.querySelectorAll('.wl'));
+  wls.forEach(function(w){
+    w.addEventListener('click', function(){
+      var open = w.getAttribute('aria-expanded') !== 'true';
+      wls.forEach(function(x){ x.setAttribute('aria-expanded', x === w ? open : false); });
+    });
+  });
+
+  // vacatures filteren
+  var vacs = [].slice.call(document.querySelectorAll('.vac'));
+  document.getElementById('vacAantal').textContent = vacs.length;
+  var filters = [].slice.call(document.querySelectorAll('.filter'));
+  filters.forEach(function(f){
+    var tak = f.dataset.filter;
+    f.querySelector('small').textContent = tak === 'alle' ? vacs.length : vacs.filter(function(v){ return v.dataset.tak === tak; }).length;
+    f.addEventListener('click', function(){
+      filters.forEach(function(x){ x.setAttribute('aria-pressed', x === f); });
+      vacs.forEach(function(v){
+        var zien = tak === 'alle' || v.dataset.tak === tak;
+        v.classList.toggle('verberg', !zien);
+        if (zien && !rustig) herstart(v, 'nieuw');
+      });
+    });
+  });
+
+  // solliciteer-knop in een vacature kiest die vacature in het formulier
+  var solVac = document.getElementById('solVac');
+  document.querySelectorAll('.kies-vac').forEach(function(a){
+    a.addEventListener('click', function(){
+      solVac.value = a.dataset.vac;
+      if (!rustig) herstart(solVac, 'gekozen');
+      setTimeout(function(){ document.getElementById('solNaam').focus({preventScroll:true}); }, 700);
+    });
+  });
+
+  // sollicitatieformulier (voorbeeld: verstuurt nog niets)
+  var sf = document.getElementById('solForm'), sfFout = document.getElementById('solFout');
+  sf.addEventListener('submit', function(e){
+    e.preventDefault();
+    var naam = sf.naam.value.trim(), contact = sf.contact.value.trim();
+    if (!naam){ sfFout.textContent = 'Vul je naam in.'; sfFout.hidden = false; sf.naam.focus(); return; }
+    if (contact.length < 6){ sfFout.textContent = 'Vul je telefoonnummer of e-mailadres in, dan kunnen we je bereiken.'; sfFout.hidden = false; sf.contact.focus(); return; }
+    sfFout.hidden = true;
+    document.getElementById('solBedanktKop').textContent = 'Dank je wel, ' + naam + '.';
+    document.getElementById('solBedanktTekst').textContent = 'We nemen snel contact met je op over ' + (solVac.value === 'Open sollicitatie' ? 'je open sollicitatie' : 'de vacature ' + solVac.value) + '.';
+    sf.hidden = true; document.getElementById('solBedankt').hidden = false;
+  });
+
+  // logo: klik laat de stip opnieuw vallen
+  var logo = document.querySelector('.logo');
+  logo.addEventListener('click', function(){ if (!rustig) herstart(logo, 'laad'); });
+
+  // klik op de grote u: de stip springt even op
+  var uStip = document.getElementById('uStip');
+  document.getElementById('uKnop').addEventListener('click', function(){
+    if (rustig || uStip.classList.contains('weg')) return;
+    uStip.classList.remove('land'); herstart(uStip, 'hup');
+  });
+
+  // kaarten kantelen een heel klein beetje mee met de muis
+  if (!rustig && matchMedia('(pointer:fine)').matches){
+    document.querySelectorAll('.tegel, .stap, .waarde').forEach(function(k){
+      k.classList.add('kantel');
+      k.addEventListener('pointermove', function(e){
+        var r = k.getBoundingClientRect();
+        var x = (e.clientX - r.left) / r.width - .5, y = (e.clientY - r.top) / r.height - .5;
+        k.style.transform = 'perspective(800px) rotateX(' + (y * -5).toFixed(2) + 'deg) rotateY(' + (x * 6).toFixed(2) + 'deg) translateY(-3px)';
+      });
+      k.addEventListener('pointerleave', function(){ k.style.transform = ''; });
+    });
+  }
+
+  // vandaag bij Huvo: wisselende kaart op de foto
+  var momenten = [
+    {label:'Samen', kop:'Koffie en een spelletje', ico:'#i-koffie', kleur:'var(--roze)'},
+    {label:'Thuis', kop:'Samen naar de markt', ico:'#i-boodschap', kleur:'var(--licht-oranje)'},
+    {label:'Wijzer', kop:'Uitleg in het buurthuis', ico:'#i-uitleg', kleur:'var(--licht-oranje)'}
+  ];
+  var chip = document.getElementById('chip'), chipTekst = document.getElementById('chipTekst');
+  var chipStippen = chip.querySelectorAll('.chip-stippen i'), mi = 0, chipPauze = false;
+  chip.addEventListener('pointerenter', function(){ chipPauze = true; });
+  chip.addEventListener('pointerleave', function(){ chipPauze = false; });
+  function volgende(){
+    if (chipPauze || document.hidden) return;
+    mi = (mi + 1) % momenten.length;
+    var m = momenten[mi];
+    chipTekst.classList.add('weg');
+    setTimeout(function(){
+      document.getElementById('chipLabel').textContent = m.label;
+      document.getElementById('chipKop').textContent = m.kop;
+      document.getElementById('chipIco').setAttribute('href', m.ico);
+      document.getElementById('chipRondje').style.background = m.kleur;
+      chipStippen.forEach(function(s, i){ s.classList.toggle('aan', i === mi); });
+      chipTekst.classList.remove('weg'); chipTekst.classList.add('komt');
+      void chipTekst.offsetWidth; chipTekst.classList.remove('komt');
+    }, rustig ? 0 : 420);
+  }
+  document.getElementById('chipRondje').style.background = momenten[0].kleur;
+  setInterval(volgende, 4200);
+
+  // mobiel menu
+  var mk = document.getElementById('menuKnop');
+  mk.addEventListener('click', function(){
+    var open = top.classList.toggle('open');
+    mk.setAttribute('aria-expanded', open);
+    mk.setAttribute('aria-label', open ? 'Menu sluiten' : 'Menu openen');
+    mk.querySelector('use').setAttribute('href', open ? '#i-kruis' : '#i-menu');
+  });
+  document.querySelectorAll('#nav a').forEach(function(a){
+    a.addEventListener('click', function(){ if(top.classList.contains('open')) mk.click(); });
+  });
+
+  // zachte reveal: inhoud blijft altijd zichtbaar; 'in' start de kleine animaties
+  if ('IntersectionObserver' in window && !rustig){
+    var io = new IntersectionObserver(function(es){
+      es.forEach(function(e){ if(e.isIntersecting){ e.target.classList.remove('wacht'); e.target.classList.add('in'); io.unobserve(e.target); } });
+    }, {rootMargin:'0px 0px -12% 0px'});
+    document.querySelectorAll('.rv').forEach(function(el){
+      if (el.getBoundingClientRect().top > window.innerHeight) el.classList.add('wacht');
+      io.observe(el);
+    });
+  }
+
+  // hulpknop
+  var hk = document.getElementById('hulpKnop'), hp = document.getElementById('hulpPaneel');
+  function zetHulp(open){ hp.hidden = !open; hk.setAttribute('aria-expanded', open); }
+  hk.addEventListener('click', function(){ zetHulp(hp.hidden); });
+  // de stip vraagt één keer uit zichzelf of u hulp wilt
+  setTimeout(function(){
+    if (!hp.hidden) return;
+    hk.classList.add('piek');
+    setTimeout(function(){ hk.classList.remove('piek'); }, 3800);
+  }, 7000);
+  document.getElementById('naarForm').addEventListener('click', function(){ zetHulp(false); setTimeout(function(){ document.getElementById('naam').focus({preventScroll:true}); }, 600); });
+  document.addEventListener('keydown', function(e){ if(e.key === 'Escape' && !hp.hidden){ zetHulp(false); hk.focus(); } });
+  document.addEventListener('click', function(e){ if(!hp.hidden && !document.getElementById('hulp').contains(e.target)) zetHulp(false); });
+
+  var kb = document.getElementById('kopie');
+  kb.addEventListener('click', function(){
+    function klaar(){ kb.textContent = 'Gekopieerd'; setTimeout(function(){ kb.textContent = 'Kopieer'; }, 2000); }
+    try {
+      navigator.clipboard.writeText(TEL.replace(/[^0-9]/g,'')).then(klaar, selecteer);
+    } catch(e){ selecteer(); }
+    function selecteer(){ var r = document.createRange(); r.selectNodeContents(hp.querySelector('.tel-nr')); var s = getSelection(); s.removeAllRanges(); s.addRange(r); }
+  });
+
+  // terugbelformulier (voorbeeld: verstuurt nog niets)
+  var f = document.getElementById('terugbel'), fout = document.getElementById('fout');
+  f.addEventListener('submit', function(e){
+    e.preventDefault();
+    var naam = f.naam.value.trim(), tel = f.tel.value.replace(/[^0-9+]/g,'');
+    if (!naam){ fout.textContent = 'Vul uw naam in, dan weten wij wie we bellen.'; fout.hidden = false; f.naam.focus(); return; }
+    if (tel.length < 10){ fout.textContent = 'Vul uw telefoonnummer in, met tien cijfers.'; fout.hidden = false; f.tel.focus(); return; }
+    fout.hidden = true;
+    var moment = f.querySelector('input[name=moment]:checked').value;
+    document.getElementById('bedanktKop').textContent = 'Dank u wel, ' + naam + '.';
+    document.getElementById('bedanktTekst').textContent = 'Wij bellen u in de ' + moment + ' terug op ' + f.tel.value.trim() + '.';
+    f.hidden = true; document.getElementById('bedankt').hidden = false;
+  });
+})();
+</script>
+</body>
+</html>
