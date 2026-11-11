@@ -5,9 +5,10 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <link rel="icon" href="favicon.ico">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
+<title>Huvo</title>
+<meta name="description" content="Huvo helpt ouderen in en rond 's-Hertogenbosch met gezelschap, hulp in huis en uitleg over alles van nu.">
 </head>
 <body>
-<title>Huvo website</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -343,6 +344,19 @@ main{scroll-margin-top:120px}
 .bedankt strong{font-size:22px;display:block;margin-bottom:4px}
 .of-bel{font-size:17px;opacity:.88}
 .of-bel b{white-space:nowrap}
+
+/* privacy */
+.privacy-noot{font-size:15px;opacity:.85;margin:0}
+.privacy-noot a{color:inherit;font-weight:700}
+.av-kaart .privacy-noot{color:var(--inkt-zacht);margin-top:14px}
+.juridisch{padding-block:72px 24px;max-width:780px}
+.juridisch h1{font-size:clamp(34px,5vw,52px);line-height:1.1;color:var(--pruim);margin:12px 0 8px}
+.juridisch h2{font-size:24px;color:var(--pruim);margin:40px 0 8px}
+.juridisch p,.juridisch li{font-size:18px;color:var(--inkt-licht)}
+.juridisch ul{padding-left:22px}
+.juridisch a{color:var(--oranje-donker);font-weight:700}
+.juridisch .bijgewerkt{color:var(--inkt-zacht);font-size:16px}
+.juridisch .label{color:var(--oranje)}
 
 /* footer */
 .voet{background:var(--inkt);color:var(--licht-oranje);margin-top:96px;overflow:hidden}
@@ -1208,6 +1222,7 @@ main{scroll-margin-top:120px}
           <span class="label">Maak kennis</span>
           <h2 id="kennis-kop">Wij bellen u terug.</h2>
           <form id="terugbel" novalidate>
+            <div class="honing" aria-hidden="true"><label for="tbWebsite">Laat dit veld leeg</label><input id="tbWebsite" name="website" tabindex="-1" autocomplete="off"></div>
             <div style="display:flex;flex-direction:column;gap:18px">
               <div class="veld"><label for="naam">Uw naam</label><input id="naam" name="naam" autocomplete="name" placeholder="Bijvoorbeeld mevrouw Jansen"></div>
               <div class="veld"><label for="tel">Uw telefoonnummer</label><input id="tel" name="tel" type="tel" autocomplete="tel" inputmode="tel" placeholder="06 12 34 56 78"></div>
@@ -1218,6 +1233,7 @@ main{scroll-margin-top:120px}
                 <input type="radio" name="moment" id="m-avond" value="avond"><label for="m-avond">Vroege avond</label>
               </fieldset>
               <p class="fout" id="fout" hidden></p>
+              <p class="privacy-noot">Wij gebruiken uw gegevens alleen om u terug te bellen. Lees onze <a href="#privacy">privacyverklaring</a>.</p>
               <div><button class="btn btn-oranje" type="submit">Bel mij terug <svg class="ico"><use href="#i-pijl"/></svg></button></div>
             </div>
           </form>
@@ -1367,6 +1383,7 @@ main{scroll-margin-top:120px}
         <div class="sol-form">
           <span class="label">Solliciteer</span>
           <form id="solForm" novalidate>
+            <div class="honing" aria-hidden="true"><label for="solWebsite">Laat dit veld leeg</label><input id="solWebsite" name="website" tabindex="-1" autocomplete="off"></div>
             <div style="display:flex;flex-direction:column;gap:18px">
               <div class="veld"><label for="solNaam">Je naam</label><input id="solNaam" name="naam" autocomplete="name"></div>
               <div class="veld"><label for="solContact">Je telefoonnummer of e-mail</label><input id="solContact" name="contact" autocomplete="email"></div>
@@ -1377,6 +1394,7 @@ main{scroll-margin-top:120px}
               </div>
               <div class="veld"><label for="solWaarom">Waarom wil je bij Huvo werken? <span style="font-weight:400;opacity:.8">(mag kort)</span></label><textarea id="solWaarom" name="waarom"></textarea></div>
               <p class="fout" id="solFout" hidden></p>
+              <p class="privacy-noot">Wij gebruiken je gegevens alleen voor je sollicitatie. Lees onze <a href="#privacy">privacyverklaring</a>.</p>
               <div><button class="btn btn-oranje" type="submit">Verstuur sollicitatie <svg class="ico"><use href="#i-pijl"/></svg></button></div>
             </div>
           </form>
@@ -1572,6 +1590,62 @@ main{scroll-margin-top:120px}
   </section>
 </main>
 
+<main id="privacy" hidden>
+  <div class="wrap juridisch">
+    <span class="label">Privacy</span>
+    <h1>Privacyverklaring</h1>
+    <p class="bijgewerkt">Laatst bijgewerkt: 11 november 2026</p>
+    <p>Huvo vindt uw privacy belangrijk. Op deze pagina leest u in gewone taal welke gegevens wij verzamelen, waarom, en wat u zelf kunt doen.</p>
+
+    <h2>Wie zijn wij?</h2>
+    <p>Huvo, gevestigd in 's-Hertogenbosch. Wij zijn verantwoordelijk voor de verwerking van uw gegevens.</p>
+    <ul>
+      <li>Bedrijfsnaam: [invullen: officiële naam en rechtsvorm]</li>
+      <li>Adres: [invullen: straat, postcode, plaats]</li>
+      <li>KvK-nummer: [invullen]</li>
+      <li>E-mail: [invullen: privacy@…]</li>
+      <li>Telefoon: 088 – 000 48 86 (werkdagen 9 tot 17 uur)</li>
+    </ul>
+
+    <h2>Welke gegevens verzamelen wij?</h2>
+    <p>Alleen wat u zelf invult in een formulier op deze website:</p>
+    <ul>
+      <li><b>Terugbelverzoek:</b> uw naam, telefoonnummer en het dagdeel waarop u gebeld wilt worden.</li>
+      <li><b>Prijs aanvragen:</b> uw naam (en die van de persoon voor wie u de hulp aanvraagt), telefoonnummer, e-mailadres (mag leeg), postcode en huisnummer, de hulp waarin u geïnteresseerd bent, en wanneer u hulp wilt.</li>
+      <li><b>Solliciteren:</b> uw naam, telefoonnummer of e-mailadres, de vacature en uw motivatie.</li>
+    </ul>
+    <p>Wij vragen niet naar gezondheidsgegevens. Wilt u die toch delen in een vrij tekstveld? Dat hoeft niet. Wij gebruiken ze niet en vragen u ze weg te laten.</p>
+
+    <h2>Waarvoor gebruiken wij ze?</h2>
+    <ul>
+      <li>Om u terug te bellen en een kennismaking in te plannen, of om uw vraag over de prijs te beantwoorden. Grondslag: uw verzoek en onze voorbereiding op een overeenkomst.</li>
+      <li>Om uw sollicitatie te beoordelen. Grondslag: uw verzoek.</li>
+      <li>Om u te laten weten wanneer wij in uw buurt beginnen, als u dat bij de postcodecontrole hebt gevraagd. Grondslag: uw toestemming. U kunt die altijd intrekken.</li>
+    </ul>
+    <p>Wij gebruiken uw gegevens niet voor reclame en verkopen ze niet door.</p>
+
+    <h2>Met wie delen wij ze?</h2>
+    <p>Formulieren worden verstuurd via een formulierdienst die ze namens ons doorstuurt naar ons: Formspree (Formspree, Inc., Verenigde Staten). Met deze partij hebben wij een verwerkersovereenkomst. De website zelf staat bij GitHub Pages. Verder delen wij uw gegevens alleen als de wet dat verplicht.</p>
+    <p>Voor de letters op de website gebruiken wij Google Fonts. Daarbij ontvangt Google uw IP-adres. Wij plaatsen zelf geen cookies en gebruiken geen statistieken of advertentie-tracking.</p>
+
+    <h2>Hoe lang bewaren wij ze?</h2>
+    <ul>
+      <li>Terugbel- en prijsverzoeken: tot 6 maanden nadat wij contact hebben gehad, tenzij u klant wordt.</li>
+      <li>Sollicitaties: tot 4 weken na afloop van de procedure. Met uw toestemming maximaal 1 jaar.</li>
+      <li>Wachtlijst: tot u zich afmeldt, of tot wij bij u in de buurt beginnen.</li>
+    </ul>
+
+    <h2>Uw rechten</h2>
+    <p>U mag ons altijd vragen om inzage in uw gegevens, om correctie of verwijdering, om beperking van de verwerking, en om uw gegevens mee te nemen. U mag ook bezwaar maken of uw toestemming intrekken. Mail of bel ons, dan regelen wij het binnen een maand. Komen wij er samen niet uit? Dan kunt u een klacht indienen bij de <a href="https://autoriteitpersoonsgegevens.nl" rel="noopener">Autoriteit Persoonsgegevens</a>.</p>
+
+    <h2>Beveiliging</h2>
+    <p>Deze website verstuurt formulieren via een beveiligde verbinding (https). Wij geven alleen mensen die het nodig hebben toegang tot uw gegevens.</p>
+
+    <h2>Vragen?</h2>
+    <p>Bel ons op 088 – 000 48 86 of <a href="#kennismaken">laat u terugbellen</a>. Wijzigen wij deze verklaring? Dan zetten wij hier de nieuwe versie met de datum.</p>
+  </div>
+</main>
+
 <footer class="voet">
   <div class="wrap">
     <div>
@@ -1586,7 +1660,7 @@ main{scroll-margin-top:120px}
       <h4>Contact</h4>
       <ul><li class="tel-nr">088 – 000 48 86</li><li>Werkdagen 9 tot 17 uur</li><li><a href="#kennismaken">Laat u terugbellen</a></li></ul>
     </div>
-    <div class="voet-onder"><span>© 2026 Huvo</span><span>Voor ouderen, met tijd en aandacht.</span></div>
+    <div class="voet-onder"><span>© 2026 Huvo · <a href="#privacy">Privacyverklaring</a></span><span>Voor ouderen, met tijd en aandacht.</span></div>
   </div>
   <div class="voet-groot rv" aria-hidden="true"><svg viewBox="0 0 2486 805"><use href="#letters"/><circle class="stip" cx="1062" cy="463" r="66.5"/></svg></div>
 </footer>
@@ -1607,6 +1681,17 @@ main{scroll-margin-top:120px}
 (function(){
   document.documentElement.classList.add('js');
   var TEL = '088 – 000 48 86';
+
+  // Formulieren versturen naar een formulierdienst (bijv. Formspree: https://formspree.io/f/xxxxxxxx).
+  // Zolang dit leeg is, wordt er niets verstuurd en tonen de formulieren een foutmelding met ons telefoonnummer.
+  var FORM_ENDPOINT = '';
+  function verstuur(onderwerp, data){
+    if (!FORM_ENDPOINT) return Promise.reject(new Error('geen endpoint'));
+    data = Object.assign({_subject: 'Huvo website: ' + onderwerp, onderwerp: onderwerp}, data);
+    return fetch(FORM_ENDPOINT, {method:'POST', headers:{'Content-Type':'application/json', 'Accept':'application/json'}, body: JSON.stringify(data)})
+      .then(function(r){ if (!r.ok) throw new Error('status ' + r.status); });
+  }
+  var VERZEND_FOUT = 'Het versturen is niet gelukt. Probeer het later nog eens, of bel ons op ' + TEL + '.';
 
   var rustig = matchMedia('(prefers-reduced-motion: reduce)').matches;
   function herstart(el, cls){ el.classList.remove(cls); void el.getBoundingClientRect(); el.classList.add(cls); }
@@ -1792,7 +1877,7 @@ main{scroll-margin-top:120px}
 
   // ===== Werken bij =====
   // twee pagina's in één: de hash bepaalt welke te zien is
-  var paginas = [document.getElementById('home'), document.getElementById('werken'), document.getElementById('over-ons'), document.getElementById('aanvragen')];
+  var paginas = [document.getElementById('home'), document.getElementById('werken'), document.getElementById('over-ons'), document.getElementById('aanvragen'), document.getElementById('privacy')];
   var navPaginas = [].slice.call(document.querySelectorAll('#nav a[data-pagina]'));
   function route(){
     var h = location.hash.slice(1);
@@ -2024,6 +2109,7 @@ main{scroll-margin-top:120px}
         if (A.verder === 'zelf'){
           h += '<div class="uitklap"><p class="av-uitleg">Wij zijn er op werkdagen van 9 tot 17 uur.</p><p class="groot-nummer tel-nr">' + TEL + '</p></div>';
         }
+        h += '<p class="privacy-noot">Met het versturen gaat u akkoord dat wij uw gegevens gebruiken om contact met u op te nemen. Lees onze <a href="#privacy">privacyverklaring</a>.</p>';
         return h;
       },
       klaar: function(){
@@ -2292,8 +2378,30 @@ main{scroll-margin-top:120px}
       if (f === 'buiten'){ fout = ''; teken(); return; }
       if (f){ fout = f; teken(); var e = vak.querySelector('.av-fout'); if (e) e.scrollIntoView({block:'nearest'}); if (!rustig){ form.classList.remove('schud'); void form.offsetWidth; form.classList.add('schud'); } return; }
       fout = '';
-      if (stap === STAPPEN.length - 1){ scherm = 'klaar'; teken(1); focusVraag(); return; }
+      if (stap === STAPPEN.length - 1){ verzend(); return; }
       stap++; teken(1); focusVraag();
+    }
+    var bezig = false;
+    function aanvraagGegevens(){
+      var naam = A.voorwie === 'zelf' ? [A.voornaam, A.achternaam] : [A.invulVoornaam, A.invulAchternaam];
+      return {
+        voor_wie: A.voorwie, aanhef: A.aanhef, naam: naam.join(' ').trim(), aanvrager: [A.voornaam, A.achternaam].join(' ').trim(),
+        telefoon: A.tel, email: A.mail, postcode: A.postcode, huisnummer: A.huisnr, gebied: A.gebied,
+        samen: A.samen === 'ja' ? namen(SAMEN,'samenKeus',A.samenAnders).join(', ') : 'nee',
+        thuis: A.thuis === 'ja' ? namen(THUIS,'thuisKeus',A.thuisAnders).join(', ') : 'nee',
+        wanneer: wanneerTekst(), verder: A.verder === 'zelf' ? 'belt zelf' : 'terugbellen', terugbellen_dagdeel: A.belDagdeel
+      };
+    }
+    function verzend(){
+      if (bezig) return;
+      bezig = true; volgendeKnop.disabled = true;
+      verstuur('Prijsaanvraag', aanvraagGegevens()).then(function(){
+        bezig = false; volgendeKnop.disabled = false;
+        scherm = 'klaar'; teken(1); focusVraag();
+      }, function(){
+        bezig = false; volgendeKnop.disabled = false;
+        fout = VERZEND_FOUT; teken(); var e = vak.querySelector('.av-fout'); if (e) e.scrollIntoView({block:'nearest'});
+      });
     }
     function vorige(){
       fout = '';
@@ -2342,7 +2450,13 @@ main{scroll-margin-top:120px}
       fout = '';
       // bewaar welke knop focus had
       var sleutel = (b.dataset.lijst || b.dataset.veld) + ':' + waarde;
-      if (b.dataset.veld === 'wachtlijst'){ scherm = 'wachtlijst'; teken(1); focusVraag(); return; }
+      if (b.dataset.veld === 'wachtlijst'){
+        if (waarde === 'ja'){
+          verstuur('Wachtlijst', aanvraagGegevens()).then(function(){ scherm = 'wachtlijst'; teken(1); focusVraag(); },
+            function(){ A.wachtlijst = null; fout = VERZEND_FOUT; teken(); });
+        } else { scherm = 'wachtlijst'; teken(1); focusVraag(); }
+        return;
+      }
       teken();
       var terugFocus = vak.querySelector('[data-' + (b.dataset.lijst ? 'lijst' : 'veld') + '="' + sleutel.split(':')[0] + '"][data-waarde="' + waarde + '"]');
       if (terugFocus){ terugFocus.focus({preventScroll:true}); if (!rustig) terugFocus.classList.add('pop'); }
@@ -2392,18 +2506,24 @@ main{scroll-margin-top:120px}
     });
   });
 
-  // sollicitatieformulier (voorbeeld: verstuurt nog niets)
+  // sollicitatieformulier
   var sf = document.getElementById('solForm'), sfFout = document.getElementById('solFout');
   sf.addEventListener('submit', function(e){
     e.preventDefault();
     var naam = sf.naam.value.trim(), contact = sf.contact.value.trim();
     if (!naam){ sfFout.textContent = 'Vul je naam in.'; sfFout.hidden = false; sf.naam.focus(); return; }
     if (contact.length < 6){ sfFout.textContent = 'Vul je telefoonnummer of e-mailadres in, dan kunnen we je bereiken.'; sfFout.hidden = false; sf.contact.focus(); return; }
+    if (sf.website.value) return; // spam
     sfFout.hidden = true;
+    var sKnop = sf.querySelector('button[type=submit]'); sKnop.disabled = true;
+    verstuur('Sollicitatie', {naam: naam, contact: contact, vacature: solVac.value, waarom: sf.waarom.value.trim()}).then(function(){ sollicitatieKlaar(naam); },
+      function(){ sfFout.textContent = VERZEND_FOUT; sfFout.hidden = false; sKnop.disabled = false; });
+  });
+  function sollicitatieKlaar(naam){
     document.getElementById('solBedanktKop').textContent = 'Dank je wel, ' + naam + '.';
     document.getElementById('solBedanktTekst').textContent = 'We nemen snel contact met je op over ' + (solVac.value === 'Open sollicitatie' ? 'je open sollicitatie' : 'de vacature ' + solVac.value) + '.';
     sf.hidden = true; document.getElementById('solBedankt').hidden = false;
-  });
+  }
 
   // logo: klik laat de stip opnieuw vallen
   var logo = document.querySelector('.logo');
@@ -2503,18 +2623,22 @@ main{scroll-margin-top:120px}
     function selecteer(){ var r = document.createRange(); r.selectNodeContents(hp.querySelector('.tel-nr')); var s = getSelection(); s.removeAllRanges(); s.addRange(r); }
   });
 
-  // terugbelformulier (voorbeeld: verstuurt nog niets)
+  // terugbelformulier
   var f = document.getElementById('terugbel'), fout = document.getElementById('fout');
   f.addEventListener('submit', function(e){
     e.preventDefault();
     var naam = f.naam.value.trim(), tel = f.tel.value.replace(/[^0-9+]/g,'');
     if (!naam){ fout.textContent = 'Vul uw naam in, dan weten wij wie we bellen.'; fout.hidden = false; f.naam.focus(); return; }
     if (tel.length < 10){ fout.textContent = 'Vul uw telefoonnummer in, met tien cijfers.'; fout.hidden = false; f.tel.focus(); return; }
+    if (f.website.value) return; // spam
     fout.hidden = true;
     var moment = f.querySelector('input[name=moment]:checked').value;
-    document.getElementById('bedanktKop').textContent = 'Dank u wel, ' + naam + '.';
-    document.getElementById('bedanktTekst').textContent = 'Wij bellen u in de ' + moment + ' terug op ' + f.tel.value.trim() + '.';
-    f.hidden = true; document.getElementById('bedankt').hidden = false;
+    var knop = f.querySelector('button[type=submit]'); knop.disabled = true;
+    verstuur('Terugbelverzoek', {naam: naam, telefoon: f.tel.value.trim(), moment: moment}).then(function(){
+      document.getElementById('bedanktKop').textContent = 'Dank u wel, ' + naam + '.';
+      document.getElementById('bedanktTekst').textContent = 'Wij bellen u in de ' + moment + ' terug op ' + f.tel.value.trim() + '.';
+      f.hidden = true; document.getElementById('bedankt').hidden = false;
+    }, function(){ fout.textContent = VERZEND_FOUT; fout.hidden = false; knop.disabled = false; });
   });
 })();
 </script>
